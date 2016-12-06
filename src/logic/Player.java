@@ -1,4 +1,4 @@
-package logic;
+package mytest;
 
 public interface Player {
 
