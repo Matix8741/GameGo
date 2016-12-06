@@ -44,11 +44,11 @@ public class FXBoard extends Canvas {
             @Override
             public void handle(MouseEvent event) {
                 for(FXField field : fields) {
-                	if((Math.abs(event.getX()-field.getX())<4)&& (Math.abs(event.getY()-field.getY())<4) ){
+                	if((Math.abs(event.getX()-field.getX())<7)&& (Math.abs(event.getY()-field.getY())<7) ){
                 		System.out.print("JEstemmm"+fields.size());
                 		if(gameMaster.isCan(field)){
                 			gc.setFill(gameMaster.which_color());
-                			gc.fillOval(field.getX()-4, field.getY()-4, 8, 8);
+                			gc.fillOval(field.getX()-8, field.getY()-8, 16, 16);
                 		}
                 	}
                 }
