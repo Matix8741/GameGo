@@ -10,7 +10,7 @@ import java.net.SocketTimeoutException;
 public class GameServer extends Thread {
 	
 	private ServerSocket serversocket;
-	private int port = 444;
+	private int port = 6066;
 	
 	public GameServer() throws IOException {
 		serversocket = new ServerSocket(port);
@@ -29,10 +29,11 @@ public class GameServer extends Thread {
 				server.close();
 			}catch(SocketTimeoutException e) {
 				System.out.println("Timeout");
+				break;
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			}
 		}
 	}
