@@ -34,9 +34,9 @@ public class FXBoard extends Canvas {
 			gc.strokeLine(30, 30+j, 370, 30+j);
 		}
 		j=0;
-		for(int i =0;i<x*19;i++,j+=19) {
+		for(int i =0;i<x*19;i+=19) {
 			for(int k=0; k<y*19;k+=19){
-				fields.add(new FXField(gc,30+j,30+k));
+				fields.add(new FXField(gc,30+i,30+k));
 			}
 		}
 		setOnMouseClicked(new EventHandler<MouseEvent>()
