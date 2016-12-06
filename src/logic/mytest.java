@@ -1,4 +1,4 @@
-package mytest;
+package logic;
 
 public class mytest {
 
