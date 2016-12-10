@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import logic.*;
 
 public class GameServer extends Thread {
 	
@@ -18,14 +19,14 @@ public class GameServer extends Thread {
 	
 	@Override
 	public void run() {
+		GameMaster gameMaster = new GameMaster(19);
 		while(true) {
 			System.out.println("Dzialam");
 			try {
 				Socket server = serversocket.accept();
 				DataInputStream in = new DataInputStream(server.getInputStream());
-				System.out.println("CLient:  "+ in.readUTF());
 				DataOutputStream out = new DataOutputStream(server.getOutputStream());
-				out.writeUTF("Server pisze");
+				System.out.println(in.readUTF());
 				server.close();
 			}catch(SocketTimeoutException e) {
 				System.out.println("Timeout");

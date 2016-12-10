@@ -2,6 +2,8 @@ package application;
 	
 import java.util.List;
 
+import Client.ClientPlayer;
+import Client.MyClient;
 import FX.FXBoard;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -18,17 +20,17 @@ import javafx.scene.shape.Rectangle;
 
 
 public class Main extends Application {
+	private static MyClient client;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = new BorderPane();
-			FXBoard board = new FXBoard(400,400);
+			FXBoard board = new FXBoard(400,400, client);
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			StackPane holder = new StackPane();
 			
 			root.getChildren().add(holder);
-			holder.setStyle("-fx-background-color: #DB962B");
 			root.getChildren().add(board);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -37,7 +39,7 @@ public class Main extends Application {
 		}
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
+	public static void main(MyClient client) {
+		launch();
 	}
 }
