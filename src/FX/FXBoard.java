@@ -51,13 +51,18 @@ public class FXBoard extends Canvas {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-                		if(true){
-                			String test;
-                			System.out.println((test=Coder.coder(fields.indexOf(field),19)));
-                			System.out.println(Coder.decoder(test, 19));
-                			gc.setFill(Color.WHITE);
-                			gc.fillOval(field.getX()-8, field.getY()-8, 16, 16);
-                		}
+                		try {
+							if(client.readFromServer().equals("OK")){
+								String test;
+								System.out.println((test=Coder.coder(fields.indexOf(field),19)));
+								System.out.println(Coder.decoder(test, 19));
+								gc.setFill(Color.WHITE);
+								gc.fillOval(field.getX()-8, field.getY()-8, 16, 16);
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                 	}
                 }
             }

@@ -26,8 +26,10 @@ public class GameServer extends Thread {
 				Socket server = serversocket.accept();
 				DataInputStream in = new DataInputStream(server.getInputStream());
 				DataOutputStream out = new DataOutputStream(server.getOutputStream());
-				System.out.println(in.readUTF());
-				server.close();
+				while(true){
+					System.out.println(in.readUTF());
+					out.writeUTF("OK");
+				}
 			}catch(SocketTimeoutException e) {
 				System.out.println("Timeout");
 				break;
