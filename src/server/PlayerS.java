@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import logic.Player;
 import logic.state;
 
-public class PlayerS extends MyClient implements Player  {
+public class PlayerS  implements Player  {
 
 	private PlayerS Opponnent;
 	private Socket socket;
