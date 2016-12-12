@@ -1,5 +1,7 @@
 package logic;
 
-public interface Player {
+import javafx.scene.paint.Color;
 
+public interface Player {
+	public state getColor ();
 }

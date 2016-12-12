@@ -2,7 +2,6 @@ package logic;
 
 public class Field {
 
-	public enum state { WHITE, BLACK, EMPTY };
 	
 	private int x;
 	private int y;

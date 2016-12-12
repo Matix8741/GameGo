@@ -20,24 +20,24 @@ public class GameServer extends Thread {
 	@Override
 	public void run() {
 		GameMaster gameMaster = new GameMaster(19);
-		while(true) {
-			System.out.println("Dzialam");
-			try {
+		try {	
+			while(true){
+				Game game = new Game(19);
+				PlayerS player1 = new PlayerS(state.BLACK,serversocket.accept());
+				PlayerS player2 = new PlayerS(state.WHITE,serversocket.accept());
 				Socket server = serversocket.accept();
 				DataInputStream in = new DataInputStream(server.getInputStream());
 				DataOutputStream out = new DataOutputStream(server.getOutputStream());
-				while(true){
-					System.out.println(in.readUTF());
-					out.writeUTF("OK");
-				}
-			}catch(SocketTimeoutException e) {
-				System.out.println("Timeout");
-				break;
+			while(true){
+				System.out.println(in.readUTF());
+				out.writeUTF("OK");
 			}
-			catch (IOException e) {
-				e.printStackTrace();
-				break;
 			}
+		}catch(SocketTimeoutException e) {
+			System.out.println("Timeout");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
