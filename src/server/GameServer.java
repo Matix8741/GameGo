@@ -25,9 +25,8 @@ public class GameServer extends Thread {
 				Game game = new Game(19);
 				PlayerS player1 = new PlayerS(state.BLACK,serversocket.accept());
 				PlayerS player2 = new PlayerS(state.WHITE,serversocket.accept());
-				Socket server = serversocket.accept();
-				DataInputStream in = new DataInputStream(server.getInputStream());
-				DataOutputStream out = new DataOutputStream(server.getOutputStream());
+				DataInputStream in = new DataInputStream(player1.socket.getInputStream());
+				DataOutputStream out = new DataOutputStream(player1.socket.getOutputStream());
 			while(true){
 				System.out.println(in.readUTF());
 				out.writeUTF("OK");

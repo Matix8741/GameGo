@@ -10,7 +10,7 @@ import logic.state;
 public class PlayerS  implements Player  {
 
 	private PlayerS Opponnent;
-	private Socket socket;
+	public Socket socket;
 	public void setOpponnent(PlayerS opponnent) {
 		Opponnent = opponnent;
 	}
