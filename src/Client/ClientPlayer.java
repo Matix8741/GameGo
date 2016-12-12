@@ -23,10 +23,11 @@ public class ClientPlayer extends Application {
 		try {
 			BorderPane root = new BorderPane();
 			FXBoard board = new FXBoard(400,400, new MyClient("localhost",port));
+			ServerListener serverlistener = new ServerListener(board.getClient().getIN(), board);
+			serverlistener.start();
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			StackPane holder = new StackPane();
-			
 			root.getChildren().add(holder);
 			root.getChildren().add(board);
 			primaryStage.setScene(scene);

@@ -23,14 +23,19 @@ public class GameServer extends Thread {
 		try {	
 			while(true){
 				Game game = new Game(19);
-				PlayerS player1 = new PlayerS(state.BLACK,serversocket.accept());
-				PlayerS player2 = new PlayerS(state.WHITE,serversocket.accept());
-				DataInputStream in = new DataInputStream(player1.socket.getInputStream());
-				DataOutputStream out = new DataOutputStream(player1.socket.getOutputStream());
-			while(true){
-				System.out.println(in.readUTF());
-				out.writeUTF("OK");
-			}
+				Socket one = serversocket.accept();
+				Socket two = serversocket.accept();
+				PlayerS player1 = new PlayerS(state.BLACK,one);
+				PlayerS player2 = new PlayerS(state.WHITE,two);
+				player1.setOpponnent(player2);
+				player2.setOpponnent(player1);
+				game.setCurrentPlayer(player1);
+				PlayerListener listener1 = new PlayerListener(one, game, player1);
+				PlayerListener listener2 = new PlayerListener(two, game, player2);
+				listener1.setOpponent(listener2);
+				listener2.setOpponent(listener1);
+				listener1.start();
+				listener2.start();
 			}
 		}catch(SocketTimeoutException e) {
 			System.out.println("Timeout");

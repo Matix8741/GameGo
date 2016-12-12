@@ -31,4 +31,10 @@ public class MyClient extends Socket {
 		out.writeUTF(messege);
 	}
 
+	public DataInputStream getIN() {
+		// TODO Auto-generated method stub
+		return in;
+	}
+
+
 }

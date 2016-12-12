@@ -3,12 +3,8 @@ package FX;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import Client.ClientPlayer;
 import Client.MyClient;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -17,18 +13,36 @@ import logic.Coder;
 
 public class FXBoard extends Canvas {
 
+	private Color color;
 	private int x=19;
 	private int y=19;
 	private List<FXField> fields;
 	private MyClient client;
+	private GraphicsContext gc;
 	public FXBoard( double arg1, double arg2, MyClient client) {
 		super(arg1,arg2);
 		this.client = client;
 		fields = new ArrayList<FXField>();
-		GraphicsContext gc = this.getGraphicsContext2D();
+		gc = this.getGraphicsContext2D();
 		gc.setFill(Color.BLUE);
 		gc.setLineWidth(2);
 		int j=0;
+		try {
+			client.sendToServer("F");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			if(client.readFromServer().equals("WHITE")){
+				color = Color.WHITE;
+			}
+			else
+				color = Color.BLACK;
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		for(int i=0; i<x;i++,j+=19){
 			gc.strokeLine(30+j, 30, 30+j, 370);
 			gc.strokeLine(30, 30+j, 370, 30+j);
@@ -46,19 +60,7 @@ public class FXBoard extends Canvas {
                 for(FXField field : fields) {
                 	if((Math.abs(event.getX()-field.getX())<7)&& (Math.abs(event.getY()-field.getY())<7) ){
                 		try {
-							client.sendToServer("wysylam");
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-                		try {
-							if(client.readFromServer().equals("OK")){
-								String test;
-								System.out.println((test=Coder.coder(fields.indexOf(field),19)));
-								System.out.println(Coder.decoder(test, 19));
-								gc.setFill(Color.WHITE);
-								gc.fillOval(field.getX()-8, field.getY()-8, 16, 16);
-							}
+							client.sendToServer("M"+Coder.coder(fields.indexOf(field),19));
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -67,6 +69,18 @@ public class FXBoard extends Canvas {
                 }
             }
         });
+	}
+	public void fillField(int i, Color color) {
+		FXField field = fields.get(i);
+		gc.setFill(color);
+		gc.fillOval(field.getX()-8, field.getY()-8, 16, 16);
+	}
+	public MyClient getClient() {
+		// TODO Auto-generated method stub
+		return client;
+	}
+	public Color getColor() {
+		return color;
 	}
 
 }
