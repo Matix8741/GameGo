@@ -12,6 +12,10 @@ public class Board {
 
 	private List<Field> fields;
 
+	public Field getField(int x, int y) {
+		return fields.get(size*(y-1)+x-1);
+	}
+	
 	public int getSize() {
 		return size;
 	}
@@ -21,8 +25,7 @@ public class Board {
 			throw new InvalidBoardSizeException();
 		this.size = size;
 		fields = new ArrayList<Field>();
-		for (int i=0; i<size; i++)
-			for (int j=0; j<size; j++)
-				fields.add(new Field(i+1,j+1));
+		for (int i=0; i<size*size; i++)
+			fields.add(new Field((i%size)+1, (i/size)+1));
 	}
 }
