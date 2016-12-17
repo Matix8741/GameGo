@@ -1,28 +1,37 @@
 package Client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import FX.FXBoard;
-import application.Main;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ClientPlayer extends Application {
 	static int port = 6066;
 	@Override
 	public void start(Stage primaryStage) {
+		MyClient myClient = null;
 		try {
+			myClient = new MyClient("localhost", port);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		createBoard(myClient);
+	}
+	public static void main(String[] args) {
+		launch(args);
+	}	
+	
+
+	private void createBoard(MyClient client){
+			Stage boardStage = new Stage(StageStyle.DECORATED);
 			BorderPane root = new BorderPane();
-			FXBoard board = new FXBoard(400,400, new MyClient("localhost",port));
+			FXBoard board = new FXBoard(400,400, client);
 			ServerListener serverlistener = new ServerListener(board.getClient().getIN(), board);
 			serverlistener.start();
 			Scene scene = new Scene(root,400,400);
@@ -30,15 +39,7 @@ public class ClientPlayer extends Application {
 			StackPane holder = new StackPane();
 			root.getChildren().add(holder);
 			root.getChildren().add(board);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+			boardStage.setScene(scene);
+			boardStage.show();
 	}
-	public static void main(String[] args) {
-		launch(args);
-	}	
-	
-
 }

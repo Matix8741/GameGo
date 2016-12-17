@@ -11,23 +11,13 @@ import javafx.scene.paint.Color;
 public class FXField extends Circle {
 	private double x;
 	private double y;
-	private GraphicsContext gc;
 	public double getX() {
 		return x;
 	}
 	
-	public FXField(GraphicsContext gc, double x, double y) {
-		this.gc = gc;
+	public FXField( double x, double y) {
 		setX(x);
 		setY(y);
-		setOnMouseClicked(new EventHandler<MouseEvent>()
-	    {
-	        @Override
-	        public void handle(MouseEvent t) {
-	        	gc.
-	            setFill(Color.RED);
-	        }
-	    });
 	}
 	
 	private void setX(double x) {

@@ -15,7 +15,6 @@ public class FXBoard extends Canvas {
 
 	private Color color;
 	private int x=19;
-	private int y=19;
 	private List<FXField> fields;
 	private MyClient client;
 	private GraphicsContext gc;
@@ -49,8 +48,8 @@ public class FXBoard extends Canvas {
 		}
 		j=0;
 		for(int i =0;i<x*19;i+=19) {
-			for(int k=0; k<y*19;k+=19){
-				fields.add(new FXField(gc,30+i,30+k));
+			for(int k=0; k<x*19;k+=19){
+				fields.add(new FXField(30+i,30+k));
 			}
 		}
 		setOnMouseClicked(new EventHandler<MouseEvent>()
@@ -58,7 +57,7 @@ public class FXBoard extends Canvas {
             @Override
             public void handle(MouseEvent event) {
                 for(FXField field : fields) {
-                	if((Math.abs(event.getX()-field.getX())<7)&& (Math.abs(event.getY()-field.getY())<7) ){
+                	if((Math.abs(event.getX()-field.getX())<8)&& (Math.abs(event.getY()-field.getY())<8) ){
                 		try {
 							client.sendToServer("M"+Coder.coder(fields.indexOf(field),19));
 						} catch (IOException e) {

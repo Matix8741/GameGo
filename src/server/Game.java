@@ -3,11 +3,13 @@ package server;
 import logic.Board;
 import logic.Coder;
 import logic.Field;
+import logic.GameMaster;
 import logic.InvalidBoardSizeException;
 
 public class Game {
 	private Board board;
 	private PlayerS CurrentPlayer;
+	GameMaster gameMaster;
 	public Game(int x) {
 		try {
 			board = new Board(x);
@@ -15,6 +17,7 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		gameMaster = new GameMaster(19);
 	}
 	public boolean doMove(Field field, PlayerS player) {
 		if(CurrentPlayer == player && field.isEmpty()){

@@ -1,7 +1,5 @@
 package server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,13 +11,17 @@ public class GameServer extends Thread {
 	private ServerSocket serversocket;
 	private int port = 6066;
 	
-	public GameServer() throws IOException {
-		serversocket = new ServerSocket(port);
+	public GameServer()  {
+		try {
+			serversocket = new ServerSocket(port);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void run() {
-		GameMaster gameMaster = new GameMaster(19);
 		try {	
 			while(true){
 				Game game = new Game(19);
@@ -48,13 +50,8 @@ public class GameServer extends Thread {
 	
 	
 	public static void main(String[] args) {
-		try {
-			Thread one = new GameServer();
-			one.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Thread one = new GameServer();
+		one.start();
 
 	}
 
