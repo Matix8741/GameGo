@@ -7,10 +7,12 @@ import logic.GameMaster;
 import logic.InvalidBoardSizeException;
 
 public class Game {
+	int x;
 	private Board board;
 	private PlayerS CurrentPlayer;
 	GameMaster gameMaster;
 	public Game(int x) {
+		this.x = x;
 		try {
 			board = new Board(x);
 		} catch (InvalidBoardSizeException e) {
@@ -47,6 +49,7 @@ public class Game {
 		}
 		else if (messege.substring(0, 1).equals("F")){
 			String e = player.color.toString();
+			System.out.println("trololo"+e);
 			return e;
 		}
 		return "NO";

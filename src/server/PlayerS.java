@@ -2,8 +2,6 @@ package server;
 
 import java.net.Socket;
 
-import Client.MyClient;
-import javafx.scene.paint.Color;
 import logic.Player;
 import logic.state;
 

@@ -13,19 +13,21 @@ public class PlayerListener extends Thread {
 	private DataOutputStream out;
 	private PlayerS myPlayer;
 	private Game game;
+	private int x;
 	
-	public PlayerListener(Socket socket, Game game, PlayerS player) throws IOException {
+	public PlayerListener(Socket socket, PlayerS player) throws IOException {
 		this.socket = socket;
 		in = new DataInputStream(socket.getInputStream());
 		out = new DataOutputStream(socket.getOutputStream());
-		this.game = game;
 		myPlayer = player;
 	}
 	
 	@Override
 	public void run() {
+		//firstContact();
 		while(true) {
 				String messege = getMessega();
+				System.out.println("<<<<<"+messege);
 				if(messege != null) {
 					String back =game.sendMessege(messege,myPlayer);
 						if(back != null && back.substring(0, 1).equals("A")){
@@ -36,6 +38,16 @@ public class PlayerListener extends Thread {
 						OutMessege(back);
 				}
 		}
+	}
+
+	public void firstContact() {
+		String msgFromClient = getMessega();
+		System.out.println(msgFromClient);
+		String size = msgFromClient.substring(msgFromClient.indexOf("SS")+2,msgFromClient.indexOf("PL"));
+		System.out.println(size+"SIZZZZSS");
+		String player = msgFromClient.substring(msgFromClient.indexOf("PL")+2);
+		System.out.println(player+"PLYDDD");
+		OutMessege("BLACK");
 	}
 
 	private String getMessega() {
@@ -66,6 +78,14 @@ public class PlayerListener extends Thread {
 	public void setOpponent(PlayerListener opponent) {
 		this.opponent = opponent;
 	}
+
+	public Game getGame() {
+		return game;
+	}
+	public void setGame(Game game){
+		this.game = game;
+	}
+
 	
 	
 }

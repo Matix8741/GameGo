@@ -23,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -31,6 +32,7 @@ public class ClientPlayer extends Application {
 	@Override
 	public void start(Stage primaryStage) throws UnknownHostException, IOException {
 		final MyClient myClient = new MyClient("localhost", port);
+		Color color;
 		BorderPane panel = new BorderPane();
 		Scene scene = new Scene(panel);
 		HBox hbox = new HBox();
@@ -59,8 +61,29 @@ public class ClientPlayer extends Application {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
-				createBoard(myClient);
+				if(!(size.getText().equals("NaN"))){
+					try {
+						prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					Boolean s = null;
+					String lol = null;
+					try {
+						lol = myClient.readFromServer();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					primaryStage.close();
+					System.out.println("OOOOOO:"+lol);
+					if(lol.equals("WHITE")){
+						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.WHITE);
+					}
+					else{
+						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.BLACK);
+					}
+				}
 				
 			}
 		});
@@ -69,12 +92,13 @@ public class ClientPlayer extends Application {
 		primaryStage.show();
 		//createBoard(myClient);
 	}
-	protected void prepareGame(MyClient myClient, String size, Toggle player) {
+	protected void prepareGame(MyClient myClient, String size, Toggle player) throws IOException {
 		MessegeFirst messege = new MessegeFirst();
 		String s = player.toString();
 		messege.setPlayerType(s.substring(s.indexOf("'")+1, s.indexOf("'",s.indexOf("'")+1 )));
 		messege.setSize(size);
-		System.out.println(messege.createMessega());
+		messege.createMessega();
+		myClient.sendToServer(messege.toString());
 		//messege.setSize(size);
 	//	myClient.sendToServer(messege);
 	}
@@ -83,11 +107,11 @@ public class ClientPlayer extends Application {
 	}	
 	
 
-	private void createBoard(MyClient client){
+	private void createBoard(MyClient client, int x, Color color){
 			Stage boardStage = new Stage(StageStyle.DECORATED);
 			BorderPane root = new BorderPane();
 			VBox labels = new VBox();
-			FXBoard board = new FXBoard(400,400, client);
+			FXBoard board = new FXBoard(400,400, client,x,color);
 			ServerListener serverlistener = new ServerListener(board.getClient().getIN(), board);
 			serverlistener.start();
 			Scene scene = new Scene(root,600,400);

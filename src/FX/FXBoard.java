@@ -18,38 +18,30 @@ public class FXBoard extends Canvas {
 	private List<FXField> fields;
 	private MyClient client;
 	private GraphicsContext gc;
-	public FXBoard( double arg1, double arg2, MyClient client) {
+	public FXBoard( double arg1, double arg2, MyClient client, int x2, Color color2) {
 		super(arg1,arg2);
+		color = color2;
+		this.x = x2;
 		this.client = client;
 		fields = new ArrayList<FXField>();
 		gc = this.getGraphicsContext2D();
-		gc.setFill(Color.BLUE);
 		gc.setLineWidth(2);
 		int j=0;
-		try {
-			client.sendToServer("F");
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			if(client.readFromServer().equals("WHITE")){
-				color = Color.WHITE;
-			}
-			else
-				color = Color.BLACK;
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		for(int i=0; i<x;i++,j+=19){
-			gc.strokeLine(30+j, 30, 30+j, 370);
-			gc.strokeLine(30, 30+j, 370, 30+j);
-		}
+		int k;
+        double width = getWidth()-30;
+        double height = getHeight()-30 ;
+
+        double htOfRow = (height) / (x-1);
+        double wdOfRow = (width) / (x-1);
+        for (k = 0; k < x; k++){
+          gc.strokeLine(15, k * htOfRow+15 , width+15, k * htOfRow+15  );
+          gc.strokeLine(k*wdOfRow+15  , 15, k*wdOfRow +15 , height+15 );
+      }
 		j=0;
-		for(int i =0;i<x*19;i+=19) {
-			for(int k=0; k<x*19;k+=19){
-				fields.add(new FXField(30+i,30+k));
+		for(double i =1;i<x*htOfRow;i+=htOfRow) {
+			for(double c=1; c<x*wdOfRow;c+=wdOfRow){
+				System.out.println((i+16)+":::"+(c+16));
+				fields.add(new FXField(i+15,c+15));
 			}
 		}
 		setOnMouseClicked(new EventHandler<MouseEvent>()
