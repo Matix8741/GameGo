@@ -35,7 +35,7 @@ public class ClientPlayer extends Application {
 	static int port = 6066;
 	@Override
 	public void start(Stage primaryStage) throws UnknownHostException, IOException {
-		//final MyClient myClient = new MyClient("localhost", port);
+		final MyClient myClient = new MyClient("localhost", port);
 		Color color;
 		BorderPane panel = new BorderPane();
 		Scene scene = new Scene(panel);
@@ -62,36 +62,36 @@ public class ClientPlayer extends Application {
 		BorderPane forbutton = new BorderPane();
 		forbutton.setCenter(start);
 		searching();
-//		start.setOnAction(new EventHandler<ActionEvent>() {
+		start.setOnAction(new EventHandler<ActionEvent>() {
 			
-//			@Override
-//			public void handle(ActionEvent event) {
-//				if(!(size.getText().equals("NaN"))){
-//					try {
-//						prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//					Boolean s = null;
-//					String lol = null;
-//					try {
-//						lol = myClient.readFromServer();
-//					} catch (IOException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-//					primaryStage.close();
-//					System.out.println("OOOOOO:"+lol);
-//					if(lol.equals("WHITE")){
-//						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.WHITE);
-//					}
-//					else{
-//						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.BLACK);
-//					}
-//				}
-//				
-//			}
-//		});
+			@Override
+			public void handle(ActionEvent event) {
+				if(!(size.getText().equals("NaN"))){
+					try {
+						prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					Boolean s = null;
+					String lol = null;
+					try {
+						lol = myClient.readFromServer();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					primaryStage.close();
+					System.out.println("OOOOOO:"+lol);
+					if(lol.equals("WHITE")){
+						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.WHITE);
+					}
+					else{
+						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.BLACK);
+					}
+				}
+				
+			}
+		});
 		panel.setBottom(forbutton);
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -104,8 +104,6 @@ public class ClientPlayer extends Application {
 		messege.setSize(size);
 		messege.createMessega();
 		myClient.sendToServer(messege.toString());
-		//messege.setSize(size);
-	//	myClient.sendToServer(messege);
 	}
 	public static void main(String[] args) {
 		launch(args);

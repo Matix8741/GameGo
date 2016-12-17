@@ -51,7 +51,7 @@ public class FXBoard extends Canvas {
                 for(FXField field : fields) {
                 	if((Math.abs(event.getX()-field.getX())<8)&& (Math.abs(event.getY()-field.getY())<8) ){
                 		try {
-							client.sendToServer("M"+Coder.coder(fields.indexOf(field),19));
+							client.sendToServer("M"+Coder.coder(fields.indexOf(field),x));
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

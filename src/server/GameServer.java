@@ -4,14 +4,19 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+
 import logic.*;
 
 public class GameServer extends Thread {
 	
 	private ServerSocket serversocket;
 	private int port = 6066;
+	private List<Game> freeGames;
 	
 	public GameServer()  {
+		freeGames = new ArrayList<Game>();
 		try {
 			serversocket = new ServerSocket(port);
 		} catch (IOException e) {
@@ -25,20 +30,8 @@ public class GameServer extends Thread {
 		try {	
 			while(true){
 				Socket one = serversocket.accept();
-				PlayerS player1 = new PlayerS(state.BLACK,one);
-				Game game = new Game(19);
-				PlayerListener listener1 = new PlayerListener(one, player1);
-				listener1.firstContact();
-				Socket two = serversocket.accept();
-				PlayerS player2 = new PlayerS(state.WHITE,two);
-				player1.setOpponnent(player2);
-				player2.setOpponnent(player1);
-				game.setCurrentPlayer(player1);
-				PlayerListener listener2 = new PlayerListener(two, player2);
-				listener1.setOpponent(listener2);
-				listener2.setOpponent(listener1);
-				listener1.start();
-				listener2.start();
+				PlayerListener listener1 = new PlayerListener(one);
+				listener1.firstContact(freeGames);
 			}
 		}catch(SocketTimeoutException e) {
 			System.out.println("Timeout");

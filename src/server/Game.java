@@ -7,7 +7,11 @@ import logic.GameMaster;
 import logic.InvalidBoardSizeException;
 
 public class Game {
-	int x;
+	private int x;
+	public int getX() {
+		return x;
+	}
+	private PlayerListener currentPlayerListener;
 	private Board board;
 	private PlayerS CurrentPlayer;
 	GameMaster gameMaster;
@@ -19,7 +23,7 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		gameMaster = new GameMaster(19);
+		gameMaster = new GameMaster(x);
 	}
 	public boolean doMove(Field field, PlayerS player) {
 		if(CurrentPlayer == player && field.isEmpty()){
@@ -40,7 +44,7 @@ public class Game {
 		System.out.println("::::"+messege);
 		if(messege.substring(0, 1).equals("M")){
 			System.out.println("JESTEM!!!!");
-			int move = Coder.decoder(messege.substring(1), 19);
+			int move = Coder.decoder(messege.substring(1), x);
 			System.out.println(move);
 			if( doMove(board.getFields().get(move), player)){
 				CurrentPlayer = player.getOpponnent();
@@ -55,4 +59,11 @@ public class Game {
 		return "NO";
 		
 	}
+	public PlayerListener getCurrentPlayerListener() {
+		return currentPlayerListener;
+	}
+	public void setCurrentPlayerListener(PlayerListener currentPlayerListener) {
+		this.currentPlayerListener = currentPlayerListener;
+	}
+
 }
