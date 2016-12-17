@@ -2,6 +2,10 @@ package Client;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.swing.SwingUtilities;
 
 import FX.FXBoard;
 import Messege.MessegeFirst;
@@ -31,7 +35,7 @@ public class ClientPlayer extends Application {
 	static int port = 6066;
 	@Override
 	public void start(Stage primaryStage) throws UnknownHostException, IOException {
-		final MyClient myClient = new MyClient("localhost", port);
+		//final MyClient myClient = new MyClient("localhost", port);
 		Color color;
 		BorderPane panel = new BorderPane();
 		Scene scene = new Scene(panel);
@@ -57,36 +61,37 @@ public class ClientPlayer extends Application {
 		Button start = new Button("Start");
 		BorderPane forbutton = new BorderPane();
 		forbutton.setCenter(start);
-		start.setOnAction(new EventHandler<ActionEvent>() {
+		searching();
+//		start.setOnAction(new EventHandler<ActionEvent>() {
 			
-			@Override
-			public void handle(ActionEvent event) {
-				if(!(size.getText().equals("NaN"))){
-					try {
-						prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					Boolean s = null;
-					String lol = null;
-					try {
-						lol = myClient.readFromServer();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					primaryStage.close();
-					System.out.println("OOOOOO:"+lol);
-					if(lol.equals("WHITE")){
-						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.WHITE);
-					}
-					else{
-						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.BLACK);
-					}
-				}
-				
-			}
-		});
+//			@Override
+//			public void handle(ActionEvent event) {
+//				if(!(size.getText().equals("NaN"))){
+//					try {
+//						prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//					Boolean s = null;
+//					String lol = null;
+//					try {
+//						lol = myClient.readFromServer();
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//					primaryStage.close();
+//					System.out.println("OOOOOO:"+lol);
+//					if(lol.equals("WHITE")){
+//						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.WHITE);
+//					}
+//					else{
+//						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.BLACK);
+//					}
+//				}
+//				
+//			}
+//		});
 		panel.setBottom(forbutton);
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -152,4 +157,38 @@ public class ClientPlayer extends Application {
 			}
 			});
 		}
+	private static void searching(){
+		Stage stage = new Stage();
+		BorderPane root = new BorderPane();
+		Label label = new Label("Searching opponent...");
+		Scene scene = new Scene(root);
+		root.setCenter(label);
+		stage.setScene(scene);
+		stage.show();
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			
+			@Override
+			public void run() {
+				javafx.application.Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						changeLabel(label);
+					}
+				});
+						
+				
+			}
+		},0,500);
+	}
+	private static void changeLabel(Label label ){
+		if(label.getText().substring(label.getText().length()-3).equals("...")){
+			label.setText("Searching opponent.");
+		}
+		else if (label.getText().substring(label.getText().length()-2).equals("..")){
+			label.setText("Searching opponent...");
+		}
+		else
+			label.setText("Searching opponent..");
+	}
 }
