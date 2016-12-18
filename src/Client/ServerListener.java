@@ -6,13 +6,10 @@ import java.io.ObjectInputStream;
 import java.util.Timer;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import FX.FXBoard;
 import logic.Board;
-import logic.Coder;
 
 public class ServerListener extends Thread {
 

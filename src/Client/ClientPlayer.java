@@ -6,8 +6,6 @@ import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.SwingUtilities;
-
 import FX.FXBoard;
 import Messege.MessegeFirst;
 import javafx.application.Application;
@@ -16,7 +14,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,12 +23,10 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
 public class ClientPlayer extends Application {
 	static int port = 6066;
@@ -44,7 +39,6 @@ public class ClientPlayer extends Application {
 	public void start(Stage primaryStage) throws UnknownHostException, IOException {
 		final MyClient myClient = new MyClient("localhost", port);
 		final Stage boardStage = new Stage();
-		Color color;
 		BorderPane panel = new BorderPane();
 		Scene scene = new Scene(panel);
 		HBox hbox = new HBox();
@@ -133,6 +127,13 @@ public class ClientPlayer extends Application {
 			labels.setSpacing(8);
 			labels.getChildren().addAll(myPoints,opponetPoints,infoFromServer);
 			root.setRight(labels);
+			HBox buttons = new HBox();
+			Button surrender = new Button("Surrender");
+			Button pause = new Button("Pause");
+			buttons.setPadding(new Insets(8));
+			buttons.setSpacing(8);
+			buttons.getChildren().addAll(surrender,pause);
+			labels.getChildren().add(buttons);
 			boardStage.setScene(scene);
 		//	boardStage.setResizable(false);
 			boardStage.show();
@@ -205,5 +206,24 @@ public class ClientPlayer extends Application {
 	}
 	public void setOpponentPoints(String points){
 		opponetPoints.setText(points);
+	}
+	public void requestWindow(String quest){
+		Stage stage = new Stage();
+		stage.initStyle(StageStyle.UTILITY);
+		BorderPane border = new BorderPane();
+		Scene scene = new Scene(border,200,100);
+		Label request = new Label(quest);
+		Button ok = new Button("OK");
+		Button no = new Button("NO.");
+		HBox buttons = new HBox();
+		buttons.setPadding(new Insets(30));
+		buttons.setSpacing(8);
+		buttons.getChildren().addAll(ok,no);
+		border.setCenter(request);
+		border.setBottom(buttons);
+		stage.setScene(scene);
+		stage.show();
+		
+		
 	}
 }

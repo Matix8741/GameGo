@@ -1,7 +1,6 @@
 package server;
 
 import logic.Board;
-import logic.Coder;
 import logic.Field;
 import logic.GameMaster;
 import logic.InvalidBoardSizeException;

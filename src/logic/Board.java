@@ -7,6 +7,10 @@ import java.util.List;
 public class Board implements Serializable
 {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 199410800481618070L;
 	private int size;
 	public List<Field> getFields() {
 		return fields;

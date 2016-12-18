@@ -8,8 +8,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import com.sun.prism.paint.Color;
-
 import logic.Field;
 import logic.state;
 
@@ -46,9 +44,6 @@ public class PlayerListener extends Thread {
 								System.out.println(".....");
 								opponent.OutMessege(back);
 								OutMessege("D"+back.substring(1));
-								for(Field field : game.getBoard().getFields()){
-									System.out.println(field.getX()+"  "+field.getY()+"<<<<<>>>>"+field.getState());
-								}
 								opponent.objectToClient(game.getBoard());
 								objectToClient(game.getBoard());
 								opponent.OutMessege(game.getPoints(opponent.myPlayer));
@@ -58,6 +53,13 @@ public class PlayerListener extends Thread {
 								//opponent.OutMessege(game.getPoints(myPlayer));
 								//OutMessege(game.getPoints(opponent.myPlayer));
 								continue;
+						}
+						if(back.equals("FF")) {
+							OutMessege("LOSE");
+							opponent.OutMessege("WON");
+						}
+						if(back.equals("PAUSE")){
+							
 						}
 						OutMessege(back);
 				}

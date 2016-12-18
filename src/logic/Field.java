@@ -5,6 +5,10 @@ import java.io.Serializable;
 public class Field implements Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1014502393010618861L;
 	private int x;
 	private int y;
 	private state myState;

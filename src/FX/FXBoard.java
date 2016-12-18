@@ -11,9 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import logic.Board;
-import logic.Coder;
 import logic.Field;
-import logic.state;
 
 public class FXBoard extends Canvas {
 

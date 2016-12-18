@@ -1,12 +1,6 @@
 package FX;
 
 import javafx.scene.shape.Circle;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 public class FXField extends Circle {
 	private double x;
