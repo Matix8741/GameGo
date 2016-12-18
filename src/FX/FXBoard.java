@@ -3,13 +3,17 @@ package FX;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import Client.MyClient;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import logic.Board;
 import logic.Coder;
+import logic.Field;
+import logic.state;
 
 public class FXBoard extends Canvas {
 
@@ -26,7 +30,6 @@ public class FXBoard extends Canvas {
 		fields = new ArrayList<FXField>();
 		gc = this.getGraphicsContext2D();
 		gc.setLineWidth(2);
-		int j=0;
 		int k;
         double width = getWidth()-30;
         double height = getHeight()-30 ;
@@ -37,7 +40,6 @@ public class FXBoard extends Canvas {
           gc.strokeLine(15, k * htOfRow+15 , width+15, k * htOfRow+15  );
           gc.strokeLine(k*wdOfRow+15  , 15, k*wdOfRow +15 , height+15 );
       }
-		j=0;
 		for(double i =1;i<x*htOfRow;i+=htOfRow) {
 			for(double c=1; c<x*wdOfRow;c+=wdOfRow){
 				System.out.println((i+16)+":::"+(c+16));
@@ -51,7 +53,7 @@ public class FXBoard extends Canvas {
                 for(FXField field : fields) {
                 	if((Math.abs(event.getX()-field.getX())<8)&& (Math.abs(event.getY()-field.getY())<8) ){
                 		try {
-							client.sendToServer("M"+Coder.coder(fields.indexOf(field),x));
+							client.sendToServer("M"+fields.indexOf(field));
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -72,6 +74,25 @@ public class FXBoard extends Canvas {
 	}
 	public Color getColor() {
 		return color;
+	}
+	public void drawBoard(Board readObject) {
+		for(Field field : readObject.getFields()){
+				System.out.println(field.getX()+"  "+field.getY()+"<<<<<>>>>"+field.getState());
+			switch (field.getState()) {
+			case WHITE:{
+				System.out.println(":::"+readObject.getFields().indexOf(field));
+				fillField(readObject.getFields().indexOf(field), Color.WHITE);
+				break;}
+			case BLACK:{
+				System.out.println(":::"+readObject.getFields().indexOf(field));
+				fillField(readObject.getFields().indexOf(field), Color.BLACK);
+				break;}
+
+			default:
+				break;
+			}
+		}
+		
 	}
 
 }

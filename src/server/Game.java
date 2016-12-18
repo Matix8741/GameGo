@@ -44,9 +44,10 @@ public class Game {
 		System.out.println("::::"+messege);
 		if(messege.substring(0, 1).equals("M")){
 			System.out.println("JESTEM!!!!");
-			int move = Coder.decoder(messege.substring(1), x);
+			int move = Integer.valueOf(messege.substring(1));
 			System.out.println(move);
 			if( doMove(board.getFields().get(move), player)){
+				System.out.println("??");
 				CurrentPlayer = player.getOpponnent();
 				return "A"+String.valueOf(move);
 			}
@@ -64,6 +65,14 @@ public class Game {
 	}
 	public void setCurrentPlayerListener(PlayerListener currentPlayerListener) {
 		this.currentPlayerListener = currentPlayerListener;
+	}
+	public Board getBoard() {
+		// TODO Auto-generated method stub
+		return board;
+	}
+	public String getPoints(PlayerS player) {
+		// TODO Auto-generated method stub
+		return "0";
 	}
 
 }

@@ -35,6 +35,9 @@ public class MyClient extends Socket {
 		// TODO Auto-generated method stub
 		return in;
 	}
+	public InputStream getInput(){
+		return inFromServer;
+	}
 
 
 }

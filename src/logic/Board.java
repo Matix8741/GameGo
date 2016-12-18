@@ -1,9 +1,11 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
+public class Board implements Serializable
+{
 	
 	private int size;
 	public List<Field> getFields() {

@@ -1,6 +1,7 @@
 package Client;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,12 +31,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 public class ClientPlayer extends Application {
 	static int port = 6066;
+	static Stage stage = null;
+	static Timer timer = null;
+	private Label myPoints;
+	private Label opponetPoints;
+	private Label infoFromServer;
 	@Override
 	public void start(Stage primaryStage) throws UnknownHostException, IOException {
 		final MyClient myClient = new MyClient("localhost", port);
+		final Stage boardStage = new Stage();
 		Color color;
 		BorderPane panel = new BorderPane();
 		Scene scene = new Scene(panel);
@@ -61,7 +69,6 @@ public class ClientPlayer extends Application {
 		Button start = new Button("Start");
 		BorderPane forbutton = new BorderPane();
 		forbutton.setCenter(start);
-		searching();
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
@@ -69,25 +76,22 @@ public class ClientPlayer extends Application {
 				if(!(size.getText().equals("NaN"))){
 					try {
 						prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
+						stage = new Stage();
+						timer = searching(stage);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					Boolean s = null;
-					String lol = null;
+					
+					ServerListener serverlistener = null;
 					try {
-						lol = myClient.readFromServer();
-					} catch (IOException e1) {
+						serverlistener = new ServerListener(myClient.getIN(),timer,Integer.valueOf(sizeTextField.getText()),
+								myClient,stage,getOwn(),boardStage,new ObjectInputStream(myClient.getInput()));
+					} catch (NumberFormatException | IOException e) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						e.printStackTrace();
 					}
+					serverlistener.start();
 					primaryStage.close();
-					System.out.println("OOOOOO:"+lol);
-					if(lol.equals("WHITE")){
-						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.WHITE);
-					}
-					else{
-						createBoard(myClient,Integer.valueOf(sizeTextField.getText()),Color.BLACK);
-					}
 				}
 				
 			}
@@ -108,21 +112,23 @@ public class ClientPlayer extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}	
-	
 
-	private void createBoard(MyClient client, int x, Color color){
-			Stage boardStage = new Stage(StageStyle.DECORATED);
+	private ClientPlayer getOwn(){
+		return this;
+	}
+
+	public void createBoard(MyClient client, int x, Color color, ServerListener serverlistener,Stage boardStage){
+			boardStage.initStyle(StageStyle.DECORATED);
 			BorderPane root = new BorderPane();
 			VBox labels = new VBox();
 			FXBoard board = new FXBoard(400,400, client,x,color);
-			ServerListener serverlistener = new ServerListener(board.getClient().getIN(), board);
-			serverlistener.start();
+			serverlistener.setFxBoard(board);
 			Scene scene = new Scene(root,600,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			root.setCenter(board);
-			Label myPoints = new Label("HELLO WORDL");
-			Label opponetPoints = new Label("HELLO WORld");
-			Label infoFromServer = new Label("Server");
+			myPoints = new Label("HELLO WORDL");
+			opponetPoints = new Label("HELLO WORld");
+			infoFromServer = new Label("Server");
 			labels.setPadding(new Insets(10));
 			labels.setSpacing(8);
 			labels.getChildren().addAll(myPoints,opponetPoints,infoFromServer);
@@ -155,11 +161,11 @@ public class ClientPlayer extends Application {
 			}
 			});
 		}
-	private static void searching(){
-		Stage stage = new Stage();
+	private static Timer searching(Stage stage){
+		stage.initStyle(StageStyle.UNDECORATED);
 		BorderPane root = new BorderPane();
 		Label label = new Label("Searching opponent...");
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(root,200,100);
 		root.setCenter(label);
 		stage.setScene(scene);
 		stage.show();
@@ -178,6 +184,11 @@ public class ClientPlayer extends Application {
 				
 			}
 		},0,500);
+		return timer;
+	}
+	public static void closeSearching(Timer timer, Stage stage){
+		timer.cancel();
+		stage.close();
 	}
 	private static void changeLabel(Label label ){
 		if(label.getText().substring(label.getText().length()-3).equals("...")){
@@ -188,5 +199,11 @@ public class ClientPlayer extends Application {
 		}
 		else
 			label.setText("Searching opponent..");
+	}
+	public void setOurPoints(String points){
+		myPoints.setText(points);
+	}
+	public void setOpponentPoints(String points){
+		opponetPoints.setText(points);
 	}
 }
