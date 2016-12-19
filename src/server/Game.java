@@ -1,13 +1,16 @@
 package server;
 
+import GameState.GameState;
+import GameState.GameStateBehavior;
+import GameState.StateOn;
 import logic.Board;
 import logic.Field;
 import logic.GameMaster;
 import logic.InvalidBoardSizeException;
 
 public class Game {
+	protected GameStateBehavior behavior = null;
 	private int x;
-	private boolean isPassed = false;
 	public int getX() {
 		return x;
 	}
@@ -24,9 +27,9 @@ public class Game {
 			e.printStackTrace();
 		}
 		gameMaster = new GameMaster(x);
+		behavior = new StateOn();
 	}
 	public boolean doMove(Field field, PlayerS player) {
-		isPassed = false;
 		if(CurrentPlayer == player && field.isEmpty()){
 			field.setState(player.getColor());
 			CurrentPlayer = player.getOpponnent();
@@ -44,13 +47,16 @@ public class Game {
 	public String sendMessege(String messege, PlayerS player) {
 		System.out.println("::::"+messege);
 		if(messege.substring(0, 1).equals("M")){
-			System.out.println("JESTEM!!!!");
-			int move = Integer.valueOf(messege.substring(1));
-			System.out.println(move);
-			if( doMove(board.getFields().get(move), player)){
-				System.out.println("??");
-				CurrentPlayer = player.getOpponnent();
-				return "A"+String.valueOf(move);
+			if(!(behavior.getState() == GameState.PAUSE)){
+				turnOn();
+				System.out.println("JESTEM!!!!");
+				int move = Integer.valueOf(messege.substring(1));
+				System.out.println(move);
+				if( doMove(board.getFields().get(move), player)){
+					System.out.println("??");
+					CurrentPlayer = player.getOpponnent();
+					return "A"+String.valueOf(move);
+				}
 			}
 		}
 		else if (messege.equals("FF")){
@@ -60,16 +66,27 @@ public class Game {
 		else if (messege.equals("PASS")){
 			pass(player);
 		}
+		else if (messege.equals("RESUME")){
+			currentPlayerListener.OutMessege("RESUME");
+			currentPlayerListener.getOpponent().OutMessege("RESUME");
+			turnOn();
+			if(currentPlayerListener.getMyPlayer() == player)
+				currentPlayerListener = currentPlayerListener.getOpponent();
+			CurrentPlayer = player.getOpponnent();
+		}
 		return "NO";
 		
 	}
 	private void pass(PlayerS playerS) {
 		if(playerS == CurrentPlayer){
-			if( isPassed){
-				//TODO pause
+			this.behavior = this.behavior.afterpass();
+			if( behavior.getState() == GameState.PAUSE){
+				currentPlayerListener.OutMessege("PAUSE");
+				currentPlayerListener.getOpponent().OutMessege("PAUSE");
+				CurrentPlayer = CurrentPlayer.getOpponnent();
+				currentPlayerListener = currentPlayerListener.getOpponent();
 			}
 			else {//////////////////TODO wywalenie servera i clienta
-				isPassed = true;
 				CurrentPlayer = CurrentPlayer.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
 			}
@@ -94,6 +111,9 @@ public class Game {
 	public String getPoints(PlayerS player) {
 		// TODO Auto-generated method stub
 		return "0";
+	}
+	public void turnOn() {
+		this.behavior = this.behavior.on();
 	}
 
 }

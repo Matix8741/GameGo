@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Client.MyClient;
+import Client.PassButton;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import logic.Board;
@@ -16,6 +18,10 @@ import logic.stateAfterGame;
 
 public class FXBoard extends Canvas {
 
+	public PassButton getPassButton() {
+		return passButton;
+	}
+	private PassButton passButton;
 	private Color color;
 	private int x=19;
 	private List<FXField> fields;
@@ -69,8 +75,8 @@ public class FXBoard extends Canvas {
 		switch (afterGame) {
 		case DEAD:{
 			gc.setLineWidth(4);
-			gc.setStroke(Color.rgb(255, 0, 0,0.6) );
-			gc.strokeOval(field.getX()-9, field.getY()-9, 18, 18);
+			gc.setFill(Color.rgb(255, 0, 0,0.6) );
+			gc.fillOval(field.getX()-9, field.getY()-9, 18, 18);
 			gc.setLineWidth(2);
 			break;
 			}
@@ -81,7 +87,13 @@ public class FXBoard extends Canvas {
 			gc.setLineWidth(2);
 			break;
 		}
-
+		case ALIVE: {
+			gc.setLineWidth(4);
+			gc.setFill(Color.rgb(140, 255, 0,0.6) );
+			gc.fillOval(field.getX()-9, field.getY()-9, 18, 18);
+			gc.setLineWidth(2);
+			break;
+		}
 		default:
 			break;
 		}
@@ -120,6 +132,10 @@ public class FXBoard extends Canvas {
 	          gc.strokeLine(15, k * htOfRow+15 , width+15, k * htOfRow+15  );
 	          gc.strokeLine(k*wdOfRow+15  , 15, k*wdOfRow +15 , height+15 );
 	      }
+	}
+	public void setPassButton(PassButton pause) {
+		passButton = pause;
+		
 	}
 
 }

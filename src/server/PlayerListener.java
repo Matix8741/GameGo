@@ -39,19 +39,19 @@ public class PlayerListener extends Thread {
 		//\\firstContact();
 		while(running) {
 				String messege = getMessega();
-				System.out.println("<<<<<"+myPlayer);
+				System.out.println("<<<<<"+getMyPlayer());
 				if(messege != null) {
-					String back =game.sendMessege(messege,myPlayer);
+					String back =game.sendMessege(messege,getMyPlayer());
 						if(back != null && (back.substring(0, 1).equals("A")||back.substring(0,1).equals("M"))){
 								System.out.println(".....");
 								opponent.OutMessege(back);
 								OutMessege("D"+back.substring(1));
 								opponent.objectToClient(game.getBoard());
 								objectToClient(game.getBoard());
-								opponent.OutMessege(game.getPoints(opponent.myPlayer));
-								OutMessege(game.getPoints(myPlayer));
-								opponent.OutMessege(game.getPoints(myPlayer));
-								OutMessege(game.getPoints(opponent.myPlayer));
+								opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
+								OutMessege(game.getPoints(getMyPlayer()));
+								opponent.OutMessege(game.getPoints(getMyPlayer()));
+								OutMessege(game.getPoints(opponent.getMyPlayer()));
 								//opponent.OutMessege(game.getPoints(myPlayer));
 								//OutMessege(game.getPoints(opponent.myPlayer));
 								continue;
@@ -93,12 +93,12 @@ public class PlayerListener extends Thread {
 		for(Game game : games){
 			if(game.getX() == x){
 				this.game = game;
-				myPlayer = new PlayerS(state.WHITE);
+				setMyPlayer(new PlayerS(state.WHITE));
 				setOpponent(game.getCurrentPlayerListener());
 				game.getCurrentPlayerListener().setOpponent(this);
 				game.getCurrentPlayerListener().start();
-				game.getCurrentPlayer().setOpponnent(myPlayer);
-				myPlayer.setOpponnent(game.getCurrentPlayer());
+				game.getCurrentPlayer().setOpponnent(getMyPlayer());
+				getMyPlayer().setOpponnent(game.getCurrentPlayer());
 				games.remove(game);
 				opponent.OutMessege("BLACK");
 				OutMessege("WHITE");
@@ -108,8 +108,8 @@ public class PlayerListener extends Thread {
 		}
 		game = new Game(x);
 		games.add(game);
-		myPlayer = new PlayerS(state.BLACK );
-		game.setCurrentPlayer(myPlayer);
+		setMyPlayer(new PlayerS(state.BLACK ));
+		game.setCurrentPlayer(getMyPlayer());
 		game.setCurrentPlayerListener(this);
 	}
 
@@ -185,6 +185,14 @@ public class PlayerListener extends Thread {
 		running = false;
 		System.out.println("IIIIIIIIII");
 		return;
+	}
+
+	public PlayerS getMyPlayer() {
+		return myPlayer;
+	}
+
+	private void setMyPlayer(PlayerS myPlayer) {
+		this.myPlayer = myPlayer;
 	}
 	
 }

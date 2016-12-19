@@ -106,6 +106,26 @@ public class ServerListener extends Thread {
 					});
 					close();
 				}
+				else if(command.equals("PAUSE")){
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							fxBoard.getPassButton().setState( stateButt.RESUME );
+							fxBoard.getPassButton().setText("RESUME");
+						}
+					});
+				}
+				else if (command.equals("RESUME")){
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							fxBoard.getPassButton().setState( stateButt.PASS);
+							fxBoard.getPassButton().setText("PASS");
+						}
+					});
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

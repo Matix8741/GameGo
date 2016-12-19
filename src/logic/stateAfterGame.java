@@ -1,5 +1,5 @@
 package logic;
 
 public enum stateAfterGame {
-	DEAD,INTERRITORY,NOTHING;
+	DEAD,INTERRITORY,ALIVE,NOTHING;
 }

@@ -148,18 +148,29 @@ public class ClientPlayer extends Application {
 					
 				}
 			});
-			Button pause = new Button("Pass");
+			PassButton pause =  new PassButton("Pass");
+			pause.setState( stateButt.PASS );
+			board.setPassButton(pause);
 			pause.setOnAction(new EventHandler<ActionEvent>() {
 				
 				@Override
 				public void handle(ActionEvent event) {
-					try {
-						client.sendToServer("PASS");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if(pause.getState() == stateButt.PASS){
+						
+						try {
+							client.sendToServer("PASS");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-					
+					else if (pause.getState() == stateButt.RESUME){
+						try{
+							client.sendToServer("RESUME");
+						}catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			});
 			buttons.setPadding(new Insets(8));
