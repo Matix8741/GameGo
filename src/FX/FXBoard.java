@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import logic.Board;
 import logic.Field;
+import logic.stateAfterGame;
 
 public class FXBoard extends Canvas {
 
@@ -20,6 +21,10 @@ public class FXBoard extends Canvas {
 	private List<FXField> fields;
 	private MyClient client;
 	private GraphicsContext gc;
+	private double width;
+	private double height;
+	private double htOfRow;
+	private double wdOfRow;
 	public FXBoard( double arg1, double arg2, MyClient client, int x2, Color color2) {
 		super(arg1,arg2);
 		color = color2;
@@ -28,16 +33,12 @@ public class FXBoard extends Canvas {
 		fields = new ArrayList<FXField>();
 		gc = this.getGraphicsContext2D();
 		gc.setLineWidth(2);
-		int k;
-        double width = getWidth()-30;
-        double height = getHeight()-30 ;
+         width = getWidth()-30;
+         height = getHeight()-30 ;
 
-        double htOfRow = (height) / (x-1);
-        double wdOfRow = (width) / (x-1);
-        for (k = 0; k < x; k++){
-          gc.strokeLine(15, k * htOfRow+15 , width+15, k * htOfRow+15  );
-          gc.strokeLine(k*wdOfRow+15  , 15, k*wdOfRow +15 , height+15 );
-      }
+         htOfRow = (height) / (x-1);
+         wdOfRow = (width) / (x-1);
+         drawGrid();
 		for(double i =1;i<x*htOfRow;i+=htOfRow) {
 			for(double c=1; c<x*wdOfRow;c+=wdOfRow){
 				System.out.println((i+16)+":::"+(c+16));
@@ -61,10 +62,30 @@ public class FXBoard extends Canvas {
             }
         });
 	}
-	public void fillField(int i, Color color) {
+	public void fillField(int i, Color color, stateAfterGame afterGame) {
 		FXField field = fields.get(i);
 		gc.setFill(color);
 		gc.fillOval(field.getX()-8, field.getY()-8, 16, 16);
+		switch (afterGame) {
+		case DEAD:{
+			gc.setLineWidth(4);
+			gc.setStroke(Color.rgb(255, 0, 0,0.6) );
+			gc.strokeOval(field.getX()-9, field.getY()-9, 18, 18);
+			gc.setLineWidth(2);
+			break;
+			}
+		case INTERRITORY: {
+			gc.setLineWidth(4);
+			gc.setStroke(Color.rgb(48, 219, 223,0.6) );
+			gc.strokeOval(field.getX()-9, field.getY()-9, 18, 18);
+			gc.setLineWidth(2);
+			break;
+		}
+
+		default:
+			break;
+		}
+		
 	}
 	public MyClient getClient() {
 		// TODO Auto-generated method stub
@@ -74,16 +95,18 @@ public class FXBoard extends Canvas {
 		return color;
 	}
 	public void drawBoard(Board readObject) {
+		gc.clearRect(0, 0, this.getWidth(), getHeight());
+		drawGrid();
 		for(Field field : readObject.getFields()){
 				System.out.println(field.getX()+"  "+field.getY()+"<<<<<>>>>"+field.getState());
 			switch (field.getState()) {
 			case WHITE:{
 				System.out.println(":::"+readObject.getFields().indexOf(field));
-				fillField(readObject.getFields().indexOf(field), Color.WHITE);
+				fillField(readObject.getFields().indexOf(field), Color.WHITE, stateAfterGame.NOTHING);
 				break;}
 			case BLACK:{
 				System.out.println(":::"+readObject.getFields().indexOf(field));
-				fillField(readObject.getFields().indexOf(field), Color.BLACK);
+				fillField(readObject.getFields().indexOf(field), Color.BLACK, stateAfterGame.NOTHING);
 				break;}
 
 			default:
@@ -91,6 +114,12 @@ public class FXBoard extends Canvas {
 			}
 		}
 		
+	}
+	private void drawGrid() {
+		for (int k = 0; k < x; k++){
+	          gc.strokeLine(15, k * htOfRow+15 , width+15, k * htOfRow+15  );
+	          gc.strokeLine(k*wdOfRow+15  , 15, k*wdOfRow +15 , height+15 );
+	      }
 	}
 
 }

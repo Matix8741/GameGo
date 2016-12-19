@@ -7,6 +7,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import FX.FXBoard;
+import Messege.MessageSurrender;
+import Messege.MessegeBody;
 import Messege.MessegeFirst;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +23,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -39,6 +42,8 @@ public class ClientPlayer extends Application {
 	public void start(Stage primaryStage) throws UnknownHostException, IOException {
 		final MyClient myClient = new MyClient("localhost", port);
 		final Stage boardStage = new Stage();
+		primaryStage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
+		boardStage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
 		BorderPane panel = new BorderPane();
 		Scene scene = new Scene(panel);
 		HBox hbox = new HBox();
@@ -129,6 +134,20 @@ public class ClientPlayer extends Application {
 			root.setRight(labels);
 			HBox buttons = new HBox();
 			Button surrender = new Button("Surrender");
+			surrender.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					MessegeBody surrMessage = new MessageSurrender();
+					try {
+						client.sendToServer((String) surrMessage.createMessega());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			});
 			Button pause = new Button("Pause");
 			buttons.setPadding(new Insets(8));
 			buttons.setSpacing(8);
@@ -162,8 +181,9 @@ public class ClientPlayer extends Application {
 			}
 			});
 		}
-	private static Timer searching(Stage stage){
+	private Timer searching(Stage stage){
 		stage.initStyle(StageStyle.UNDECORATED);
+		stage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
 		BorderPane root = new BorderPane();
 		Label label = new Label("Searching opponent...");
 		Scene scene = new Scene(root,200,100);
@@ -207,8 +227,12 @@ public class ClientPlayer extends Application {
 	public void setOpponentPoints(String points){
 		opponetPoints.setText(points);
 	}
+	public void setServerStatement(String statement){
+		infoFromServer.setText(statement);
+	}
 	public void requestWindow(String quest){
 		Stage stage = new Stage();
+		stage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
 		stage.initStyle(StageStyle.UTILITY);
 		BorderPane border = new BorderPane();
 		Scene scene = new Scene(border,200,100);

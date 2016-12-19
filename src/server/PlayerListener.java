@@ -13,6 +13,8 @@ import logic.state;
 
 public class PlayerListener extends Thread {
 	
+
+	private volatile boolean running = true;
 	public Socket socket;
 	private PlayerListener opponent;
 	private DataInputStream in;
@@ -35,7 +37,7 @@ public class PlayerListener extends Thread {
 	@Override
 	public void run() {
 		//\\firstContact();
-		while(true) {
+		while(running) {
 				String messege = getMessega();
 				System.out.println("<<<<<"+myPlayer);
 				if(messege != null) {
@@ -57,9 +59,22 @@ public class PlayerListener extends Thread {
 						if(back.equals("FF")) {
 							OutMessege("LOSE");
 							opponent.OutMessege("WON");
+							try {
+								opponent.close();
+							} catch (IOException e) {
+								System.out.println("wAS CLOSED");
+								e.printStackTrace();
+							}
+							try {
+								close();
+								System.out.println("WHOOOOOOOOOAAAAAAAAA");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 						if(back.equals("PAUSE")){
-							
+							//TODO implamant pause
 						}
 						OutMessege(back);
 				}
@@ -99,17 +114,22 @@ public class PlayerListener extends Thread {
 	}
 
 	private String getMessega() {
+		if(socket.isClosed()){
+			return"";
+		}
 		String x = "";
 		try {
 			x = in.readUTF();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "NULL";
 		}
 		return x;
 	}
 
 	public void OutMessege(String back) {
+		if(socket.isClosed()){
+			return;
+		}
 		try {
 			out.writeUTF(back);
 		} catch (IOException e) {
@@ -135,10 +155,14 @@ public class PlayerListener extends Thread {
 		return x;
 	}
 	private Object objectFromClient() throws ClassNotFoundException, IOException{
+		//TODO now dont need it
 		return inObj.readObject();
 	}
 	
 	private void objectToClient(Object obj) {
+		if(socket.isClosed()){
+			return;
+		}
 		try {
 			outObj.reset();
 		} catch (IOException e1) {
@@ -152,6 +176,15 @@ public class PlayerListener extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+	public void close() throws IOException{
+		socket.close();
+		in.close();
+		out.close();
+		//TODO is null inObj.close();
+		outObj.close();
+		running = false;
+		System.out.println("IIIIIIIIII");
+		return;
+	}
 	
 }

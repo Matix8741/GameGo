@@ -13,6 +13,7 @@ import logic.Board;
 
 public class ServerListener extends Thread {
 
+	private volatile boolean running = true;
 	private DataInputStream in;
 	private ObjectInputStream inObj;
 	private FXBoard fxBoard;
@@ -50,7 +51,7 @@ public class ServerListener extends Thread {
 	@Override
 	public void run() {
 		firstContact(myClient, integer, timer, stage);
-		while(true){
+		while(running){
 			try {
 				command = readFromServer();
 				if(command.substring(0, 1).equals("A")||command.substring(0, 1).equals("D")){
@@ -79,9 +80,42 @@ public class ServerListener extends Thread {
 					});
 					//command = readFromServer();
 				}
+				else if (command.equals("LOSE")){
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							clientPlayer.setOurPoints("YOU LOSE");
+							clientPlayer.setOpponentPoints("YOU LOSE");
+							clientPlayer.setServerStatement("YOU LOSE");
+							
+						}
+					});
+					close();
+				}
+				else if (command.equals("WON")){
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							clientPlayer.setOurPoints("YOU WON");
+							clientPlayer.setOpponentPoints("YOU WON");
+							clientPlayer.setServerStatement("YOU WON");
+							
+						}
+					});
+					close();
+				}
 			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
+	}
+	private void close() throws IOException {
+		inObj.close();
+		in.close();
+		myClient.close();
+		running = false;
 	}
 	public void firstContact(MyClient myClient, int integer, Timer timer, Stage stage){
 		System.out.println("LKLLK:"+in);

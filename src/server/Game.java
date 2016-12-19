@@ -51,12 +51,15 @@ public class Game {
 				return "A"+String.valueOf(move);
 			}
 		}
-		else if (messege.substring(0, 1).equals("F")){
-			String e = player.color.toString();
-			System.out.println("trololo"+e);
-			return e;
+		else if (messege.equals("FF")){
+			close();
+			return "FF";
 		}
 		return "NO";
+		
+	}
+	private void close() {
+		//TODO when need
 		
 	}
 	public PlayerListener getCurrentPlayerListener() {

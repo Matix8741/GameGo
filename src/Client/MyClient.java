@@ -25,9 +25,15 @@ public class MyClient extends Socket {
 	}
 	
 	public String readFromServer() throws IOException {
+		if(isClosed()){
+			return "";
+		}
 		return in.readUTF();
 	}
 	public void sendToServer(String messege) throws IOException{
+		if(isClosed()){
+			return;
+		}
 		out.writeUTF(messege);
 	}
 
