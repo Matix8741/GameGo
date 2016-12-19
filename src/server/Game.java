@@ -59,6 +59,25 @@ public class Game {
 				}
 			}
 		}
+		else if(messege.substring(0, 1).equals("A")){
+			if(behavior.getState() == GameState.PAUSE){
+				int move = Integer.valueOf(messege.substring(1));
+				doMove(board.getFields().get(move),player);
+				return "A" + String.valueOf(move);
+			}
+		}else if(messege.substring(0, 1).equals("I")){
+			if(behavior.getState() == GameState.PAUSE){
+				int move = Integer.valueOf(messege.substring(1));
+				doMove(board.getFields().get(move),player);
+				return "A" + String.valueOf(move);
+			}
+		}else if(messege.substring(0, 1).equals("D")){
+			if(behavior.getState() == GameState.PAUSE){
+				int move = Integer.valueOf(messege.substring(1));
+				doMove(board.getFields().get(move),player);
+				return "A" + String.valueOf(move);
+			}
+		}
 		else if (messege.equals("FF")){
 			close();
 			return "FF";
@@ -73,6 +92,8 @@ public class Game {
 			if(currentPlayerListener.getMyPlayer() == player)
 				currentPlayerListener = currentPlayerListener.getOpponent();
 			CurrentPlayer = player.getOpponnent();
+		}else if (messege.equals("NEXT")){
+			return "NEXT";
 		}
 		return "NO";
 		

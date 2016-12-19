@@ -6,6 +6,9 @@ import java.io.ObjectInputStream;
 import java.util.Timer;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import FX.FXBoard;
@@ -107,12 +110,24 @@ public class ServerListener extends Thread {
 					close();
 				}
 				else if(command.equals("PAUSE")){
+					fxBoard.nextMyState();
 					Platform.runLater(new Runnable() {
 						
 						@Override
 						public void run() {
 							fxBoard.getPassButton().setState( stateButt.RESUME );
 							fxBoard.getPassButton().setText("RESUME");
+							Button button = new Button("OK");
+							button.setOnAction( new EventHandler<ActionEvent>() {
+								
+								@Override
+								public void handle(ActionEvent event) {
+									fxBoard.nextMyState();
+									
+								}
+							});
+							fxBoard.removeForResume();
+							fxBoard.addForPause(button);
 						}
 					});
 				}
@@ -123,8 +138,12 @@ public class ServerListener extends Thread {
 						public void run() {
 							fxBoard.getPassButton().setState( stateButt.PASS);
 							fxBoard.getPassButton().setText("PASS");
+							fxBoard.removeForResume();
 						}
 					});
+				}
+				else if (command.equals("NEXT")){
+					fxBoard.nextMyState();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

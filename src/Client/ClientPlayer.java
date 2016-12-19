@@ -30,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logic.stateAfterGame;
 
 public class ClientPlayer extends Application {
 	static int port = 6066;
@@ -173,10 +174,13 @@ public class ClientPlayer extends Application {
 					}
 				}
 			});
+			board.setMystate(stateAfterGame.NOTHING);
+			BorderPane when_pause = new BorderPane();
+			board.setBordeForPause(when_pause);
 			buttons.setPadding(new Insets(8));
 			buttons.setSpacing(8);
 			buttons.getChildren().addAll(surrender,pause);
-			labels.getChildren().add(buttons);
+			labels.getChildren().addAll(buttons,when_pause);
 			boardStage.setScene(scene);
 		//	boardStage.setResizable(false);
 			boardStage.show();
