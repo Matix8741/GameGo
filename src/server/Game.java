@@ -7,6 +7,7 @@ import logic.InvalidBoardSizeException;
 
 public class Game {
 	private int x;
+	private boolean isPassed = false;
 	public int getX() {
 		return x;
 	}
@@ -25,6 +26,7 @@ public class Game {
 		gameMaster = new GameMaster(x);
 	}
 	public boolean doMove(Field field, PlayerS player) {
+		isPassed = false;
 		if(CurrentPlayer == player && field.isEmpty()){
 			field.setState(player.getColor());
 			CurrentPlayer = player.getOpponnent();
@@ -55,7 +57,24 @@ public class Game {
 			close();
 			return "FF";
 		}
+		else if (messege.equals("PASS")){
+			pass(player);
+		}
 		return "NO";
+		
+	}
+	private void pass(PlayerS playerS) {
+		if(playerS == CurrentPlayer){
+			if( isPassed){
+				//TODO pause
+			}
+			else {//////////////////TODO wywalenie servera i clienta
+				isPassed = true;
+				CurrentPlayer = CurrentPlayer.getOpponnent();
+				currentPlayerListener = currentPlayerListener.getOpponent();
+			}
+		}
+		
 		
 	}
 	private void close() {

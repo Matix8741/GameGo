@@ -76,8 +76,8 @@ public class FXBoard extends Canvas {
 			}
 		case INTERRITORY: {
 			gc.setLineWidth(4);
-			gc.setStroke(Color.rgb(48, 219, 223,0.6) );
-			gc.strokeOval(field.getX()-9, field.getY()-9, 18, 18);
+			gc.setFill(Color.rgb(48, 219, 223,0.6) );
+			gc.fillRect(field.getX()-10, field.getY()-10, 20, 20);
 			gc.setLineWidth(2);
 			break;
 		}

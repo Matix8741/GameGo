@@ -148,7 +148,20 @@ public class ClientPlayer extends Application {
 					
 				}
 			});
-			Button pause = new Button("Pause");
+			Button pause = new Button("Pass");
+			pause.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					try {
+						client.sendToServer("PASS");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			});
 			buttons.setPadding(new Insets(8));
 			buttons.setSpacing(8);
 			buttons.getChildren().addAll(surrender,pause);
