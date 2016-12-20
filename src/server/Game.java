@@ -41,7 +41,6 @@ public class Game {
 			} catch (KoException e) {
 				return false;
 			}
-			CurrentPlayer = player.getOpponnent();
 			return true;
 		}
 		return false;

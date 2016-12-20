@@ -196,6 +196,10 @@ public class ClientPlayer extends Application {
 				boolean catched = false;
 				int ifzero = 0;
 				try{ ifzero = Integer.valueOf(tf.getText());
+					if(ifzero >20||ifzero<2){
+						catched = true;
+						lb.setText("NaN");
+					}
 				}
 				catch (IllegalArgumentException e){
 					lb.setText("NaN");	
