@@ -5,8 +5,11 @@ import GameState.GameStateBehavior;
 import GameState.StateOn;
 import logic.Board;
 import logic.Field;
-import logic.GameMaster;
+import logic.FieldOccupiedException;
+import logic.GameRules;
 import logic.InvalidBoardSizeException;
+import logic.KoException;
+import logic.SuicideException;
 
 public class Game {
 	protected GameStateBehavior behavior = null;
@@ -17,7 +20,6 @@ public class Game {
 	private PlayerListener currentPlayerListener;
 	private Board board;
 	private PlayerS CurrentPlayer;
-	GameMaster gameMaster;
 	public Game(int x) {
 		this.x = x;
 		try {
@@ -26,12 +28,19 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		gameMaster = new GameMaster(x);
 		behavior = new StateOn();
 	}
 	public boolean doMove(Field field, PlayerS player) {
-		if(CurrentPlayer == player && field.isEmpty()){
-			field.setState(player.getColor());
+		if(CurrentPlayer == player){
+			try {
+				GameRules.move(board, field, player.getColor());
+			} catch (SuicideException e) {
+				return false;
+			} catch (FieldOccupiedException e) {
+				return false;
+			} catch (KoException e) {
+				return false;
+			}
 			CurrentPlayer = player.getOpponnent();
 			return true;
 		}
