@@ -23,6 +23,14 @@ public class Group implements Serializable {
 		breaths--;
 	}
 	
+	public void giveBreath() {
+		breaths++;
+	}
+	
+	public state getState() {
+		return mystate;
+	}
+	
 	public Group(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
@@ -54,6 +62,8 @@ public class Group implements Serializable {
 	}
 
 	private void merge(Group addedGroup) {
+		if (this.equals(addedGroup))
+			return;
 		for (Field aField : addedGroup.getFields()){
 			fields.add(aField);
 			aField.setGroup(this);
