@@ -15,7 +15,7 @@ public class GameRules {
 			if ((gonnaBeat(board, field, color, opponentColor))) {
 				if (!(ko())) {
 					rightMove(board, field, color);
-					beating(board);
+					beating(board, opponentColor);
 				}
 			}
 			else if (!(isSuicidal(board, field, color, opponentColor)))
@@ -94,12 +94,24 @@ public class GameRules {
 	}
 	
 	
-	private static void beating(Board board) {
+	private static void beating(Board board, state opponentColor) {
 		ArrayList<Group> toRemove = new ArrayList<Group>();
 		for (Group aGroup : board.getGroups())
-			if (aGroup.getBreaths() == 0) {
+			if (aGroup.getBreaths() == 0 && aGroup.getState() == opponentColor) {
 				for (Field aField : aGroup.getFields()) {
 					aField.setEmpty();
+					try {
+						aField.getLeft().getGroup().giveBreath();
+					} catch (EndOfBoardException e) {}
+					try {
+						aField.getRight().getGroup().giveBreath();
+					} catch (EndOfBoardException e) {}
+					try {
+						aField.getUp().getGroup().giveBreath();
+					} catch (EndOfBoardException e) {}
+					try {
+						aField.getDown().getGroup().giveBreath();
+					} catch (EndOfBoardException e) {}
 					aField.setGroup(null);
 				}
 				toRemove.add(aGroup);
