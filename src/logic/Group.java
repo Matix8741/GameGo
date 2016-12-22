@@ -33,6 +33,21 @@ public class Group implements Serializable {
 	public Group(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
+		out = new ArrayList<Field>();
+		
+		try {
+			out.add(field.getDown());
+		} catch (EndOfBoardException e1) {}
+		try {
+			out.add(field.getUp());
+		} catch (EndOfBoardException e1) {}
+		try {
+			out.add(field.getRight());
+		} catch (EndOfBoardException e1) {}
+		try {
+			out.add(field.getLeft());
+		} catch (EndOfBoardException e1) {}
+		
 		board = field.getBoard();
 		mystate = field.getState();
 		
