@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group implements Serializable {
-	private int breaths;
 	private List<Field> fields;
 	private Board board;
 	private state mystate;
