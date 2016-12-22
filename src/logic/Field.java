@@ -93,22 +93,6 @@ public class Field implements Serializable {
 			else if (newState == state.WHITE)
 				opponentState = state.BLACK;
 			group = new Group(this);
-			try {
-				if (getLeft().getState()==opponentState)
-					getLeft().getGroup().takeBreath();
-			} catch (EndOfBoardException e) {}
-			try {
-				if (getRight().getState()==opponentState)
-					getRight().getGroup().takeBreath();
-			} catch (EndOfBoardException e) {}
-			try {
-				if (getUp().getState()==opponentState)
-					getUp().getGroup().takeBreath();
-			} catch (EndOfBoardException e) {}
-			try {
-				if (getDown().getState()==opponentState)
-					getDown().getGroup().takeBreath();
-			} catch (EndOfBoardException e) {}
 		}
 		
 		

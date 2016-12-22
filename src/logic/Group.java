@@ -6,24 +6,20 @@ import java.util.List;
 
 public class Group implements Serializable {
 	private List<Field> fields;
+	private List<Field> out;
 	private Board board;
 	private state mystate;
-	private state opponentstate;
-
-	public int getBreaths() {
-		return breaths;
-	}
 
 	public List<Field> getFields() {
 		return fields;
 	}
-
-	public void takeBreath() {
-		breaths--;
+	
+	public List<Field> getOut() {
+		return out;
 	}
 	
-	public void giveBreath() {
-		breaths++;
+	public int countBreaths() {
+		for ()
 	}
 	
 	public state getState() {
@@ -35,12 +31,8 @@ public class Group implements Serializable {
 		fields.add(field);
 		board = field.getBoard();
 		mystate = field.getState();
-		opponentstate = field.getOpponentState();
 		
 		board.getGroups().add(this);
-		
-		breaths = GameRules.countBreaths(board, field, mystate, opponentstate);
-		//System.out.println(breaths);
 		
 		try {
 			if (field.getLeft().getState()==mystate)
@@ -67,11 +59,8 @@ public class Group implements Serializable {
 			fields.add(aField);
 			aField.setGroup(this);
 		}
-		//System.out.println(breaths+"/"+addedGroup.getBreaths());
-		breaths += (addedGroup.getBreaths()-2);
-		//System.out.println(breaths);
-		if (addedGroup.getBreaths()==1)
-			breaths++;
+		addedGroup.getOut().removeAll(out);
+		out.addAll(addedGroup.getOut());
 		board.getGroups().remove(addedGroup);
 	}
 
