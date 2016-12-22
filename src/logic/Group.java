@@ -19,7 +19,11 @@ public class Group implements Serializable {
 	}
 	
 	public int countBreaths() {
-		for ()
+		int i=0;
+		for (Field aField : out)
+			if (aField.isEmpty())
+				i++;
+		return i;
 	}
 	
 	public state getState() {

@@ -31,19 +31,19 @@ public class GameRules {
 
 	private static boolean gonnaBeat(Board board, Field field, state color, state opponentColor) {
 		try {
-			if (field.getLeft().getState()==opponentColor && field.getLeft().getGroup().getBreaths()==1)
+			if (field.getLeft().getState()==opponentColor && field.getLeft().getGroup().countBreaths()==1)
 				return true;
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getRight().getState()==opponentColor && field.getRight().getGroup().getBreaths()==1)
+			if (field.getRight().getState()==opponentColor && field.getRight().getGroup().countBreaths()==1)
 				return true;
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getDown().getState()==opponentColor && field.getDown().getGroup().getBreaths()==1)
+			if (field.getDown().getState()==opponentColor && field.getDown().getGroup().countBreaths()==1)
 				return true;
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getUp().getState()==opponentColor && field.getUp().getGroup().getBreaths()==1)
+			if (field.getUp().getState()==opponentColor && field.getUp().getGroup().countBreaths()==1)
 				return true;
 		} catch (EndOfBoardException e) {}
 		return false;
@@ -62,25 +62,25 @@ public class GameRules {
 	public static int countBreaths(Board board, Field field, state color, state opponentColor) {
 		int breaths=4;
 		try {
-			if (field.getLeft().getState()==opponentColor || (field.getLeft().getState()==color && field.getLeft().getGroup().getBreaths()==1))
+			if (field.getLeft().getState()==opponentColor || (field.getLeft().getState()==color && field.getLeft().getGroup().countBreaths()==1))
 				breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
 		}
 		try {
-			if (field.getRight().getState()==opponentColor || (field.getRight().getState()==color && field.getRight().getGroup().getBreaths()==1))
+			if (field.getRight().getState()==opponentColor || (field.getRight().getState()==color && field.getRight().getGroup().countBreaths()==1))
 				breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
 		}
 		try {
-			if (field.getUp().getState()==opponentColor || (field.getUp().getState()==color && field.getUp().getGroup().getBreaths()==1))
+			if (field.getUp().getState()==opponentColor || (field.getUp().getState()==color && field.getUp().getGroup().countBreaths()==1))
 				breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
 		}
 		try {
-			if (field.getDown().getState()==opponentColor || (field.getDown().getState()==color && field.getDown().getGroup().getBreaths()==1))
+			if (field.getDown().getState()==opponentColor || (field.getDown().getState()==color && field.getDown().getGroup().countBreaths()==1))
 				breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
@@ -97,21 +97,9 @@ public class GameRules {
 	private static void beating(Board board, state opponentColor) {
 		ArrayList<Group> toRemove = new ArrayList<Group>();
 		for (Group aGroup : board.getGroups())
-			if (aGroup.getBreaths() == 0 && aGroup.getState() == opponentColor) {
+			if (aGroup.countBreaths() == 0 && aGroup.getState() == opponentColor) {
 				for (Field aField : aGroup.getFields()) {
 					aField.setEmpty();
-					try {
-						aField.getLeft().getGroup().giveBreath();
-					} catch (EndOfBoardException e) {}
-					try {
-						aField.getRight().getGroup().giveBreath();
-					} catch (EndOfBoardException e) {}
-					try {
-						aField.getUp().getGroup().giveBreath();
-					} catch (EndOfBoardException e) {}
-					try {
-						aField.getDown().getGroup().giveBreath();
-					} catch (EndOfBoardException e) {}
 					aField.setGroup(null);
 				}
 				toRemove.add(aGroup);
