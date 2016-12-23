@@ -139,6 +139,7 @@ public class LogicTest {
 		GameRules.territories(board);
 		for (Group aGroup : board.getGroups())
 			System.out.println(aGroup);
+		GameRules.removeTerritories(board);
 	}
 	
 }

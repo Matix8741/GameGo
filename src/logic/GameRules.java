@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameRules {
 	
@@ -29,6 +30,14 @@ public class GameRules {
 				aField.setGroup(new Group(aField));
 			}
 		}
+	}
+	
+	public static void removeTerritories(Board board) {
+		List<Group> toRemove = new ArrayList<Group>();
+		for (Group aGroup : board.getGroups())
+			if (aGroup.getState()==state.EMPTY)
+				toRemove.add(aGroup);
+		board.getGroups().removeAll(toRemove);
 	}
 	
 	public static int move(Board board, Field field, state color)
