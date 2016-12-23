@@ -59,15 +59,12 @@ public class Game {
 		CurrentPlayer = currentPlayer;
 	}
 	public String sendMessege(String messege, PlayerS player) {
-		System.out.println("::::"+messege);
+		System.out.println("IN GAME"+messege);
 		if(messege.substring(0, 1).equals("M")){
 			if(!(behavior.getState() == GameState.PAUSE)){
 				turnOn();
-				System.out.println("JESTEM!!!!");
 				int move = Integer.valueOf(messege.substring(1));
-				System.out.println(move);
 				if( doMove(board.getFields().get(move), player)){
-					System.out.println("??");
 					CurrentPlayer = player.getOpponnent();
 					currentPlayerListener = currentPlayerListener.getOpponent();
 					return "A"+String.valueOf(move);
@@ -117,8 +114,11 @@ public class Game {
 				getWinner().OutMessege("WIN");
 				getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
 			}
-		}else if (messege.equals("MYCHOOSE")){
-			
+		}else if (messege.equals("CHOOSE")){
+			System.out.println("mychoose");
+			lastGroup = null;
+			CurrentPlayer = player.getOpponnent();
+			currentPlayerListener = currentPlayerListener.getOpponent();
 		}
 		return "NO";
 		
@@ -144,20 +144,42 @@ public class Game {
 	}
 	private void doInPass(Field field, PlayerS player) {
 		//TODO territory
-		if(true){
-			lastGroup = field.getGroup();
-			for(Field fiield :field.getGroup().getFields()){
-				if(fiield.getState() == state.EMPTY){
-					if(player.getColor() == state.BLACK){
-						fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
-					}else {
-						fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
-					}
-				}
-				else{
-					fiield.setStateAfterGame(stateAfterGame.DEAD);
+		if(CurrentPlayer == player){
+			if(lastGroup != null){//zmiana nie koniecznie na nothing
+				System.out.println("ZMIANA NA NOTHING");
+				for(Field fiield :lastGroup.getFields()){
+					fiield.setStateAfterGame(stateAfterGame.NOTHING);
 				}
 			}
+			lastGroup = field.getGroup();
+			if(field.getState() == state.EMPTY){
+				for(Field fiield :field.getTerirory().getFields()){
+					if(fiield.getState() == state.EMPTY){
+						if(player.getColor() == state.BLACK){
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+						}else {
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+						}
+					}
+					else{
+						fiield.setStateAfterGame(stateAfterGame.DEAD);
+					}
+				}
+			}else{
+				for(Field fiield :field.getGroup().getFields()){
+					if(fiield.getState() == state.EMPTY){
+						if(player.getColor() == state.BLACK){
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+						}else {
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+						}
+					}
+					else{
+						fiield.setStateAfterGame(stateAfterGame.DEAD);
+					}
+				}
+			}
+			
 		}
 		
 	}

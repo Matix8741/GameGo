@@ -52,7 +52,6 @@ public class FXBoard extends Canvas {
          drawGrid();
 		for(double i =1;i<x*htOfRow;i+=htOfRow) {
 			for(double c=1; c<x*wdOfRow;c+=wdOfRow){
-				System.out.println((i+16)+":::"+(c+16));
 				fields.add(new FXField(i+15,c+15));
 			}
 		}
@@ -134,14 +133,11 @@ public class FXBoard extends Canvas {
 		gc.clearRect(0, 0, this.getWidth(), getHeight());
 		drawGrid();
 		for(Field field : readObject.getFields()){
-				System.out.println(field.getX()+"  "+field.getY()+"<<<<<>>>>"+field.getState());
 			switch (field.getState()) {
 			case WHITE:{
-				System.out.println(":::"+readObject.getFields().indexOf(field));
 				fillField(readObject.getFields().indexOf(field), Color.WHITE, field.getStateAfterGame(),true);
 				break;}
 			case BLACK:{//TODO states from fields
-				System.out.println(":::"+readObject.getFields().indexOf(field));
 				fillField(readObject.getFields().indexOf(field), Color.BLACK, field.getStateAfterGame(),true);
 				break;}
 

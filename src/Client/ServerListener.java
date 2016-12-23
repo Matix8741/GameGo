@@ -58,7 +58,6 @@ public class ServerListener extends Thread {
 			try {
 				command = readFromServer();
 				if(command.substring(0, 1).equals("A")||command.substring(0, 1).equals("D")){
-					System.out.println(command.substring(1));
 					try {
 						fxBoard.drawBoard((Board)inObj.readObject());
 					} catch (ClassNotFoundException e) {
@@ -136,7 +135,8 @@ public class ServerListener extends Thread {
 								@Override
 								public void handle(ActionEvent event) {
 									try {
-										myClient.sendToServer("MYCHOOSE");
+										System.out.println("HALO");
+										myClient.sendToServer("CHOOSE");
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -174,7 +174,6 @@ public class ServerListener extends Thread {
 		running = false;
 	}
 	public void firstContact(MyClient myClient, int integer, Timer timer, Stage stage){
-		System.out.println("LKLLK:"+in);
 		try {
 			color = readFromServer();
 		} catch (IOException e) {

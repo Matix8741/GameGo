@@ -38,11 +38,9 @@ public class PlayerListener extends Thread {
 		//\\firstContact();
 		while(running) {
 				String messege = getMessega();
-				System.out.println("<<<<<"+getMyPlayer());
 				if(messege != null) {
 					String back =game.sendMessege(messege,getMyPlayer());
 						if(back != null && (back.substring(0, 1).equals("A")||back.substring(0,1).equals("M"))){
-								System.out.println(".....");
 								opponent.OutMessege(back);
 								OutMessege("D"+back.substring(1));
 								opponent.objectToClient(game.getBoard());
@@ -61,12 +59,10 @@ public class PlayerListener extends Thread {
 							try {
 								opponent.close();
 							} catch (IOException e) {
-								System.out.println("wAS CLOSED");
 								e.printStackTrace();
 							}
 							try {
 								close();
-								System.out.println("WHOOOOOOOOOAAAAAAAAA");
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -82,7 +78,6 @@ public class PlayerListener extends Thread {
 
 	public void firstContact(List<Game> games) {
 		String msgFromClient = getMessega();
-		System.out.println(msgFromClient);
 		String size = msgFromClient.substring(msgFromClient.indexOf("SS")+2,msgFromClient.indexOf("PL"));
 		x = Integer.valueOf(size);
 		String player = msgFromClient.substring(msgFromClient.indexOf("PL")+2);
@@ -182,7 +177,6 @@ public class PlayerListener extends Thread {
 		//TODO is null inObj.close();
 		outObj.close();
 		running = false;
-		System.out.println("IIIIIIIIII");
 		return;
 	}
 

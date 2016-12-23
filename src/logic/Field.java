@@ -23,7 +23,7 @@ public class Field implements Serializable {
 		this.y = y;
 		this.board = board;
 		myState = state.EMPTY;
-		stateAfterGame = stateAfterGame.NOTHING;
+		stateAfterGame = logic.stateAfterGame.NOTHING;
 	}
 	
 	public int getX() {
@@ -119,5 +119,10 @@ public class Field implements Serializable {
 		}else{
 			ifDone = true;
 		}
+	}
+
+	public Board getTerirory() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
