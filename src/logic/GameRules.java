@@ -1,12 +1,12 @@
 package logic;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GameRules {
 
-	public static void move(Board board, Field field, state color)
+	public static int move(Board board, Field field, state color)
 			throws FieldOccupiedException, SuicideException, KoException {
+		int beaten=0;
 		if (!(isOccupied(board, field))) {
 			state opponentColor;
 			if (color == state.BLACK)
@@ -16,13 +16,14 @@ public class GameRules {
 			if ((gonnaBeat(board, field, color, opponentColor))) {
 				if (!(ko(board, field, color, opponentColor))) {
 					rightMove(board, field, color);
-					beating(board, opponentColor);
+					beaten = beating(board, opponentColor);
 				}
 			}
 			else if (!(isSuicidal(board, field, color, opponentColor)))
 				rightMove(board, field, color);
 			board.saveMove(color);
 		}
+		return beaten;
 	}
 
 	private static boolean isOccupied(Board board, Field field) throws FieldOccupiedException {
@@ -111,18 +112,20 @@ public class GameRules {
 		board.getField(field).setState(color);
 	}
 
-	private static void beating(Board board, state opponentColor) {
+	private static int beating(Board board, state opponentColor) {
 		ArrayList<Group> toRemove = new ArrayList<Group>();
+		int i=0;
 		for (Group aGroup : board.getGroups())
 			if (aGroup.countBreaths() == 0 && aGroup.getState() == opponentColor) {
 				for (Field aField : aGroup.getFields()) {
+					i++;
 					aField.setEmpty();
 					aField.setGroup(null);
 				}
 				toRemove.add(aGroup);
 			}
 		board.getGroups().removeAll(toRemove);
-				
+		return i;
 	}
 
 }

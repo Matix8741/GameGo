@@ -17,7 +17,6 @@ import logic.state;
 public class LogicTest {
 
 	private Board board;
-	private Board lastMove;
 
 	@Before
 	public void setBoard() {
