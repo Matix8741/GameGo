@@ -18,6 +18,16 @@ public enum GameState {
 		public GameStateBehavior getStateBehavior(){
 			return new StateAfterPass();
 		}
+	},
+	END{
+		public GameStateBehavior getStateBehavior(){
+			return new StateEnd();
+		}
+	},
+	ONEEND{
+		public GameStateBehavior getStateBehavior(){
+			return new StateOneEnd();
+		}
 	};
 	public GameStateBehavior getStateBehavior() {
 		return null;

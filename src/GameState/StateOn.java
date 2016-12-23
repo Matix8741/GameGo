@@ -26,4 +26,16 @@ public class StateOn implements GameStateBehavior {
 		return GameState.AFTERPASS.getStateBehavior();
 	}
 
+	@Override
+	public GameStateBehavior end() {
+		// TODO Auto-generated method stub
+		return GameState.END.getStateBehavior();
+	}
+
+	@Override
+	public GameStateBehavior oneend() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
 }

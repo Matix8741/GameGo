@@ -10,4 +10,7 @@ public interface GameStateBehavior {
 	
 	GameStateBehavior afterpass();
 	
+	GameStateBehavior end();
+	
+	GameStateBehavior oneend();
 }

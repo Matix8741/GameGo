@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import logic.Field;
 import logic.state;
 
 public class PlayerListener extends Thread {

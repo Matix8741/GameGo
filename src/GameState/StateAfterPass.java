@@ -24,4 +24,15 @@ public class StateAfterPass implements GameStateBehavior {
 		return GameState.PAUSE.getStateBehavior();
 	}
 
+	@Override
+	public GameStateBehavior end() {
+		return GameState.END.getStateBehavior();
+	}
+
+	@Override
+	public GameStateBehavior oneend() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
 }

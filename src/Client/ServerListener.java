@@ -110,7 +110,6 @@ public class ServerListener extends Thread {
 					close();
 				}
 				else if(command.equals("PAUSE")){
-					fxBoard.nextMyState();
 					Platform.runLater(new Runnable() {
 						
 						@Override
@@ -118,16 +117,35 @@ public class ServerListener extends Thread {
 							fxBoard.getPassButton().setState( stateButt.RESUME );
 							fxBoard.getPassButton().setText("RESUME");
 							Button button = new Button("OK");
+							Button end = new Button("END");
+							end.setOnAction( new  EventHandler<ActionEvent>() {
+								
+								@Override
+								public void handle(ActionEvent event) {
+									try {
+										myClient.sendToServer("END");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									
+								}
+							});
 							button.setOnAction( new EventHandler<ActionEvent>() {
 								
 								@Override
 								public void handle(ActionEvent event) {
-									fxBoard.nextMyState();
-									
+									try {
+										myClient.sendToServer("MYCHOOSE");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 								}
 							});
 							fxBoard.removeForResume();
 							fxBoard.addForPause(button);
+							fxBoard.addForPause(end);
 						}
 					});
 				}
@@ -143,7 +161,6 @@ public class ServerListener extends Thread {
 					});
 				}
 				else if (command.equals("NEXT")){
-					fxBoard.nextMyState();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

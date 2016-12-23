@@ -175,7 +175,7 @@ public class ClientPlayer extends Application {
 				}
 			});
 			board.setMystate(stateAfterGame.NOTHING);
-			BorderPane when_pause = new BorderPane();
+			HBox when_pause = new HBox();
 			board.setBordeForPause(when_pause);
 			buttons.setPadding(new Insets(8));
 			buttons.setSpacing(8);

@@ -1,23 +1,23 @@
 package GameState;
 
-public class StatePause implements GameStateBehavior {
+public class StateOneEnd implements GameStateBehavior {
 
 	@Override
 	public GameState getState() {
 		// TODO Auto-generated method stub
-		return GameState.PAUSE;
+		return GameState.ONEEND;
 	}
 
 	@Override
 	public GameStateBehavior on() {
 		// TODO Auto-generated method stub
-		return GameState.ON.getStateBehavior();
+		return this;
 	}
 
 	@Override
 	public GameStateBehavior pause() {
 		// TODO Auto-generated method stub
-		return this;
+		return GameState.PAUSE.getStateBehavior();
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class StatePause implements GameStateBehavior {
 	@Override
 	public GameStateBehavior oneend() {
 		// TODO Auto-generated method stub
-		return GameState.ONEEND.getStateBehavior();
+		return GameState.END.getStateBehavior();
 	}
 
 }

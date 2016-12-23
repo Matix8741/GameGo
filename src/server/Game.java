@@ -7,11 +7,15 @@ import logic.Board;
 import logic.Field;
 import logic.FieldOccupiedException;
 import logic.GameRules;
+import logic.Group;
 import logic.InvalidBoardSizeException;
 import logic.KoException;
 import logic.SuicideException;
+import logic.state;
+import logic.stateAfterGame;
 
 public class Game {
+	private Group lastGroup;
 	protected GameStateBehavior behavior = null;
 	private int x;
 	public int getX() {
@@ -20,6 +24,7 @@ public class Game {
 	private PlayerListener currentPlayerListener;
 	private Board board;
 	private PlayerS CurrentPlayer;
+	private int bonusPoints;
 	public Game(int x) {
 		this.x = x;
 		try {
@@ -29,6 +34,7 @@ public class Game {
 			e.printStackTrace();
 		}
 		behavior = new StateOn();
+		bonusPoints = x/3;
 	}
 	public boolean doMove(Field field, PlayerS player) {
 		if(CurrentPlayer == player){
@@ -63,6 +69,7 @@ public class Game {
 				if( doMove(board.getFields().get(move), player)){
 					System.out.println("??");
 					CurrentPlayer = player.getOpponnent();
+					currentPlayerListener = currentPlayerListener.getOpponent();
 					return "A"+String.valueOf(move);
 				}
 			}
@@ -70,22 +77,22 @@ public class Game {
 		else if(messege.substring(0, 1).equals("A")){
 			if(behavior.getState() == GameState.PAUSE){
 				int move = Integer.valueOf(messege.substring(1));
-				doMove(board.getFields().get(move),player);
+				doInPass(board.getFields().get(move),player);
 				return "A" + String.valueOf(move);
 			}
-		}else if(messege.substring(0, 1).equals("I")){
-			if(behavior.getState() == GameState.PAUSE){
-				int move = Integer.valueOf(messege.substring(1));
-				doMove(board.getFields().get(move),player);
-				return "A" + String.valueOf(move);
-			}
-		}else if(messege.substring(0, 1).equals("D")){
-			if(behavior.getState() == GameState.PAUSE){
-				int move = Integer.valueOf(messege.substring(1));
-				doMove(board.getFields().get(move),player);
-				return "A" + String.valueOf(move);
-			}
-		}
+		}/*else if(messege.substring(0, 1).equals("I")){
+//			if(behavior.getState() == GameState.PAUSE){
+//				int move = Integer.valueOf(messege.substring(1));
+//				doMove(board.getFields().get(move),player);
+//				return "A" + String.valueOf(move);
+//			}
+//		}else if(messege.substring(0, 1).equals("D")){
+//			if(behavior.getState() == GameState.PAUSE){
+//				int move = Integer.valueOf(messege.substring(1));
+//				doMove(board.getFields().get(move),player);
+//				return "A" + String.valueOf(move);
+//			}
+//		}*/
 		else if (messege.equals("FF")){
 			close();
 			return "FF";
@@ -102,8 +109,56 @@ public class Game {
 			CurrentPlayer = player.getOpponnent();
 		}else if (messege.equals("NEXT")){
 			return "NEXT";
+		}else if (messege.equals("END")){
+			oneEnd();
+			if(behavior.getState() == GameState.ONEEND)
+				return "NO";
+			else if(behavior.getState() == GameState.END){
+				getWinner().OutMessege("WIN");
+				getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
+			}
+		}else if (messege.equals("MYCHOOSE")){
+			
 		}
 		return "NO";
+		
+	}
+	private PlayerListener getWinner() {
+		
+		if(Integer.valueOf(getPoints(CurrentPlayer))>Integer.valueOf(getPoints(CurrentPlayer.getOpponnent()))){
+			//TODO czy platerListener ma zawsze tego CurrentPlayera
+			return currentPlayerListener;
+		}
+		else{
+			return currentPlayerListener.getOpponent();
+		}
+		
+	}
+	private void oneEnd() {
+		this.behavior = this.behavior.oneend();
+		
+	}
+	private void end() {
+		this.behavior = this.behavior.end();
+		
+	}
+	private void doInPass(Field field, PlayerS player) {
+		//TODO territory
+		if(true){
+			lastGroup = field.getGroup();
+			for(Field fiield :field.getGroup().getFields()){
+				if(fiield.getState() == state.EMPTY){
+					if(player.getColor() == state.BLACK){
+						fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+					}else {
+						fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+					}
+				}
+				else{
+					fiield.setStateAfterGame(stateAfterGame.DEAD);
+				}
+			}
+		}
 		
 	}
 	private void pass(PlayerS playerS) {
@@ -138,8 +193,41 @@ public class Game {
 		return board;
 	}
 	public String getPoints(PlayerS player) {
-		// TODO Auto-generated method stub
+		switch (player.getColor()) {
+		case BLACK:{
+			int points=0;
+			for(Field field : board.getFields()){
+				if(field.getState() == state.BLACK && field.getStateAfterGame() == stateAfterGame.DEAD){
+					points--;
+				}
+				if(field.getState() == state.EMPTY && field.getStateAfterGame() == stateAfterGame.INTERRITORY_BLACK){
+					points++;
+				}
+			}
+			points-= getCaptives(player); 
+			return String.valueOf(points);
+		}
+		case WHITE:{
+			int points=bonusPoints;
+			for(Field field : board.getFields()){
+				if(field.getState() == state.WHITE && field.getStateAfterGame() == stateAfterGame.DEAD){
+					points--;
+				}
+				if(field.getState() == state.EMPTY && field.getStateAfterGame() == stateAfterGame.INTERRITORY_WHITE){
+					points++;
+				}
+			}
+			points-= getCaptives(player); 
+			return String.valueOf(points);
+		}
+
+		default:
+			break;
+		}
 		return "0";
+	}
+	private int getCaptives(PlayerS player) {
+		return 0;
 	}
 	public void turnOn() {
 		this.behavior = this.behavior.on();

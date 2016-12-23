@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import logic.Board;
 import logic.Field;
@@ -20,7 +21,7 @@ import logic.stateAfterGame;
 
 public class FXBoard extends Canvas {
 
-	private  BorderPane for_pause;
+	private  HBox for_pause;
 	public PassButton getPassButton() {
 		return passButton;
 	}
@@ -62,7 +63,6 @@ public class FXBoard extends Canvas {
             public void handle(MouseEvent event) {
                 for(FXField field : fields) {
                 	if((Math.abs(event.getX()-field.getX())<8)&& (Math.abs(event.getY()-field.getY())<8) ){
-                		System.out.println(mystate+"<>"+passButton.getState());
                 		if(passButton.getState() == stateButt.PASS){
 	                		try {
 								client.sendToServer("M"+fields.indexOf(field));
@@ -72,34 +72,11 @@ public class FXBoard extends Canvas {
 							}
                 		}
                 		else{
-                			switch(getMystate()){
-                			case ALIVE:{
-                				try{
-                					client.sendToServer("A"+fields.indexOf(field));
-                				}catch (Exception e) {
-                					e.printStackTrace();
-								}
-                				break;
-                			}
-                			case DEAD:{
-                				try{
-                					client.sendToServer("D"+fields.indexOf(field));
-                				}catch (Exception e) {
-									e.printStackTrace();
-								}
-                				break;
-                			}
-                			case INTERRITORY:{
-                				try{
-                					client.sendToServer("I"+fields.indexOf(field));
-                				}catch (Exception e) {
-									e.printStackTrace();
-								}
-                				break;
-                			}
-							default:
-								break;
-                			}
+                			try{
+                				client.sendToServer("A"+fields.indexOf(field));
+                			}catch (Exception e) {
+                				e.printStackTrace();
+							}
                 		}
                 	}
                 }
@@ -118,11 +95,18 @@ public class FXBoard extends Canvas {
 			gc.setFill(Color.rgb(255, 0, 0,0.6) );
 			gc.fillOval(field.getX()-9, field.getY()-9, 18, 18);
 			gc.setLineWidth(2);
-			break;
+			break; 
 			}
-		case INTERRITORY: {
+		case INTERRITORY_BLACK: {
 			gc.setLineWidth(4);
-			gc.setFill(Color.rgb(48, 219, 223,0.6) );
+			gc.setFill(Color.rgb(29, 112, 86  ,0.6) );
+			gc.fillRect(field.getX()-10, field.getY()-10, 20, 20);
+			gc.setLineWidth(2);
+			break;
+		}
+		case INTERRITORY_WHITE: {
+			gc.setLineWidth(4);
+			gc.setFill(Color.rgb(177, 240, 220   ,0.6) );
 			gc.fillRect(field.getX()-10, field.getY()-10, 20, 20);
 			gc.setLineWidth(2);
 			break;
@@ -154,15 +138,15 @@ public class FXBoard extends Canvas {
 			switch (field.getState()) {
 			case WHITE:{
 				System.out.println(":::"+readObject.getFields().indexOf(field));
-				fillField(readObject.getFields().indexOf(field), Color.WHITE, mystate,true);
+				fillField(readObject.getFields().indexOf(field), Color.WHITE, field.getStateAfterGame(),true);
 				break;}
 			case BLACK:{//TODO states from fields
 				System.out.println(":::"+readObject.getFields().indexOf(field));
-				fillField(readObject.getFields().indexOf(field), Color.BLACK, mystate,true);
+				fillField(readObject.getFields().indexOf(field), Color.BLACK, field.getStateAfterGame(),true);
 				break;}
 
 			default:{
-				fillField(readObject.getFields().indexOf(field), Color.BLACK, mystate,false);
+				fillField(readObject.getFields().indexOf(field), Color.BLACK, field.getStateAfterGame(),false);
 				break;
 			}
 			}
@@ -179,14 +163,16 @@ public class FXBoard extends Canvas {
 		passButton = pause;
 		
 	}
-	public void setBordeForPause(BorderPane when_pause) {
+	public void setBordeForPause(HBox when_pause) {
 		for_pause = when_pause;
 	}
 	public void addForPause(Node node){
-		for_pause.setCenter(node);
+		for_pause.getChildren().add(node);
 	}
 	public void removeForResume(){
-		for_pause.setCenter(null);
+		for(Node child: for_pause.getChildren()){
+		    for_pause.getChildren().remove(child);
+		}
 	}
 	public stateAfterGame getMystate() {
 		return mystate;
@@ -194,28 +180,28 @@ public class FXBoard extends Canvas {
 	public void setMystate(stateAfterGame mystate) {
 		this.mystate = mystate;
 	}
-	public void nextMyState(){
-		switch (mystate) {
-		case NOTHING:{
-			mystate = stateAfterGame.ALIVE;
-			break;
-		}
-		case ALIVE: {
-			mystate = stateAfterGame.DEAD;
-			break;
-		}
-		case DEAD: {
-			mystate = stateAfterGame.INTERRITORY;
-			break;
-		}
-		case INTERRITORY: {
-			mystate = stateAfterGame.NOTHING;
-			break;
-		}
-
-		default:
-			break;
-		}
-	}
+//	public void nextMyState(){
+//		switch (mystate) {
+//		case NOTHING:{
+//			mystate = stateAfterGame.ALIVE;
+//			break;
+//		}
+//		case ALIVE: {
+//			mystate = stateAfterGame.DEAD;
+//			break;
+//		}
+//		case DEAD: {
+//			mystate = stateAfterGame.INTERRITORY;
+//			break;
+//		}
+//		case INTERRITORY: {
+//			mystate = stateAfterGame.NOTHING;
+//			break;
+//		}
+//
+//		default:
+//			break;
+//		}
+//	}
 
 }
