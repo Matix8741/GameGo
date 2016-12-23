@@ -26,6 +26,12 @@ public class Field implements Serializable {
 		stateAfterGame = logic.stateAfterGame.NOTHING;
 	}
 	
+	protected Field(Field field) {
+		this.x = field.getX();
+		this.y = field.getY();
+		this.myState = field.getState();
+	}
+	
 	public int getX() {
 		return x;
 	}
@@ -44,6 +50,13 @@ public class Field implements Serializable {
 	
 	public void setGroup(Group newGroup) {
 		this.group = newGroup;
+	}
+	
+	public int countBreaths() {
+		if (getGroup()==null)
+			return 100;
+		else
+			return getGroup().countBreaths();
 	}
 	
 	public Field getLeft() throws EndOfBoardException {
