@@ -61,8 +61,10 @@ public class ServerListener extends Thread {
 					try {
 						fxBoard.drawBoard((Board)inObj.readObject());
 					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						
+					}catch (IOException e1){
+						close();
+						return;
 					}
 					command = readFromServer();
 					Platform.runLater(new Runnable() {
@@ -275,7 +277,13 @@ public class ServerListener extends Thread {
 						});
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				try {
+					close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				return;
 			}
 		}
 	}

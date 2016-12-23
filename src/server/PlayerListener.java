@@ -99,7 +99,12 @@ public class PlayerListener extends Thread {
 
 	public void firstContact(List<Game> games) {
 		String msgFromClient = getMessega();
-		String size = msgFromClient.substring(msgFromClient.indexOf("SS")+2,msgFromClient.indexOf("PL"));
+		String size = "";
+		try{ size = msgFromClient.substring(msgFromClient.indexOf("SS")+2,msgFromClient.indexOf("PL"));
+		
+		}catch(StringIndexOutOfBoundsException e){
+				return;
+		}
 		x = Integer.valueOf(size);
 		String player = msgFromClient.substring(msgFromClient.indexOf("PL")+2);
 		if(player.equals("Bot")){
@@ -148,8 +153,12 @@ public class PlayerListener extends Thread {
 		try {
 			out.writeUTF(back);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 	}
