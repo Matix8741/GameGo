@@ -38,4 +38,10 @@ public class StateEnd implements GameStateBehavior {
 		return this;
 	}
 
+	@Override
+	public GameStateBehavior waitfor() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
 }

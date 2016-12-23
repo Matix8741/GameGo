@@ -1,15 +1,17 @@
 package GameState;
 
-public class StateAfterPass implements GameStateBehavior {
+public class StateWait implements GameStateBehavior {
 
 	@Override
 	public GameState getState() {
-		return GameState.AFTERPASS;
+		// TODO Auto-generated method stub
+		return GameState.WAITFORDECIDE;
 	}
 
 	@Override
 	public GameStateBehavior on() {
-		return GameState.ON.getStateBehavior();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -21,12 +23,13 @@ public class StateAfterPass implements GameStateBehavior {
 	@Override
 	public GameStateBehavior afterpass() {
 		// TODO Auto-generated method stub
-		return GameState.PAUSE.getStateBehavior();
+		return null;
 	}
 
 	@Override
 	public GameStateBehavior end() {
-		return GameState.END.getStateBehavior();
+		// TODO Auto-generated method stub
+		return this;
 	}
 
 	@Override
@@ -38,7 +41,7 @@ public class StateAfterPass implements GameStateBehavior {
 	@Override
 	public GameStateBehavior waitfor() {
 		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 }

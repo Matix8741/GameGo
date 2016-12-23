@@ -121,7 +121,7 @@ public class Field implements Serializable {
 		}
 	}
 
-	public Board getTerirory() {
+	public Group getTerirory() {
 		// TODO Auto-generated method stub
 		return null;
 	}

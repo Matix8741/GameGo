@@ -28,6 +28,11 @@ public enum GameState {
 		public GameStateBehavior getStateBehavior(){
 			return new StateOneEnd();
 		}
+	},
+	WAITFORDECIDE{
+		public GameStateBehavior getStateBehavior(){
+			return new StateWait();
+		}
 	};
 	public GameStateBehavior getStateBehavior() {
 		return null;

@@ -61,7 +61,7 @@ public class Game {
 	public String sendMessege(String messege, PlayerS player) {
 		System.out.println("IN GAME"+messege);
 		if(messege.substring(0, 1).equals("M")){
-			if(!(behavior.getState() == GameState.PAUSE)){
+			if(!(behavior.getState() == GameState.PAUSE) && !(behavior.getState() == GameState.WAITFORDECIDE)){
 				turnOn();
 				int move = Integer.valueOf(messege.substring(1));
 				if( doMove(board.getFields().get(move), player)){
@@ -72,7 +72,7 @@ public class Game {
 			}
 		}
 		else if(messege.substring(0, 1).equals("A")){
-			if(behavior.getState() == GameState.PAUSE){
+			if(behavior.getState() == GameState.PAUSE&& !(behavior.getState() == GameState.WAITFORDECIDE)){
 				int move = Integer.valueOf(messege.substring(1));
 				doInPass(board.getFields().get(move),player);
 				return "A" + String.valueOf(move);
@@ -107,20 +107,60 @@ public class Game {
 		}else if (messege.equals("NEXT")){
 			return "NEXT";
 		}else if (messege.equals("END")){
-			oneEnd();
-			if(behavior.getState() == GameState.ONEEND)
-				return "NO";
-			else if(behavior.getState() == GameState.END){
-				getWinner().OutMessege("WIN");
-				getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
+			if(!(behavior.getState() == GameState.WAITFORDECIDE)){
+				oneEnd();
+				if(behavior.getState() == GameState.ONEEND)
+					return "NO";
+				else if(behavior.getState() == GameState.END){
+					getWinner().OutMessege("WIN");
+					getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
+				}
 			}
+			
 		}else if (messege.equals("CHOOSE")){
-			System.out.println("mychoose");
+			if(CurrentPlayer == player&& !(behavior.getState() == GameState.WAITFORDECIDE)){
+				System.out.println("mychoose");
+				CurrentPlayer = player.getOpponnent();
+				currentPlayerListener = currentPlayerListener.getOpponent();
+				waitFor();
+				return "PPAUSE";
+			}
+		}else if (messege.equals("LINE")){
+			changeGroup(CurrentPlayer,lastGroup);
 			lastGroup = null;
-			CurrentPlayer = player.getOpponnent();
-			currentPlayerListener = currentPlayerListener.getOpponent();
+			pause();
+			return "dec";
+		}else if (messege.equals("EPT")){
+			lastGroup = null;
+			pause();
+			return "acpt";
 		}
 		return "NO";
+		
+	}
+	private void changeGroup(PlayerS player, Group group) {
+		if(!(group == null)){
+			for(Field fiield :group.getFields()){
+				if(fiield.getStateAfterGame() == stateAfterGame.NOTHING){
+					if(fiield.getState()== state.EMPTY){
+						if(player.getColor() == state.BLACK)
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+						else 
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+					}else{
+						fiield.setStateAfterGame(stateAfterGame.DEAD);
+					}
+				}
+				else{
+					fiield.setStateAfterGame(stateAfterGame.NOTHING);
+				}
+				
+			}
+		}
+		
+	}
+	private void waitFor() {
+		behavior = behavior.waitfor();
 		
 	}
 	private PlayerListener getWinner() {
@@ -145,39 +185,12 @@ public class Game {
 	private void doInPass(Field field, PlayerS player) {
 		//TODO territory
 		if(CurrentPlayer == player){
-			if(lastGroup != null){//zmiana nie koniecznie na nothing
-				System.out.println("ZMIANA NA NOTHING");
-				for(Field fiield :lastGroup.getFields()){
-					fiield.setStateAfterGame(stateAfterGame.NOTHING);
-				}
-			}
+			changeGroup(player,lastGroup);
 			lastGroup = field.getGroup();
 			if(field.getState() == state.EMPTY){
-				for(Field fiield :field.getTerirory().getFields()){
-					if(fiield.getState() == state.EMPTY){
-						if(player.getColor() == state.BLACK){
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
-						}else {
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
-						}
-					}
-					else{
-						fiield.setStateAfterGame(stateAfterGame.DEAD);
-					}
-				}
+				changeGroup(player, field.getTerirory());
 			}else{
-				for(Field fiield :field.getGroup().getFields()){
-					if(fiield.getState() == state.EMPTY){
-						if(player.getColor() == state.BLACK){
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
-						}else {
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
-						}
-					}
-					else{
-						fiield.setStateAfterGame(stateAfterGame.DEAD);
-					}
-				}
+				changeGroup(player, field.getGroup());
 			}
 			
 		}
@@ -199,6 +212,9 @@ public class Game {
 		}
 		
 		
+	}
+	private void pause(){
+		behavior = behavior.pause();
 	}
 	private void close() {
 		//TODO when need

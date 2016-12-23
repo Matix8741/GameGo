@@ -149,6 +149,78 @@ public class ServerListener extends Thread {
 						}
 					});
 				}
+				else if(command.equals("PPAUSE")){
+					System.out.println(">>>>>>>>>>>>>>>>>>");
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							fxBoard.getPassButton().setState( stateButt.RESUME );
+							fxBoard.getPassButton().setText("RESUME");
+							Button button = new Button("OK");
+							Button end = new Button("END");
+							Button accept = new Button("ACCEPT");
+							Button decline = new Button("DECLINE");
+							end.setOnAction( new  EventHandler<ActionEvent>() {
+								
+								@Override
+								public void handle(ActionEvent event) {
+									try {
+										myClient.sendToServer("END");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									
+								}
+							});
+							button.setOnAction( new EventHandler<ActionEvent>() {
+								
+								@Override
+								public void handle(ActionEvent event) {
+									try {
+										System.out.println("HALO");
+										myClient.sendToServer("CHOOSE");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							});
+							accept.setOnAction( new  EventHandler<ActionEvent>() {
+								
+								@Override
+								public void handle(ActionEvent event) {
+									try {
+										myClient.sendToServer("EPT");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									
+								}
+							});
+							decline.setOnAction( new EventHandler<ActionEvent>() {
+								
+								@Override
+								public void handle(ActionEvent event) {
+									try {
+										myClient.sendToServer("LINE");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							});
+							fxBoard.removeForResume();
+							fxBoard.addForPause(button);
+							fxBoard.addForPause(end);
+							fxBoard.removeForAccept();
+							fxBoard.addForAccept(accept);
+							fxBoard.addForAccept(decline);
+						}
+					});
+				}
 				else if (command.equals("RESUME")){
 					Platform.runLater(new Runnable() {
 						
@@ -161,6 +233,46 @@ public class ServerListener extends Thread {
 					});
 				}
 				else if (command.equals("NEXT")){
+				}
+				else if (command.equals("acpt")){
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							fxBoard.removeForAccept();;
+						}
+					});
+				}
+				if( command.equals("dec")){
+						Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							fxBoard.removeForAccept();;
+						}
+						});
+						try {
+							fxBoard.drawBoard((Board)inObj.readObject());
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						command = readFromServer();
+						Platform.runLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								clientPlayer.setOurPoints(command);
+							}
+						});
+						command = readFromServer();
+						Platform.runLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								clientPlayer.setOpponentPoints(command);	
+							}
+						});
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

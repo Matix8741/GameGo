@@ -36,6 +36,7 @@ public class FXBoard extends Canvas {
 	private double height;
 	private double htOfRow;
 	private double wdOfRow;
+	private HBox accept;
 	public FXBoard( double arg1, double arg2, MyClient client, int x2, Color color2) {
 		super(arg1,arg2);
 		color = color2;
@@ -159,16 +160,21 @@ public class FXBoard extends Canvas {
 		passButton = pause;
 		
 	}
-	public void setBordeForPause(HBox when_pause) {
+	public void setBordeForPause(HBox when_pause, HBox accepting) {
 		for_pause = when_pause;
+		accept = accepting;
 	}
 	public void addForPause(Node node){
 		for_pause.getChildren().add(node);
 	}
 	public void removeForResume(){
-		for(Node child: for_pause.getChildren()){
-		    for_pause.getChildren().remove(child);
-		}
+		for_pause.getChildren().clear();
+	}
+	public void addForAccept(Node node){
+		accept.getChildren().add(node);
+	}
+	public void removeForAccept(){
+		accept.getChildren().clear();
 	}
 	public stateAfterGame getMystate() {
 		return mystate;

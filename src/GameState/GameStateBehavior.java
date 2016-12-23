@@ -13,4 +13,6 @@ public interface GameStateBehavior {
 	GameStateBehavior end();
 	
 	GameStateBehavior oneend();
+	
+	GameStateBehavior waitfor();
 }

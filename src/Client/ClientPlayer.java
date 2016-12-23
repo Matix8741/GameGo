@@ -176,11 +176,16 @@ public class ClientPlayer extends Application {
 			});
 			board.setMystate(stateAfterGame.NOTHING);
 			HBox when_pause = new HBox();
-			board.setBordeForPause(when_pause);
+			when_pause.setPadding(new Insets(8));
+			when_pause.setSpacing(8);
+			HBox accepting = new HBox();
+			accepting.setPadding(new Insets(8));
+			accepting.setSpacing(8);
+			board.setBordeForPause(when_pause,accepting);
 			buttons.setPadding(new Insets(8));
 			buttons.setSpacing(8);
 			buttons.getChildren().addAll(surrender,pause);
-			labels.getChildren().addAll(buttons,when_pause);
+			labels.getChildren().addAll(buttons,when_pause,accepting);
 			boardStage.setScene(scene);
 		//	boardStage.setResizable(false);
 			boardStage.show();

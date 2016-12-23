@@ -38,4 +38,10 @@ public class StatePause implements GameStateBehavior {
 		return GameState.ONEEND.getStateBehavior();
 	}
 
+	@Override
+	public GameStateBehavior waitfor() {
+		// TODO Auto-generated method stub
+		return GameState.WAITFORDECIDE.getStateBehavior();
+	}
+
 }

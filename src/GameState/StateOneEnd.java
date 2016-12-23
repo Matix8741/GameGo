@@ -38,4 +38,10 @@ public class StateOneEnd implements GameStateBehavior {
 		return GameState.END.getStateBehavior();
 	}
 
+	@Override
+	public GameStateBehavior waitfor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
