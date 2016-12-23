@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Field> fields;
 	private List<Field> out;
 	private Board board;
@@ -31,6 +35,7 @@ public class Group implements Serializable {
 	}
 	
 	public Group(Field field) {
+		System.out.println("Hello 3");
 		fields = new ArrayList<Field>();
 		fields.add(field);
 		out = new ArrayList<Field>();
@@ -54,33 +59,34 @@ public class Group implements Serializable {
 		board.getGroups().add(this);
 		
 		try {
-			if (field.getLeft().getState()==mystate)
-				merge(field.getLeft().getGroup());
+			if (field.getLeft().getState()==mystate && field.getLeft().getGroup()!=null)
+				merge(field.getLeft());
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getRight().getState()==mystate)
-				merge(field.getRight().getGroup());
+			if (field.getRight().getState()==mystate && field.getRight().getGroup()!=null)
+				merge(field.getRight());
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getUp().getState()==mystate)
-				merge(field.getUp().getGroup());
+			if (field.getUp().getState()==mystate && field.getUp().getGroup()!=null)
+				merge(field.getUp());
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getDown().getState()==mystate)
-				merge(field.getDown().getGroup());
+			if (field.getDown().getState()==mystate && field.getDown().getGroup()!=null)
+				merge(field.getDown());
 		} catch (EndOfBoardException e) {}
 	}
 
-	private void merge(Group addedGroup) {
-		if (this.equals(addedGroup))
+	private void merge(Field field) {
+		if (this.equals(field.getGroup()))
 			return;
-		for (Field aField : addedGroup.getFields()){
+		
+		for (Field aField : field.getGroup().getFields()){
 			fields.add(aField);
 			aField.setGroup(this);
 		}
-		addedGroup.getOut().removeAll(out);
-		out.addAll(addedGroup.getOut());
-		board.getGroups().remove(addedGroup);
+		field.getGroup().getOut().removeAll(out);
+		out.addAll(field.getGroup().getOut());
+		board.getGroups().remove(field);
 	}
 
 }

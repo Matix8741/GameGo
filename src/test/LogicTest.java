@@ -9,6 +9,7 @@ import logic.EndOfBoardException;
 import logic.Field;
 import logic.FieldOccupiedException;
 import logic.GameRules;
+import logic.Group;
 import logic.InvalidBoardSizeException;
 import logic.KoException;
 import logic.SuicideException;
@@ -131,6 +132,13 @@ public class LogicTest {
 		Field field=board.getField(2, 2);
 		Field left=field.getLeft();
 		Assert.assertTrue(left.getX()==1 && left.getY()==2);
+	}
+	
+	@Test
+	public void territoryTest() {
+		GameRules.territories(board);
+		for (Group aGroup : board.getGroups())
+			System.out.println(aGroup);
 	}
 	
 }
