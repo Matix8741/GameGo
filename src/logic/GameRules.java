@@ -3,7 +3,14 @@ package logic;
 import java.util.ArrayList;
 
 public class GameRules {
-
+	
+	public static boolean isProbablyDead(Group group) {
+		if (group.getState()==state.EMPTY)
+			return false;
+		if (group.countBreaths()==1)
+			return true;
+		return false;
+	}
 	
 	public static state territoryOwner(Group territory) {
 		if (territory.getState()!=state.EMPTY)
