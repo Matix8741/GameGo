@@ -59,7 +59,6 @@ public class Game {
 		CurrentPlayer = currentPlayer;
 	}
 	public String sendMessege(String messege, PlayerS player) {
-		System.out.println("IN GAME"+messege);
 		if(messege.substring(0, 1).equals("M")){
 			if(!(behavior.getState() == GameState.PAUSE) && !(behavior.getState() == GameState.WAITFORDECIDE)){
 				turnOn();
@@ -119,7 +118,6 @@ public class Game {
 			
 		}else if (messege.equals("CHOOSE")){
 			if(CurrentPlayer == player&& !(behavior.getState() == GameState.WAITFORDECIDE)){
-				System.out.println("mychoose");
 				CurrentPlayer = player.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
 				waitFor();

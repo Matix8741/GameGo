@@ -12,9 +12,6 @@ import Messege.MessegeBody;
 import Messege.MessegeFirst;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,8 +31,8 @@ import logic.stateAfterGame;
 
 public class ClientPlayer extends Application {
 	static int port = 6066;
-	static Stage stage = null;
-	static Timer timer = null;
+	Stage stage = null;
+	Timer timer = null;
 	private Label myPoints;
 	private Label opponetPoints;
 	private Label infoFromServer;
@@ -69,32 +66,28 @@ public class ClientPlayer extends Application {
 		Button start = new Button("Start");
 		BorderPane forbutton = new BorderPane();
 		forbutton.setCenter(start);
-		start.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				if(!(size.getText().equals("NaN"))){
-					try {
-						prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
-						stage = new Stage();
-						timer = searching(stage);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					
-					ServerListener serverlistener = null;
-					try {
-						serverlistener = new ServerListener(myClient.getIN(),timer,Integer.valueOf(sizeTextField.getText()),
-								myClient,stage,getOwn(),boardStage,new ObjectInputStream(myClient.getInput()));
-					} catch (NumberFormatException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					serverlistener.start();
-					primaryStage.close();
+		start.setOnAction(event -> {
+			if(!(size.getText().equals("NaN"))){
+				try {
+					prepareGame(myClient, sizeTextField.getText(),group.getSelectedToggle());
+					stage = new Stage();
+					timer = searching(stage);
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 				
+				ServerListener serverlistener = null;
+				try {
+					serverlistener = new ServerListener(myClient.getIN(),timer,Integer.valueOf(sizeTextField.getText()),
+							myClient,stage,getOwn(),boardStage,new ObjectInputStream(myClient.getInput()));
+				} catch (NumberFormatException | IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				serverlistener.start();
+				primaryStage.close();
 			}
+			
 		});
 		panel.setBottom(forbutton);
 		primaryStage.setScene(scene);
@@ -135,42 +128,34 @@ public class ClientPlayer extends Application {
 			root.setRight(labels);
 			HBox buttons = new HBox();
 			Button surrender = new Button("Surrender");
-			surrender.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) {
-					MessegeBody surrMessage = new MessageSurrender();
-					try {
-						client.sendToServer((String) surrMessage.createMessega());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+			surrender.setOnAction(event -> {
+				MessegeBody surrMessage = new MessageSurrender();
+				try {
+					client.sendToServer((String) surrMessage.createMessega());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				
 			});
 			PassButton pause =  new PassButton("Pass");
 			pause.setState( stateButt.PASS );
 			board.setPassButton(pause);
-			pause.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) {
-					if(pause.getState() == stateButt.PASS){
-						
-						try {
-							client.sendToServer("PASS");
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+			pause.setOnAction(event -> {
+				if(pause.getState() == stateButt.PASS){
+					
+					try {
+						client.sendToServer("PASS");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-					else if (pause.getState() == stateButt.RESUME){
-						try{
-							client.sendToServer("RESUME");
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
+				}
+				else if (pause.getState() == stateButt.RESUME){
+					try{
+						client.sendToServer("RESUME");
+					}catch (Exception e2) {
+						e2.printStackTrace();
 					}
 				}
 			});
@@ -191,32 +176,29 @@ public class ClientPlayer extends Application {
 			boardStage.show();
 	}
 	public static void addTextLimiterAndAction(final TextField tf,final Label lb, final int maxLength) {
-		tf.textProperty().addListener(new ChangeListener<String>() { 
-
-			@Override public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-				if (tf.getText().length() > maxLength) {
-					String s = tf.getText().substring(0, maxLength);
-					tf.setText(s);
-					}
-				boolean catched = false;
-				int ifzero = 0;
-				try{ ifzero = Integer.valueOf(tf.getText());
-					if(ifzero >20||ifzero<2){
-						catched = true;
-						lb.setText("NaN");
-					}
+		tf.textProperty().addListener((ChangeListener<String>) (ov, oldValue, newValue) -> {
+			if (tf.getText().length() > maxLength) {
+				String s = tf.getText().substring(0, maxLength);
+				tf.setText(s);
 				}
-				catch (IllegalArgumentException e){
-					lb.setText("NaN");	
+			boolean catched = false;
+			int ifzero = 0;
+			try{ ifzero = Integer.valueOf(tf.getText());
+				if(ifzero >20||ifzero<2){
 					catched = true;
-				}
-				if(!(catched)&& ifzero!=0)
-					lb.setText(tf.getText()+"x"+tf.getText());
-				else {
-					lb.setText("NaN");	
+					lb.setText("NaN");
 				}
 			}
-			});
+			catch (IllegalArgumentException e){
+				lb.setText("NaN");	
+				catched = true;
+			}
+			if(!(catched)&& ifzero!=0)
+				lb.setText(tf.getText()+"x"+tf.getText());
+			else {
+				lb.setText("NaN");	
+			}
+		});
 		}
 	private Timer searching(Stage stage){
 		stage.initStyle(StageStyle.UNDECORATED);
@@ -232,12 +214,7 @@ public class ClientPlayer extends Application {
 			
 			@Override
 			public void run() {
-				javafx.application.Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						changeLabel(label);
-					}
-				});
+				javafx.application.Platform.runLater(() -> changeLabel(label));
 						
 				
 			}

@@ -6,8 +6,6 @@ import java.io.ObjectInputStream;
 import java.util.Timer;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -47,7 +45,6 @@ public class ServerListener extends Thread {
 		this.fxBoard = fxBoard;
 	}
 	public String readFromServer() throws IOException {
-		//System.out.println("LKLLK:"+in);
 		return in.readUTF();
 	}
 	
@@ -67,191 +64,124 @@ public class ServerListener extends Thread {
 						return;
 					}
 					command = readFromServer();
-					Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							clientPlayer.setOurPoints(command);
-						}
-					});
+					Platform.runLater(() -> clientPlayer.setOurPoints(command));
 					command = readFromServer();
-					Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							clientPlayer.setOpponentPoints(command);	
-						}
-					});
+					Platform.runLater(() -> clientPlayer.setOpponentPoints(command));
 					//command = readFromServer();
 				}
 				else if (command.equals("LOSE")){
-					Platform.runLater(new Runnable() {
+					Platform.runLater(() -> {
+						clientPlayer.setOurPoints("YOU LOSE");
+						clientPlayer.setOpponentPoints("YOU LOSE");
+						clientPlayer.setServerStatement("YOU LOSE");
 						
-						@Override
-						public void run() {
-							clientPlayer.setOurPoints("YOU LOSE");
-							clientPlayer.setOpponentPoints("YOU LOSE");
-							clientPlayer.setServerStatement("YOU LOSE");
-							
-						}
 					});
 					close();
 				}
 				else if (command.equals("WON")){
-					Platform.runLater(new Runnable() {
+					Platform.runLater(() -> {
+						clientPlayer.setOurPoints("YOU WON");
+						clientPlayer.setOpponentPoints("YOU WON");
+						clientPlayer.setServerStatement("YOU WON");
 						
-						@Override
-						public void run() {
-							clientPlayer.setOurPoints("YOU WON");
-							clientPlayer.setOpponentPoints("YOU WON");
-							clientPlayer.setServerStatement("YOU WON");
-							
-						}
 					});
 					close();
 				}
 				else if(command.equals("PAUSE")){
-					Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							fxBoard.getPassButton().setState( stateButt.RESUME );
-							fxBoard.getPassButton().setText("RESUME");
-							Button button = new Button("OK");
-							Button end = new Button("END");
-							end.setOnAction( new  EventHandler<ActionEvent>() {
-								
-								@Override
-								public void handle(ActionEvent event) {
-									try {
-										myClient.sendToServer("END");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									
-								}
-							});
-							button.setOnAction( new EventHandler<ActionEvent>() {
-								
-								@Override
-								public void handle(ActionEvent event) {
-									try {
-										System.out.println("HALO");
-										myClient.sendToServer("CHOOSE");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								}
-							});
-							fxBoard.removeForResume();
-							fxBoard.addForPause(button);
-							fxBoard.addForPause(end);
-						}
+					Platform.runLater(() -> {
+						fxBoard.getPassButton().setState( stateButt.RESUME );
+						fxBoard.getPassButton().setText("RESUME");
+						Button button = new Button("OK");
+						Button end = new Button("END");
+						end.setOnAction( event -> {
+							try {
+								myClient.sendToServer("END");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						});
+						button.setOnAction( event -> {
+							try {
+								myClient.sendToServer("CHOOSE");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						});
+						fxBoard.removeForResume();
+						fxBoard.addForPause(button);
+						fxBoard.addForPause(end);
 					});
 				}
 				else if(command.equals("PPAUSE")){
-					System.out.println(">>>>>>>>>>>>>>>>>>");
-					Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							fxBoard.getPassButton().setState( stateButt.RESUME );
-							fxBoard.getPassButton().setText("RESUME");
-							Button button = new Button("OK");
-							Button end = new Button("END");
-							Button accept = new Button("ACCEPT");
-							Button decline = new Button("DECLINE");
-							end.setOnAction( new  EventHandler<ActionEvent>() {
-								
-								@Override
-								public void handle(ActionEvent event) {
-									try {
-										myClient.sendToServer("END");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									
-								}
-							});
-							button.setOnAction( new EventHandler<ActionEvent>() {
-								
-								@Override
-								public void handle(ActionEvent event) {
-									try {
-										System.out.println("HALO");
-										myClient.sendToServer("CHOOSE");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								}
-							});
-							accept.setOnAction( new  EventHandler<ActionEvent>() {
-								
-								@Override
-								public void handle(ActionEvent event) {
-									try {
-										myClient.sendToServer("EPT");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									
-								}
-							});
-							decline.setOnAction( new EventHandler<ActionEvent>() {
-								
-								@Override
-								public void handle(ActionEvent event) {
-									try {
-										myClient.sendToServer("LINE");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								}
-							});
-							fxBoard.removeForResume();
-							fxBoard.addForPause(button);
-							fxBoard.addForPause(end);
-							fxBoard.removeForAccept();
-							fxBoard.addForAccept(accept);
-							fxBoard.addForAccept(decline);
-						}
+					Platform.runLater(() -> {
+						fxBoard.getPassButton().setState( stateButt.RESUME );
+						fxBoard.getPassButton().setText("RESUME");
+						Button button = new Button("OK");
+						Button end = new Button("END");
+						Button accept = new Button("ACCEPT");
+						Button decline = new Button("DECLINE");
+						end.setOnAction( event -> {
+							try {
+								myClient.sendToServer("END");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						});
+						button.setOnAction( event -> {
+							try {
+								myClient.sendToServer("CHOOSE");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						});
+						accept.setOnAction( event -> {
+							try {
+								myClient.sendToServer("EPT");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						});
+						decline.setOnAction( event -> {
+							try {
+								myClient.sendToServer("LINE");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						});
+						fxBoard.removeForResume();
+						fxBoard.addForPause(button);
+						fxBoard.addForPause(end);
+						fxBoard.removeForAccept();
+						fxBoard.addForAccept(accept);
+						fxBoard.addForAccept(decline);
 					});
 				}
 				else if (command.equals("RESUME")){
-					Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							fxBoard.getPassButton().setState( stateButt.PASS);
-							fxBoard.getPassButton().setText("PASS");
-							fxBoard.removeForResume();
-						}
+					Platform.runLater(() -> {
+						fxBoard.getPassButton().setState( stateButt.PASS);
+						fxBoard.getPassButton().setText("PASS");
+						fxBoard.removeForResume();
 					});
 				}
 				else if (command.equals("NEXT")){
 				}
 				else if (command.equals("acpt")){
-					Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							fxBoard.removeForAccept();;
-						}
+					Platform.runLater(() -> {
+						fxBoard.removeForAccept();;
 					});
 				}
 				if( command.equals("dec")){
-						Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
+						Platform.runLater(() -> {
 							fxBoard.removeForAccept();;
-						}
 						});
 						try {
 							fxBoard.drawBoard((Board)inObj.readObject());
@@ -260,21 +190,9 @@ public class ServerListener extends Thread {
 							e.printStackTrace();
 						}
 						command = readFromServer();
-						Platform.runLater(new Runnable() {
-							
-							@Override
-							public void run() {
-								clientPlayer.setOurPoints(command);
-							}
-						});
+						Platform.runLater(() -> clientPlayer.setOurPoints(command));
 						command = readFromServer();
-						Platform.runLater(new Runnable() {
-							
-							@Override
-							public void run() {
-								clientPlayer.setOpponentPoints(command);	
-							}
-						});
+						Platform.runLater(() -> clientPlayer.setOpponentPoints(command));
 				}
 			} catch (IOException e) {
 				try {
@@ -300,18 +218,14 @@ public class ServerListener extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Platform.runLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				if(color.equals("WHITE")){
-					clientPlayer.createBoard(myClient, integer, Color.WHITE, getOwn(),boardStage);
-				}
-				else{
-					clientPlayer.createBoard(myClient, integer, Color.BLACK, getOwn(),boardStage);
-				}
-				ClientPlayer.closeSearching(timer, stage);
+		Platform.runLater(() -> {
+			if(color.equals("WHITE")){
+				clientPlayer.createBoard(myClient, integer, Color.WHITE, getOwn(),boardStage);
 			}
+			else{
+				clientPlayer.createBoard(myClient, integer, Color.BLACK, getOwn(),boardStage);
+			}
+			ClientPlayer.closeSearching(timer, stage);
 		});
 		
 		

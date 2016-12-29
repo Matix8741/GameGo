@@ -7,11 +7,9 @@ import java.util.List;
 import Client.MyClient;
 import Client.PassButton;
 import Client.stateButt;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -56,32 +54,27 @@ public class FXBoard extends Canvas {
 				fields.add(new FXField(i+15,c+15));
 			}
 		}
-		setOnMouseClicked(new EventHandler<MouseEvent>()
-        {
-
-			@Override
-            public void handle(MouseEvent event) {
-                for(FXField field : fields) {
-                	if((Math.abs(event.getX()-field.getX())<8)&& (Math.abs(event.getY()-field.getY())<8) ){
-                		if(passButton.getState() == stateButt.PASS){
-	                		try {
-								client.sendToServer("M"+fields.indexOf(field));
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-                		}
-                		else{
-                			try{
-                				client.sendToServer("A"+fields.indexOf(field));
-                			}catch (Exception e) {
-                				e.printStackTrace();
-							}
-                		}
-                	}
-                }
-            }
-        });
+		setOnMouseClicked(event -> {
+		    for(FXField field : fields) {
+		    	if((Math.abs(event.getX()-field.getX())<8)&& (Math.abs(event.getY()-field.getY())<8) ){
+		    		if(passButton.getState() == stateButt.PASS){
+		        		try {
+							client.sendToServer("M"+fields.indexOf(field));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+		    		}
+		    		else{
+		    			try{
+		    				client.sendToServer("A"+fields.indexOf(field));
+		    			}catch (Exception e2) {
+		    				e2.printStackTrace();
+						}
+		    		}
+		    	}
+		    }
+		});
 	}
 	public void fillField(int i, Color color, stateAfterGame afterGame, boolean b) {
 		FXField field = fields.get(i);

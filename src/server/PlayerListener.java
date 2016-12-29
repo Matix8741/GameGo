@@ -40,8 +40,6 @@ public class PlayerListener extends Thread {
 				String messege = getMessega();
 				if(messege != null) {
 					String back =game.sendMessege(messege,getMyPlayer());
-
-					System.out.println(":::::::::::::"+back);
 						if(back != null && (back.substring(0, 1).equals("A")||back.substring(0,1).equals("M"))){
 								opponent.OutMessege(back);
 								OutMessege("D"+back.substring(1));
