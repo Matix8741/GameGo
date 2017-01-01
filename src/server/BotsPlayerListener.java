@@ -99,10 +99,10 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 	}
 
 	public void myMove(){
-		int i = generator.nextInt(getX());
-		int j = generator.nextInt(getX()-1)+1;
-		String messege = game.sendMessege("M"+String.valueOf(i*j), myPlayer);
-		System.out.println(messege);
+		String messege = "";
+		while(messege !="A"){
+			messege = doMove();
+		}
 		if(messege.equals("A")){
 			System.out.println("EEEEEEEE");
 			opponent.OutMessege(messege);
@@ -112,4 +112,10 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 		}
 	}
 
+	private String doMove(){
+		int i = generator.nextInt(getX());
+		int j = generator.nextInt(getX()-1)+1;
+		String messege = game.sendMessege("M"+String.valueOf(i*j), myPlayer);
+		return messege;
+	}
 }
