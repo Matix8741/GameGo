@@ -26,6 +26,8 @@ public class ServerListener extends Thread {
 	private Stage boardStage;
 	private String color;
 	private String command;
+	private String mypoints;
+	private String opponentPoints;
 	
 	public ServerListener(DataInputStream in,Timer timer,int x,MyClient myClient,Stage stage, ClientPlayer clientPlayer,
 			Stage boardStage, ObjectInputStream inObj) {
@@ -54,7 +56,7 @@ public class ServerListener extends Thread {
 		while(running){
 			try {
 				command = readFromServer();
-				if(command.substring(0, 1).equals("A")||command.substring(0, 1).equals("D")){
+				if(command.equals("A")){//ZAAKCEPTOWANY RUCH
 					try {
 						fxBoard.drawBoard((Board)inObj.readObject());
 					} catch (ClassNotFoundException e) {
@@ -63,13 +65,13 @@ public class ServerListener extends Thread {
 						close();
 						return;
 					}
-					command = readFromServer();
-					Platform.runLater(() -> clientPlayer.setOurPoints(command));
-					command = readFromServer();
-					Platform.runLater(() -> clientPlayer.setOpponentPoints(command));
+					mypoints = readFromServer();
+					Platform.runLater(() -> clientPlayer.setOurPoints(mypoints));
+					opponentPoints = readFromServer();
+					Platform.runLater(() -> clientPlayer.setOpponentPoints(opponentPoints));
 					//command = readFromServer();
 				}
-				else if (command.equals("LOSE")){
+				else if (command.equals("LOSE")){//PRZEGRANA
 					Platform.runLater(() -> {
 						clientPlayer.setOurPoints("YOU LOSE");
 						clientPlayer.setOpponentPoints("YOU LOSE");
@@ -78,7 +80,7 @@ public class ServerListener extends Thread {
 					});
 					close();
 				}
-				else if (command.equals("WON")){
+				else if (command.equals("WON")){//WYGRANA
 					Platform.runLater(() -> {
 						clientPlayer.setOurPoints("YOU WON");
 						clientPlayer.setOpponentPoints("YOU WON");
@@ -87,7 +89,7 @@ public class ServerListener extends Thread {
 					});
 					close();
 				}
-				else if(command.equals("PAUSE")){
+				else if(command.equals("PAUSE")){//PAUZA 
 					Platform.runLater(() -> {
 						fxBoard.getPassButton().setState( stateButt.RESUME );
 						fxBoard.getPassButton().setText("RESUME");
@@ -115,7 +117,7 @@ public class ServerListener extends Thread {
 						fxBoard.addForPause(end);
 					});
 				}
-				else if(command.equals("PPAUSE")){
+				else if(command.equals("PPAUSE")){//PAUZA TAKA, ZE TRZEBA ZAREAGOWAC NA RUCH PRZECIWNIKA
 					Platform.runLater(() -> {
 						fxBoard.getPassButton().setState( stateButt.RESUME );
 						fxBoard.getPassButton().setText("RESUME");
@@ -165,21 +167,19 @@ public class ServerListener extends Thread {
 						fxBoard.addForAccept(decline);
 					});
 				}
-				else if (command.equals("RESUME")){
+				else if (command.equals("RESUME")){//WRACAMY DO GRY
 					Platform.runLater(() -> {
 						fxBoard.getPassButton().setState( stateButt.PASS);
 						fxBoard.getPassButton().setText("PASS");
 						fxBoard.removeForResume();
 					});
 				}
-				else if (command.equals("NEXT")){
-				}
-				else if (command.equals("acpt")){
+				else if (command.equals("acpt")){//RUCH ZAAKCEPTOWANY W PAUZIE
 					Platform.runLater(() -> {
 						fxBoard.removeForAccept();;
 					});
 				}
-				if( command.equals("dec")){
+				if( command.equals("dec")){//RUCH NIEZAAKCEPTOWANY W PAUZE
 						Platform.runLater(() -> {
 							fxBoard.removeForAccept();;
 						});

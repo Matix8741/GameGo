@@ -3,6 +3,7 @@ package server;
 import GameState.GameState;
 import GameState.GameStateBehavior;
 import GameState.StateOn;
+import Messege.MessageSurrender;
 import logic.Board;
 import logic.Field;
 import logic.FieldOccupiedException;
@@ -21,9 +22,9 @@ public class Game {
 	public int getX() {
 		return x;
 	}
-	private PlayerListener currentPlayerListener;
+	private IPlayerListener currentPlayerListener;
 	private Board board;
-	private PlayerS CurrentPlayer;
+	private IPlayerS CurrentPlayer;
 	private int bonusPoints;
 	public Game(int x) {
 		this.x = x;
@@ -36,15 +37,19 @@ public class Game {
 		behavior = new StateOn();
 		bonusPoints = x/3;
 	}
-	public boolean doMove(Field field, PlayerS player) {
-		if(CurrentPlayer == player){
+	public boolean doMove(Field field, IPlayerS iPlayerS) {
+		System.out.println(CurrentPlayer+ "><><><"+iPlayerS);
+		if(CurrentPlayer == iPlayerS){
 			try {
-				GameRules.move(board, field, player.getColor());
+				GameRules.move(board, field, iPlayerS.getColor());
 			} catch (SuicideException e) {
+				System.out.println(e.getMessage());
 				return false;
 			} catch (FieldOccupiedException e) {
+				System.out.println(e.getMessage());
 				return false;
 			} catch (KoException e) {
+				System.out.println(e.getMessage());
 				return false;
 			}
 			return true;
@@ -52,59 +57,46 @@ public class Game {
 		return false;
 		
 	}
-	public PlayerS getCurrentPlayer() {
+	public IPlayerS getCurrentPlayer() {
 		return CurrentPlayer;
 	}
-	public void setCurrentPlayer(PlayerS currentPlayer) {
-		CurrentPlayer = currentPlayer;
+	public void setCurrentPlayer(IPlayerS iPlayerS) {
+		CurrentPlayer = iPlayerS;
 	}
-	public String sendMessege(String messege, PlayerS player) {
+	public String sendMessege(String messege, IPlayerS iPlayerS) {
+		System.out.println(messege);
 		if(messege.substring(0, 1).equals("M")){
 			if(!(behavior.getState() == GameState.PAUSE) && !(behavior.getState() == GameState.WAITFORDECIDE)){
 				turnOn();
+				System.out.println(iPlayerS+"  ,,  "+messege);
 				int move = Integer.valueOf(messege.substring(1));
-				if( doMove(board.getFields().get(move), player)){
-					CurrentPlayer = player.getOpponnent();
+				if( doMove(board.getFields().get(move), iPlayerS)){
+					CurrentPlayer = iPlayerS.getOpponnent();
 					currentPlayerListener = currentPlayerListener.getOpponent();
-					return "A"+String.valueOf(move);
+					return "A";
 				}
 			}
 		}
 		else if(messege.substring(0, 1).equals("A")){
 			if(behavior.getState() == GameState.PAUSE&& !(behavior.getState() == GameState.WAITFORDECIDE)){
 				int move = Integer.valueOf(messege.substring(1));
-				doInPass(board.getFields().get(move),player);
-				return "A" + String.valueOf(move);
+				doInPass(board.getFields().get(move),iPlayerS);
+				return "A";
 			}
-		}/*else if(messege.substring(0, 1).equals("I")){
-//			if(behavior.getState() == GameState.PAUSE){
-//				int move = Integer.valueOf(messege.substring(1));
-//				doMove(board.getFields().get(move),player);
-//				return "A" + String.valueOf(move);
-//			}
-//		}else if(messege.substring(0, 1).equals("D")){
-//			if(behavior.getState() == GameState.PAUSE){
-//				int move = Integer.valueOf(messege.substring(1));
-//				doMove(board.getFields().get(move),player);
-//				return "A" + String.valueOf(move);
-//			}
-//		}*/
-		else if (messege.equals("FF")){
+		}else if (messege.equals("FF")){
 			close();
 			return "FF";
 		}
 		else if (messege.equals("PASS")){
-			pass(player);
+			pass(iPlayerS);
 		}
 		else if (messege.equals("RESUME")){
 			currentPlayerListener.OutMessege("RESUME");
 			currentPlayerListener.getOpponent().OutMessege("RESUME");
 			turnOn();
-			if(currentPlayerListener.getMyPlayer() == player)
+			if(currentPlayerListener.getMyPlayer() == iPlayerS)
 				currentPlayerListener = currentPlayerListener.getOpponent();
-			CurrentPlayer = player.getOpponnent();
-		}else if (messege.equals("NEXT")){
-			return "NEXT";
+			CurrentPlayer = iPlayerS.getOpponnent();
 		}else if (messege.equals("END")){
 			if(!(behavior.getState() == GameState.WAITFORDECIDE)){
 				oneEnd();
@@ -117,14 +109,14 @@ public class Game {
 			}
 			
 		}else if (messege.equals("CHOOSE")){
-			if(CurrentPlayer == player&& !(behavior.getState() == GameState.WAITFORDECIDE)){
-				CurrentPlayer = player.getOpponnent();
+			if(CurrentPlayer == iPlayerS&& !(behavior.getState() == GameState.WAITFORDECIDE)){
+				CurrentPlayer = iPlayerS.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
 				waitFor();
 				return "PPAUSE";
 			}
 		}else if (messege.equals("LINE")){
-			changeGroup(CurrentPlayer,lastGroup);
+			changeGroup((PlayerS) CurrentPlayer,lastGroup);
 			lastGroup = null;
 			pause();
 			return "dec";
@@ -136,12 +128,12 @@ public class Game {
 		return "NO";
 		
 	}
-	private void changeGroup(PlayerS player, Group group) {
+	private void changeGroup(IPlayerS iPlayerS, Group group) {
 		if(!(group == null)){
 			for(Field fiield :group.getFields()){
 				if(fiield.getStateAfterGame() == stateAfterGame.NOTHING){
 					if(fiield.getState()== state.EMPTY){
-						if(player.getColor() == state.BLACK)
+						if(iPlayerS.getColor() == state.BLACK)
 							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
 						else 
 							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
@@ -161,7 +153,7 @@ public class Game {
 		behavior = behavior.waitfor();
 		
 	}
-	private PlayerListener getWinner() {
+	private IPlayerListener getWinner() {
 		
 		if(Integer.valueOf(getPoints(CurrentPlayer))>Integer.valueOf(getPoints(CurrentPlayer.getOpponnent()))){
 			//TODO czy platerListener ma zawsze tego CurrentPlayera
@@ -180,21 +172,21 @@ public class Game {
 		this.behavior = this.behavior.end();
 		
 	}
-	private void doInPass(Field field, PlayerS player) {
+	private void doInPass(Field field, IPlayerS iPlayerS) {
 		//TODO territory
-		if(CurrentPlayer == player){
-			changeGroup(player,lastGroup);
+		if(CurrentPlayer == iPlayerS){
+			changeGroup(iPlayerS,lastGroup);
 			lastGroup = field.getGroup();
 			if(field.getState() == state.EMPTY){
-				changeGroup(player, field.getTerirory());
+				changeGroup(iPlayerS, field.getTerirory());
 			}else{
-				changeGroup(player, field.getGroup());
+				changeGroup(iPlayerS, field.getGroup());
 			}
 			
 		}
 		
 	}
-	private void pass(PlayerS playerS) {
+	private void pass(IPlayerS playerS) {
 		if(playerS == CurrentPlayer){
 			this.behavior = this.behavior.afterpass();
 			if( behavior.getState() == GameState.PAUSE){
@@ -218,18 +210,18 @@ public class Game {
 		//TODO when need
 		
 	}
-	public PlayerListener getCurrentPlayerListener() {
+	public IPlayerListener getCurrentPlayerListener() {
 		return currentPlayerListener;
 	}
-	public void setCurrentPlayerListener(PlayerListener currentPlayerListener) {
+	public void setCurrentPlayerListener(IPlayerListener currentPlayerListener) {
 		this.currentPlayerListener = currentPlayerListener;
 	}
 	public Board getBoard() {
 		// TODO Auto-generated method stub
 		return board;
 	}
-	public String getPoints(PlayerS player) {
-		switch (player.getColor()) {
+	public String getPoints(IPlayerS iPlayerS) {
+		switch (iPlayerS.getColor()) {
 		case BLACK:{
 			int points=0;
 			for(Field field : board.getFields()){
@@ -240,7 +232,8 @@ public class Game {
 					points++;
 				}
 			}
-			points-= getCaptives(player); 
+			points-= getCaptives(iPlayerS); 
+			if(points<0) points=0;
 			return String.valueOf(points);
 		}
 		case WHITE:{
@@ -253,7 +246,8 @@ public class Game {
 					points++;
 				}
 			}
-			points-= getCaptives(player); 
+			points-= getCaptives(iPlayerS); 
+			if(points<0) points=0;
 			return String.valueOf(points);
 		}
 
@@ -262,7 +256,7 @@ public class Game {
 		}
 		return "0";
 	}
-	private int getCaptives(PlayerS player) {
+	private int getCaptives(IPlayerS player) {
 		return 0;
 	}
 	public void turnOn() {

@@ -28,7 +28,7 @@ public class GameServer extends Thread {
 		try {	
 			while(true){
 				Socket one = serversocket.accept();
-				PlayerListener listener1 = new PlayerListener(one);
+				IPlayerListener listener1 = new PlayerListener(one);
 				listener1.firstContact(freeGames);
 			}
 		}catch(SocketTimeoutException e) {

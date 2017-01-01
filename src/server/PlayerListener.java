@@ -10,15 +10,15 @@ import java.util.List;
 
 import logic.state;
 
-public class PlayerListener extends Thread {
+public class PlayerListener extends Thread implements IPlayerListener {
 	
 
 	private volatile boolean running = true;
 	public Socket socket;
-	private PlayerListener opponent;
+	private IPlayerListener opponent;
 	private DataInputStream in;
 	private DataOutputStream out;
-	private PlayerS myPlayer;
+	private IPlayerS myPlayer;
 	private Game game;
 	private int x;
 	private ObjectInputStream inObj;
@@ -33,6 +33,9 @@ public class PlayerListener extends Thread {
 		//inObj = new ObjectInputStream(socket.getInputStream());
 	}
 	
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#run()
+	 */
 	@Override
 	public void run() {
 		//\\firstContact();
@@ -40,15 +43,16 @@ public class PlayerListener extends Thread {
 				String messege = getMessega();
 				if(messege != null) {
 					String back =game.sendMessege(messege,getMyPlayer());
-						if(back != null && (back.substring(0, 1).equals("A")||back.substring(0,1).equals("M"))){
+						if(back.equals("A")){
 								opponent.OutMessege(back);
-								OutMessege("D"+back.substring(1));
+								OutMessege("A");
 								opponent.objectToClient(game.getBoard());
 								objectToClient(game.getBoard());
 								opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
 								OutMessege(game.getPoints(getMyPlayer()));
 								opponent.OutMessege(game.getPoints(getMyPlayer()));
 								OutMessege(game.getPoints(opponent.getMyPlayer()));
+								opponent.myMove();
 								//opponent.OutMessege(game.getPoints(myPlayer));
 								//OutMessege(game.getPoints(opponent.myPlayer));
 								continue;
@@ -95,6 +99,10 @@ public class PlayerListener extends Thread {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#firstContact(java.util.List)
+	 */
+	@Override
 	public void firstContact(List<Game> games) {
 		String msgFromClient = getMessega();
 		String size = "";
@@ -106,7 +114,21 @@ public class PlayerListener extends Thread {
 		x = Integer.valueOf(size);
 		String player = msgFromClient.substring(msgFromClient.indexOf("PL")+2);
 		if(player.equals("Bot")){
-			// not implamants yet
+			setMyPlayer(new PlayerS(state.BLACK));
+			game = new Game(x);
+			game.setCurrentPlayer(getMyPlayer());
+			game.setCurrentPlayerListener(this);
+			IPlayerListener opponent = new BotsPlayerListener();
+			opponent.getMyPlayer().setOpponnent(getMyPlayer());
+			getMyPlayer().setOpponnent(opponent.getMyPlayer());
+			opponent.setOpponent(this);
+			setOpponent(opponent);
+			OutMessege("BLACK");
+			opponent.setX(x);
+			opponent.setGame(game);
+			this.start();
+			opponent.start();
+			return;
 		}
 		for(Game game : games){
 			if(game.getX() == x){
@@ -144,6 +166,13 @@ public class PlayerListener extends Thread {
 		return x;
 	}
 
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#OutMessege(java.lang.String)
+	 */
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#OutMessege(java.lang.String)
+	 */
+	@Override
 	public void OutMessege(String back) {
 		if(socket.isClosed()){
 			return;
@@ -161,18 +190,34 @@ public class PlayerListener extends Thread {
 		
 	}
 
-	public PlayerListener getOpponent() {
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#getOpponent()
+	 */
+	@Override
+	public IPlayerListener getOpponent() {
 		return opponent;
 	}
 
-	public void setOpponent(PlayerListener opponent) {
-		this.opponent = opponent;
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#setOpponent(server.PlayerListener)
+	 */
+	@Override
+	public void setOpponent(IPlayerListener opponent2) {
+		this.opponent = opponent2;
 	}
 
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#getGame()
+	 */
+	@Override
 	public Game getGame() {
 		return game;
 	}
 
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#getX()
+	 */
+	@Override
 	public int getX() {
 		return x;
 	}
@@ -180,8 +225,8 @@ public class PlayerListener extends Thread {
 		//TODO now dont need it
 		return inObj.readObject();
 	}
-	
-	private void objectToClient(Object obj) {
+	@Override
+	 public void objectToClient(Object board) {
 		if(socket.isClosed()){
 			return;
 		}
@@ -192,12 +237,16 @@ public class PlayerListener extends Thread {
 			e1.printStackTrace();
 		}
 		try {
-			outObj.writeObject(obj);
+			outObj.writeObject(board);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#close()
+	 */
+	@Override
 	public void close() throws IOException{
 		socket.close();
 		in.close();
@@ -208,12 +257,35 @@ public class PlayerListener extends Thread {
 		return;
 	}
 
-	public PlayerS getMyPlayer() {
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#getMyPlayer()
+	 */
+	@Override
+	public IPlayerS getMyPlayer() {
 		return myPlayer;
 	}
 
 	private void setMyPlayer(PlayerS myPlayer) {
 		this.myPlayer = myPlayer;
 	}
+
+	@Override
+	public void setX(int x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setGame(Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void myMove() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 }

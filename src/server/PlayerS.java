@@ -3,10 +3,14 @@ package server;
 import logic.Player;
 import logic.state;
 
-public class PlayerS  implements Player  {
+public class PlayerS  implements Player, IPlayerS  {
 
-	private PlayerS Opponnent;
-	public void setOpponnent(PlayerS opponnent) {
+	private IPlayerS Opponnent;
+	/* (non-Javadoc)
+	 * @see server.IPlayerS#setOpponnent(server.PlayerS)
+	 */
+	@Override
+	public void setOpponnent(IPlayerS opponnent) {
 		Opponnent = opponnent;
 	}
 	state color;
@@ -14,11 +18,18 @@ public class PlayerS  implements Player  {
 	public PlayerS(state color) {
 		this.color = color;
 	}
+	/* (non-Javadoc)
+	 * @see server.IPlayerS#getColor()
+	 */
 	@Override
 	public state getColor() {
 		return color;
 	}
-	public PlayerS getOpponnent() {
+	/* (non-Javadoc)
+	 * @see server.IPlayerS#getOpponnent()
+	 */
+	@Override
+	public IPlayerS getOpponnent() {
 		return Opponnent;
 	}
 
