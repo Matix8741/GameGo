@@ -10,7 +10,7 @@ public class MessegeFirst implements MessegeBody {
 	@Override
 	public Object createMessega() {
 		messege ="SS" + String.valueOf(size);
-		messege +="PL" + player;
+		messege +="PL" + getPlayer();
 		return messege;
 	}
 
@@ -21,7 +21,7 @@ public class MessegeFirst implements MessegeBody {
 
 	@Override
 	public void setPlayerType(String player) {
-		this.player = player;	
+		this.player = player;
 	}
 
 	@Override
@@ -32,5 +32,13 @@ public class MessegeFirst implements MessegeBody {
 	public String toString(){
 		return messege;
 	}
+
+	/**
+	 * @return the player
+	 */
+	public String getPlayer() {
+		return player;
+	}
+
 
 }

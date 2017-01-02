@@ -28,6 +28,7 @@ public class ServerListener extends Thread {
 	private String command;
 	private String mypoints;
 	private String opponentPoints;
+	private boolean ifBot;
 	
 	public ServerListener(DataInputStream in,Timer timer,int x,MyClient myClient,Stage stage, ClientPlayer clientPlayer,
 			Stage boardStage, ObjectInputStream inObj) {
@@ -116,6 +117,7 @@ public class ServerListener extends Thread {
 						fxBoard.addForPause(button);
 						fxBoard.addForPause(end);
 					});
+					if(ifBot) myClient.sendToServer("END");
 				}
 				else if(command.equals("PPAUSE")){//PAUZA TAKA, ZE TRZEBA ZAREAGOWAC NA RUCH PRZECIWNIKA
 					Platform.runLater(() -> {
@@ -232,5 +234,9 @@ public class ServerListener extends Thread {
 	}
 	private ServerListener getOwn(){
 		return this;
+	}
+	public void setIfBot(boolean b) {
+		ifBot=b;
+		
 	}
 }

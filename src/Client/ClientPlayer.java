@@ -36,6 +36,7 @@ public class ClientPlayer extends Application {
 	private Label myPoints;
 	private Label opponetPoints;
 	private Label infoFromServer;
+	private String pp;
 	@Override
 	public void start(Stage primaryStage) throws UnknownHostException, IOException {
 		final MyClient myClient = new MyClient("localhost", port);
@@ -80,6 +81,7 @@ public class ClientPlayer extends Application {
 				try {
 					serverlistener = new ServerListener(myClient.getIN(),timer,Integer.valueOf(sizeTextField.getText()),
 							myClient,stage,getOwn(),boardStage,new ObjectInputStream(myClient.getInput()));
+					if(pp.equals("Bot")) serverlistener.setIfBot(true);
 				} catch (NumberFormatException | IOException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
@@ -99,6 +101,7 @@ public class ClientPlayer extends Application {
 		String s = player.toString();
 		messege.setPlayerType(s.substring(s.indexOf("'")+1, s.indexOf("'",s.indexOf("'")+1 )));
 		messege.setSize(size);
+		pp = messege.getPlayer();
 		messege.createMessega();
 		myClient.sendToServer(messege.toString());
 	}
@@ -243,25 +246,5 @@ public class ClientPlayer extends Application {
 	}
 	public void setServerStatement(String statement){
 		infoFromServer.setText(statement);
-	}
-	public void requestWindow(String quest){
-		Stage stage = new Stage();
-		stage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
-		stage.initStyle(StageStyle.UTILITY);
-		BorderPane border = new BorderPane();
-		Scene scene = new Scene(border,200,100);
-		Label request = new Label(quest);
-		Button ok = new Button("OK");
-		Button no = new Button("NO.");
-		HBox buttons = new HBox();
-		buttons.setPadding(new Insets(30));
-		buttons.setSpacing(8);
-		buttons.getChildren().addAll(ok,no);
-		border.setCenter(request);
-		border.setBottom(buttons);
-		stage.setScene(scene);
-		stage.show();
-		
-		
 	}
 }

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>770</x>
+      <y>240</y>
+      <w>450</w>
+      <h>530</h>
+    </coordinates>
+    <panel_attributes>server::Game
+--
+-lastGroup: Group
+#behavior = null: GameStateBehavior
+-x: int
+-currentPlayerListener: IPlayerListener
+-board: Board
+-CurrentPlayer: IPlayerS
+-bonusPoints: int
+--
++Game(int x): ctor
++getX(): int
++doMove(Field field, IPlayerS iPlayerS): boolean
++getCurrentPlayer(): IPlayerS
++setCurrentPlayer(IPlayerS iPlayerS): void
++sendMessege(String messege, IPlayerS iPlayerS): String
+-changeGroup(IPlayerS iPlayerS, Group group): void
+-waitFor(): void
+-getWinner(): IPlayerListener
+-oneEnd(): void
+-end(): void
+-doInPass(Field field, IPlayerS iPlayerS): void
+-pass(IPlayerS playerS): void
+-pause(): void
+-close(): void
++getCurrentPlayerListener(): IPlayerListener
++setCurrentPlayerListener(IPlayerListener currentPlayerListener): void
++getBoard(): Board
++getPoints(IPlayerS iPlayerS): String
+-getCaptives(IPlayerS player): int
++turnOn(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>0</y>
+      <w>190</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>server::GameServer
+--
+-serversocket: ServerSocket
+-port = 6066: int
+-freeGames: List&lt;Game&gt;
+--
++GameServer(): ctor
++run(): void
++main(String[] args): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>150</y>
+      <w>220</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=0...n
+m2=1 </panel_attributes>
+    <additional_attributes>200.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>150</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=0...n...2n
+m2=1</panel_attributes>
+    <additional_attributes>10.0;100.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>250</y>
+      <w>310</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+server::IPlayerListener
+--
+--
+~run(): void
+~firstContact(List&lt;Game&gt; games): void
+~OutMessege(String back): void
+~getOpponent(): IPlayerListener
+~setOpponent(IPlayerListener opponent2): void
+~getGame(): Game
+~getX(): int
+~close(): void
+~getMyPlayer(): IPlayerS
+~objectToClient(Object board): void
+~start(): void
+~setX(int x): void
+~setGame(Game game): void
+~myMove(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>1220</y>
+      <w>340</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>server::PlayerListener
+--
+-running = true: boolean
++socket: Socket
+-opponent: IPlayerListener
+-in: DataInputStream
+-out: DataOutputStream
+-myPlayer: IPlayerS
+-game: Game
+-x: int
+-inObj: ObjectInputStream
+-outObj: ObjectOutputStream
+-ifbot = false: boolean
+--
++PlayerListener(Socket socket): ctor
++run(): void
++firstContact(List&lt;Game&gt; games): void
+-getMessega(): String
++OutMessege(String back): void
++getOpponent(): IPlayerListener
++setOpponent(IPlayerListener opponent2): void
++getGame(): Game
++getX(): int
+-objectFromClient(): Object
++objectToClient(Object board): void
++close(): void
++getMyPlayer(): IPlayerS
+-setMyPlayer(PlayerS myPlayer): void
++setX(int x): void
++setGame(Game game): void
++myMove(): void
++isIfbot(): boolean
++setIfbot(boolean ifbot): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>290</x>
+      <y>850</y>
+      <w>310</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+server::IPlayerListener
+--
+--
+~run(): void
+~firstContact(List&lt;Game&gt; games): void
+~OutMessege(String back): void
+~getOpponent(): IPlayerListener
+~setOpponent(IPlayerListener opponent2): void
+~getGame(): Game
+~getX(): int
+~close(): void
+~getMyPlayer(): IPlayerS
+~objectToClient(Object board): void
+~start(): void
+~setX(int x): void
+~setGame(Game game): void
+~myMove(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>1150</y>
+      <w>180</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>160.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>1220</y>
+      <w>300</w>
+      <h>450</h>
+    </coordinates>
+    <panel_attributes>server::BotsPlayerListener
+--
+-running = true: boolean
+-opponent: IPlayerListener
+-myPlayer: IPlayerS
+-game: Game
+-x: int
+-board: Board
+-generator: Random
+-statement: String
+--
++BotsPlayerListener(): ctor
++run(): void
++firstContact(List&lt;Game&gt; games): void
++OutMessege(String back): void
++getOpponent(): IPlayerListener
++setOpponent(IPlayerListener opponent): void
++getGame(): Game
++getX(): int
++close(): void
++getMyPlayer(): IPlayerS
++objectToClient(Object board): void
++setX(int x): void
++setGame(Game game): void
++myMove(): void
+-doMove(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>1150</y>
+      <w>140</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>770</x>
+      <y>840</y>
+      <w>260</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+server::IPlayerS
+--
+--
+~setOpponnent(IPlayerS iPlayerS): void
+~getColor(): state
+~getOpponnent(): IPlayerS
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>890</x>
+      <y>760</y>
+      <w>50</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=2
+m2=1</panel_attributes>
+    <additional_attributes>10.0;80.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>970</x>
+      <y>1030</y>
+      <w>260</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+server::IPlayerS
+--
+--
+~setOpponnent(IPlayerS iPlayerS): void
+~getColor(): state
+~getOpponnent(): IPlayerS
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>950</x>
+      <y>1140</y>
+      <w>130</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>810</x>
+      <y>1230</y>
+      <w>280</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>server::PlayerS
+--
+-Opponnent: IPlayerS
+~color: state
+--
++PlayerS(state color): ctor
++setOpponnent(IPlayerS opponnent): void
++getColor(): state
++getOpponnent(): IPlayerS
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1110</x>
+      <y>1230</y>
+      <w>280</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>server::BotsPlayerS
+--
+~color: state
+-Opponnent: IPlayerS
+--
++BotsPlayerS(state c): ctor
++setOpponnent(IPlayerS opponnent): void
++getColor(): state
++getOpponnent(): IPlayerS
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1140</x>
+      <y>1140</y>
+      <w>110</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>550</y>
+      <w>250</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>230.0;290.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

@@ -16,7 +16,7 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 	private int x;
 	private Board board;
 	private Random generator;
-	
+	private String statement;
 	public BotsPlayerListener() {
 		myPlayer = new BotsPlayerS(state.WHITE);
 		generator = new Random();
@@ -37,7 +37,7 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 
 	@Override
 	public void OutMessege(String back) {
-		// TODO Auto-generated method stub
+		statement = back;
 		
 	}
 
@@ -100,7 +100,7 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 
 	public void myMove(){
 		String messege = "";
-		while(messege !="A"){
+		while(messege !="A"&& messege !="1PAUSE"){
 			messege = doMove();
 		}
 		if(messege.equals("A")){
@@ -110,9 +110,18 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 			opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
 			opponent.OutMessege(game.getPoints(getMyPlayer()));
 		}
+		if(messege.equals("1PAUSE")){
+			
+		}
 	}
 
 	private String doMove(){
+		if(statement.equals("1PAUSE")){
+			game.sendMessege("PASS", myPlayer);
+			game.sendMessege("END", myPlayer.getOpponnent());
+			game.sendMessege("END", myPlayer);
+			return "1PAUSE";
+		}
 		int i = generator.nextInt(getX());
 		int j = generator.nextInt(getX()-1)+1;
 		String messege = game.sendMessege("M"+String.valueOf(i*j), myPlayer);

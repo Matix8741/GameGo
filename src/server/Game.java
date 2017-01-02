@@ -98,12 +98,14 @@ public class Game {
 				currentPlayerListener = currentPlayerListener.getOpponent();
 			CurrentPlayer = iPlayerS.getOpponnent();
 		}else if (messege.equals("END")){
-			if(!(behavior.getState() == GameState.WAITFORDECIDE)){
+			if(!(behavior.getState() == GameState.WAITFORDECIDE)&&CurrentPlayer == iPlayerS){
 				oneEnd();
+				currentPlayerListener = currentPlayerListener.getOpponent();
+				CurrentPlayer = CurrentPlayer.getOpponnent();
 				if(behavior.getState() == GameState.ONEEND)
 					return "NO";
 				else if(behavior.getState() == GameState.END){
-					getWinner().OutMessege("WIN");
+					getWinner().OutMessege("WON");
 					getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
 				}
 			}
@@ -198,6 +200,9 @@ public class Game {
 			else {//////////////////TODO wywalenie servera i clienta
 				CurrentPlayer = CurrentPlayer.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
+				currentPlayerListener.OutMessege("1PAUSE");
+				currentPlayerListener.getOpponent().OutMessege("1PAUSE");
+				currentPlayerListener.myMove();
 			}
 		}
 		

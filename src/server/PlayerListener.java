@@ -23,6 +23,7 @@ public class PlayerListener extends Thread implements IPlayerListener {
 	private int x;
 	private ObjectInputStream inObj;
 	private ObjectOutputStream outObj;
+	private boolean ifbot = false;
 	
 	public PlayerListener(Socket socket) throws IOException {
 		this.socket = socket;
@@ -74,7 +75,11 @@ public class PlayerListener extends Thread implements IPlayerListener {
 							continue;
 						}
 						if(back.equals("PAUSE")){
-							//TODO implamant pause
+							if(ifbot) {
+								game.sendMessege("END", myPlayer.getOpponnent());
+								game.sendMessege("END", myPlayer);
+								game.sendMessege("END", myPlayer.getOpponnent());
+							}
 						}
 						if(back.equals("PPAUSE")){
 							opponent.OutMessege(back);
@@ -124,6 +129,7 @@ public class PlayerListener extends Thread implements IPlayerListener {
 			opponent.setOpponent(this);
 			setOpponent(opponent);
 			OutMessege("BLACK");
+			setIfbot(true);
 			opponent.setX(x);
 			opponent.setGame(game);
 			this.start();
@@ -285,6 +291,20 @@ public class PlayerListener extends Thread implements IPlayerListener {
 	public void myMove() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * @return the ifbot
+	 */
+	public boolean isIfbot() {
+		return ifbot;
+	}
+
+	/**
+	 * @param ifbot the ifbot to set
+	 */
+	public void setIfbot(boolean ifbot) {
+		this.ifbot = ifbot;
 	}
 	
 	
