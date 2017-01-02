@@ -1,1 +1,276 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><umlet_diagram></umlet_diagram>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>0</y>
+      <w>650</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>Client::ClientPlayer
+--
+~port = 6066: int
+~stage = null: Stage
+~timer = null: Timer
+-myPoints: Label
+-opponetPoints: Label
+-infoFromServer: Label
+-pp: String
+--
++start(Stage primaryStage): void
+#prepareGame(MyClient myClient, String size, Toggle player): void
++main(String[] args): void
+-getOwn(): ClientPlayer
++createBoard(MyClient client, int x, Color color, ServerListener serverlistener, Stage boardStage): void
++addTextLimiterAndAction(final TextField tf, final Label lb, final int maxLength): void
+-searching(Stage stage): Timer
++closeSearching(Timer timer, Stage stage): void
+-changeLabel(Label label): void
++setOurPoints(String points): void
++setOpponentPoints(String points): void
++setServerStatement(String statement): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>550</y>
+      <w>240</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Client::MyClient
+--
+-outToServer: OutputStream
+-out: DataOutputStream
+-inFromServer: InputStream
+-in: DataInputStream
+--
++MyClient(String arg0, int arg1): ctor
++readFromServer(): String
++sendToServer(String messege): void
++getIN(): DataInputStream
++getInput(): InputStream
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>110</x>
+      <y>370</y>
+      <w>210</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;180.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>850</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Client::PassButton
+--
+-state: stateButt
+--
++PassButton(String string): ctor
++getState(): stateButt
++setState(stateButt state): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>410</x>
+      <y>540</y>
+      <w>500</w>
+      <h>530</h>
+    </coordinates>
+    <panel_attributes>FX::FXBoard
+--
+-for_pause: HBox
+-mystate: stateAfterGame
+-passButton: PassButton
+-color: Color
+-x = 19: int
+-fields: List&lt;FXField&gt;
+-client: MyClient
+-gc: GraphicsContext
+-width: double
+-height: double
+-htOfRow: double
+-wdOfRow: double
+-accept: HBox
+--
++FXBoard(double arg1, double arg2, MyClient client, int x2, Color color2): ctor
++getPassButton(): PassButton
++fillField(int i, Color color, stateAfterGame afterGame, boolean b): void
++getClient(): MyClient
++getColor(): Color
++drawBoard(Board readObject): void
+-drawGrid(): void
++setPassButton(PassButton pause): void
++setBordeForPause(HBox when_pause, HBox accepting): void
++addForPause(Node node): void
++removeForResume(): void
++addForAccept(Node node): void
++removeForAccept(): void
++getMystate(): stateAfterGame
++setMystate(stateAfterGame mystate): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>370</y>
+      <w>110</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>90.0;170.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>900</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>780</x>
+      <y>30</y>
+      <w>1030</w>
+      <h>460</h>
+    </coordinates>
+    <panel_attributes>Client::ServerListener
+--
+-running = true: boolean
+-in: DataInputStream
+-inObj: ObjectInputStream
+-fxBoard: FXBoard
+-timer: Timer
+-integer: int
+-myClient: MyClient
+-stage: Stage
+-clientPlayer: ClientPlayer
+-boardStage: Stage
+-color: String
+-command: String
+-mypoints: String
+-opponentPoints: String
+-ifBot: boolean
+--
++ServerListener(DataInputStream in, Timer timer, int x, MyClient myClient, Stage stage, ClientPlayer clientPlayer, Stage boardStage, ObjectInputStream inObj): ctor
++getFxBoard(): FXBoard
++setFxBoard(FXBoard fxBoard): void
++readFromServer(): String
++run(): void
+-close(): void
++firstContact(MyClient myClient, int integer, Timer timer, Stage stage): void
+-getOwn(): ServerListener
++setIfBot(boolean b): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>240</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>480</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;60.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>230</x>
+      <y>450</y>
+      <w>570</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>550.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1090</x>
+      <y>750</y>
+      <w>230</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>FX::FXField
+--
+-x: double
+-y: double
+--
++FXField(double x, double y): ctor
++getX(): double
+-setX(double x): void
++getY(): double
+-setY(double y): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>900</x>
+      <y>820</y>
+      <w>210</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>190.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
