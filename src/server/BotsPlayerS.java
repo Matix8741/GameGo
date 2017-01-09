@@ -4,6 +4,7 @@ import logic.state;
 
 public class BotsPlayerS implements IPlayerS {
 
+	private int captives;
 	state color; 
 	private IPlayerS Opponnent;
 	public BotsPlayerS(state c) {
@@ -26,6 +27,14 @@ public class BotsPlayerS implements IPlayerS {
 	public IPlayerS getOpponnent() {
 		// TODO Auto-generated method stub
 		return Opponnent;
+	}
+
+	public int getCaptives() {
+		return captives;
+	}
+
+	public void setCaptives(int captives) {
+		this.captives = captives;
 	}
 
 }

@@ -48,6 +48,7 @@ public class ServerListener extends Thread {
 		this.fxBoard = fxBoard;
 	}
 	public String readFromServer() throws IOException {
+		if(!myClient.isConnected())return null;
 		return in.readUTF();
 	}
 	
@@ -70,7 +71,8 @@ public class ServerListener extends Thread {
 					Platform.runLater(() -> clientPlayer.setOurPoints(mypoints));
 					opponentPoints = readFromServer();
 					Platform.runLater(() -> clientPlayer.setOpponentPoints(opponentPoints));
-					//command = readFromServer();
+					command = readFromServer();
+					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
 				else if (command.equals("LOSE")){//PRZEGRANA
 					Platform.runLater(() -> {
@@ -117,6 +119,8 @@ public class ServerListener extends Thread {
 						fxBoard.addForPause(button);
 						fxBoard.addForPause(end);
 					});
+					command = readFromServer();
+					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 					if(ifBot) myClient.sendToServer("END");
 				}
 				else if(command.equals("PPAUSE")){//PAUZA TAKA, ZE TRZEBA ZAREAGOWAC NA RUCH PRZECIWNIKA
@@ -168,6 +172,9 @@ public class ServerListener extends Thread {
 						fxBoard.addForAccept(accept);
 						fxBoard.addForAccept(decline);
 					});
+
+					command = readFromServer();
+					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
 				else if (command.equals("RESUME")){//WRACAMY DO GRY
 					Platform.runLater(() -> {
@@ -175,13 +182,19 @@ public class ServerListener extends Thread {
 						fxBoard.getPassButton().setText("PASS");
 						fxBoard.removeForResume();
 					});
+
+					command = readFromServer();
+					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
 				else if (command.equals("acpt")){//RUCH ZAAKCEPTOWANY W PAUZIE
 					Platform.runLater(() -> {
 						fxBoard.removeForAccept();;
 					});
+
+					command = readFromServer();
+					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
-				if( command.equals("dec")){//RUCH NIEZAAKCEPTOWANY W PAUZE
+				else if( command.equals("dec")){//RUCH NIEZAAKCEPTOWANY W PAUZE
 						Platform.runLater(() -> {
 							fxBoard.removeForAccept();;
 						});
@@ -191,10 +204,16 @@ public class ServerListener extends Thread {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						mypoints = readFromServer();
+						Platform.runLater(() -> clientPlayer.setOurPoints(mypoints));
+						opponentPoints = readFromServer();
+						Platform.runLater(() -> clientPlayer.setOpponentPoints(opponentPoints));
 						command = readFromServer();
-						Platform.runLater(() -> clientPlayer.setOurPoints(command));
-						command = readFromServer();
-						Platform.runLater(() -> clientPlayer.setOpponentPoints(command));
+						Platform.runLater(() -> clientPlayer.setServerStatement(command));
+				}
+				else if(command.equals("NO")){
+					command = readFromServer();
+					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
 			} catch (IOException e) {
 				try {

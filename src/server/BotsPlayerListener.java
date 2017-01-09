@@ -104,11 +104,11 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 			messege = doMove();
 		}
 		if(messege.equals("A")){
-			System.out.println("EEEEEEEE");
 			opponent.OutMessege(messege);
 			opponent.objectToClient(game.getBoard());
 			opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
 			opponent.OutMessege(game.getPoints(getMyPlayer()));
+			opponent.OutMessege(game.getMessage());
 		}
 		if(messege.equals("1PAUSE")){
 			

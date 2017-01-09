@@ -17,7 +17,7 @@ import logic.stateAfterGame;
 
 public class Game {
 	private Group lastGroup;
-	protected GameStateBehavior behavior = null;
+	protected GameStateBehavior behavior;
 	private int x;
 	public int getX() {
 		return x;
@@ -26,6 +26,7 @@ public class Game {
 	private Board board;
 	private IPlayerS CurrentPlayer;
 	private int bonusPoints;
+	private String message = "Ruch poprawny";
 	public Game(int x) {
 		this.x = x;
 		try {
@@ -41,17 +42,18 @@ public class Game {
 		System.out.println(CurrentPlayer+ "><><><"+iPlayerS);
 		if(CurrentPlayer == iPlayerS){
 			try {
-				GameRules.move(board, field, iPlayerS.getColor());
+				iPlayerS.getOpponnent().setCaptives(GameRules.move(board, field, iPlayerS.getColor()));
 			} catch (SuicideException e) {
-				System.out.println(e.getMessage());
+				message = e.getMessage();
 				return false;
 			} catch (FieldOccupiedException e) {
-				System.out.println(e.getMessage());
+				message = e.getMessage();
 				return false;
 			} catch (KoException e) {
-				System.out.println(e.getMessage());
+				message = e.getMessage();
 				return false;
 			}
+			message = "Ruch poprawny";
 			return true;
 		}
 		return false;
@@ -74,7 +76,7 @@ public class Game {
 					CurrentPlayer = iPlayerS.getOpponnent();
 					currentPlayerListener = currentPlayerListener.getOpponent();
 					return "A";
-				}
+				}else message = "Ruch niepoprawny";
 			}
 		}
 		else if(messege.substring(0, 1).equals("A")){
@@ -93,6 +95,7 @@ public class Game {
 		else if (messege.equals("RESUME")){
 			currentPlayerListener.OutMessege("RESUME");
 			currentPlayerListener.getOpponent().OutMessege("RESUME");
+			message = "Gra wznowiona";
 			turnOn();
 			if(currentPlayerListener.getMyPlayer() == iPlayerS)
 				currentPlayerListener = currentPlayerListener.getOpponent();
@@ -100,6 +103,7 @@ public class Game {
 		}else if (messege.equals("END")){
 			if(!(behavior.getState() == GameState.WAITFORDECIDE)&&CurrentPlayer == iPlayerS){
 				oneEnd();
+				message = "Ruch zpassowany - chêæ koñca gry";
 				currentPlayerListener = currentPlayerListener.getOpponent();
 				CurrentPlayer = CurrentPlayer.getOpponnent();
 				if(behavior.getState() == GameState.ONEEND)
@@ -114,15 +118,18 @@ public class Game {
 			if(CurrentPlayer == iPlayerS&& !(behavior.getState() == GameState.WAITFORDECIDE)){
 				CurrentPlayer = iPlayerS.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
+				message = "Akceptacja...";
 				waitFor();
 				return "PPAUSE";
 			}
 		}else if (messege.equals("LINE")){
 			changeGroup((PlayerS) CurrentPlayer,lastGroup);
 			lastGroup = null;
+			message = "Odmowa wyboru";
 			pause();
 			return "dec";
 		}else if (messege.equals("EPT")){
+			message = "Wybor zaakecptowany";
 			lastGroup = null;
 			pause();
 			return "acpt";
@@ -177,6 +184,7 @@ public class Game {
 	private void doInPass(Field field, IPlayerS iPlayerS) {
 		//TODO territory
 		if(CurrentPlayer == iPlayerS){
+			message = "Wybieranie...";
 			changeGroup(iPlayerS,lastGroup);
 			lastGroup = field.getGroup();
 			if(field.getState() == state.EMPTY){
@@ -192,12 +200,14 @@ public class Game {
 		if(playerS == CurrentPlayer){
 			this.behavior = this.behavior.afterpass();
 			if( behavior.getState() == GameState.PAUSE){
+				message = "Dogadywanie siê graczy";
 				currentPlayerListener.OutMessege("PAUSE");
 				currentPlayerListener.getOpponent().OutMessege("PAUSE");
 				CurrentPlayer = CurrentPlayer.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
 			}
 			else {//////////////////TODO wywalenie servera i clienta
+				message = "Ruch zpassowany";
 				CurrentPlayer = CurrentPlayer.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
 				currentPlayerListener.OutMessege("1PAUSE");
@@ -237,7 +247,7 @@ public class Game {
 					points++;
 				}
 			}
-			points-= getCaptives(iPlayerS); 
+			points-= iPlayerS.getCaptives(); 
 			if(points<0) points=0;
 			return String.valueOf(points);
 		}
@@ -251,7 +261,7 @@ public class Game {
 					points++;
 				}
 			}
-			points-= getCaptives(iPlayerS); 
+			points-= iPlayerS.getCaptives(); 
 			if(points<0) points=0;
 			return String.valueOf(points);
 		}
@@ -261,11 +271,11 @@ public class Game {
 		}
 		return "0";
 	}
-	private int getCaptives(IPlayerS player) {
-		return 0;
-	}
 	public void turnOn() {
 		this.behavior = this.behavior.on();
+	}
+	public String getMessage() {
+		return message;
 	}
 
 }

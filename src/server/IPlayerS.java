@@ -10,4 +10,6 @@ public interface IPlayerS {
 
 	IPlayerS getOpponnent();
 
+	int getCaptives();
+	void setCaptives(int captives);
 }

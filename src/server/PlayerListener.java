@@ -54,8 +54,8 @@ public class PlayerListener extends Thread implements IPlayerListener {
 								opponent.OutMessege(game.getPoints(getMyPlayer()));
 								OutMessege(game.getPoints(opponent.getMyPlayer()));
 								opponent.myMove();
-								//opponent.OutMessege(game.getPoints(myPlayer));
-								//OutMessege(game.getPoints(opponent.myPlayer));
+								opponent.OutMessege(game.getMessage());
+								OutMessege(game.getMessage());
 								continue;
 						}
 						if(back.equals("FF")) {
@@ -83,6 +83,8 @@ public class PlayerListener extends Thread implements IPlayerListener {
 						}
 						if(back.equals("PPAUSE")){
 							opponent.OutMessege(back);
+							OutMessege(game.getMessage());
+							getOpponent().OutMessege(game.getMessage());
 							continue;
 						}
 						if(back.equals("dec")){
@@ -94,12 +96,16 @@ public class PlayerListener extends Thread implements IPlayerListener {
 							OutMessege(game.getPoints(getMyPlayer()));
 							opponent.OutMessege(game.getPoints(getMyPlayer()));
 							OutMessege(game.getPoints(opponent.getMyPlayer()));
+							OutMessege(game.getMessage());
+							getOpponent().OutMessege(game.getMessage());
 							continue;
 						}
 						if(back.equals("acpt")){
 							opponent.OutMessege(back);
 						}
 						OutMessege(back);
+						OutMessege(game.getMessage());
+						getOpponent().OutMessege(game.getMessage());
 				}
 		}
 	}
