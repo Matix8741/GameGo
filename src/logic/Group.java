@@ -35,7 +35,7 @@ public class Group implements Serializable {
 	}
 	
 	public Group(Field field) {
-		System.out.println("Hello 3");
+		//System.out.println("Hello 3");
 		fields = new ArrayList<Field>();
 		fields.add(field);
 		out = new ArrayList<Field>();

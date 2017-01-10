@@ -39,7 +39,6 @@ public class Game {
 		bonusPoints = x/3;
 	}
 	public boolean doMove(Field field, IPlayerS iPlayerS) {
-		System.out.println(CurrentPlayer+ "><><><"+iPlayerS);
 		if(CurrentPlayer == iPlayerS){
 			try {
 				iPlayerS.getOpponnent().setCaptives(GameRules.move(board, field, iPlayerS.getColor()));
@@ -66,11 +65,10 @@ public class Game {
 		CurrentPlayer = iPlayerS;
 	}
 	public String sendMessege(String messege, IPlayerS iPlayerS) {
-		System.out.println(messege);
+		System.out.println("Komunikat otrzymany: "+messege +",  "+ iPlayerS);
 		if(messege.substring(0, 1).equals("M")){
 			if(!(behavior.getState() == GameState.PAUSE) && !(behavior.getState() == GameState.WAITFORDECIDE)){
 				turnOn();
-				System.out.println(iPlayerS+"  ,,  "+messege);
 				int move = Integer.valueOf(messege.substring(1));
 				if( doMove(board.getFields().get(move), iPlayerS)){
 					CurrentPlayer = iPlayerS.getOpponnent();

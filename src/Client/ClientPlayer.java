@@ -122,9 +122,9 @@ public class ClientPlayer extends Application {
 			Scene scene = new Scene(root,600,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			root.setCenter(board);
-			myPoints = new Label("HELLO WORDL");
-			opponetPoints = new Label("HELLO WORld");
-			infoFromServer = new Label("Server");
+			myPoints = new Label("Moje punkty");
+			opponetPoints = new Label("Punkty przeciwnika");
+			infoFromServer = new Label("Komunikat z serwera");
 			labels.setPadding(new Insets(10));
 			labels.setSpacing(8);
 			labels.getChildren().addAll(myPoints,opponetPoints,infoFromServer);

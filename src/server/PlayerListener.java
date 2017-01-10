@@ -53,9 +53,9 @@ public class PlayerListener extends Thread implements IPlayerListener {
 								OutMessege(game.getPoints(getMyPlayer()));
 								opponent.OutMessege(game.getPoints(getMyPlayer()));
 								OutMessege(game.getPoints(opponent.getMyPlayer()));
-								opponent.myMove();
 								opponent.OutMessege(game.getMessage());
 								OutMessege(game.getMessage());
+								opponent.myMove();// must be last
 								continue;
 						}
 						if(back.equals("FF")) {
@@ -169,7 +169,7 @@ public class PlayerListener extends Thread implements IPlayerListener {
 		if(socket.isClosed()){
 			return"";
 		}
-		String x = "";
+		String x = "NULL";
 		try {
 			x = in.readUTF();
 		} catch (IOException e) {

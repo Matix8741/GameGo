@@ -58,12 +58,14 @@ public class ServerListener extends Thread {
 		while(running){
 			try {
 				command = readFromServer();
+				System.out.println("Komunikat otrzymany: "+command);
 				if(command.equals("A")){//ZAAKCEPTOWANY RUCH
 					try {
 						fxBoard.drawBoard((Board)inObj.readObject());
 					} catch (ClassNotFoundException e) {
-						
+						System.out.println(e.getMessage());
 					}catch (IOException e1){
+						System.out.println(e1.getMessage());
 						close();
 						return;
 					}
@@ -72,6 +74,7 @@ public class ServerListener extends Thread {
 					opponentPoints = readFromServer();
 					Platform.runLater(() -> clientPlayer.setOpponentPoints(opponentPoints));
 					command = readFromServer();
+					System.out.println("Komunikat otrzymany: "+command);
 					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
 				else if (command.equals("LOSE")){//PRZEGRANA
@@ -212,8 +215,11 @@ public class ServerListener extends Thread {
 						Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
 				else if(command.equals("NO")){
-					command = readFromServer();
-					Platform.runLater(() -> clientPlayer.setServerStatement(command));
+					if(!ifBot){
+						command = readFromServer();
+						Platform.runLater(() -> clientPlayer.setServerStatement(command));
+					}
+					
 				}
 			} catch (IOException e) {
 				try {

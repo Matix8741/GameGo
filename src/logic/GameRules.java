@@ -69,7 +69,7 @@ public class GameRules {
 	}
 
 	private static boolean gonnaBeat(Board board, Field field, state color, state opponentColor) {
-		System.out.println("Field: "+field.getX()+"."+field.getY());
+		//System.out.println("Field: "+field.getX()+"."+field.getY());
 		try {
 			//System.out.println("left "+field.getLeft().countBreaths());
 			if (field.getLeft().getState()==opponentColor && field.getLeft().countBreaths()==1) {
