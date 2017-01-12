@@ -68,7 +68,7 @@ public class Board implements Serializable, Cloneable {
 		} catch (InvalidBoardSizeException e) {}
 		for (Field aField : this.getFields()) {
 			if (!(aField.isEmpty()))
-				copy.getField(aField).setState(aField.getState());
+				copy.getField(aField).setStateWithoutGroup(aField.getState());
 		}
 		return copy;
 	}
