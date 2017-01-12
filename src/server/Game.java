@@ -174,10 +174,6 @@ public class Game {
 		this.behavior = this.behavior.oneend();
 		
 	}
-//	private void end() {
-//		this.behavior = this.behavior.end();
-//		
-//	}
 	private void doInPass(Field field, IPlayerS iPlayerS) {
 		//TODO territory
 		if(CurrentPlayer == iPlayerS){

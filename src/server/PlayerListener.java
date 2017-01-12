@@ -21,7 +21,6 @@ public class PlayerListener extends Thread implements IPlayerListener {
 	private IPlayerS myPlayer;
 	private Game game;
 	private int x;
-	private ObjectInputStream inObj;
 	private ObjectOutputStream outObj;
 	private boolean ifbot = false;
 	
@@ -233,10 +232,7 @@ public class PlayerListener extends Thread implements IPlayerListener {
 	public int getX() {
 		return x;
 	}
-//	private Object objectFromClient() throws ClassNotFoundException, IOException{
-//		//TODO now dont need it
-//		return inObj.readObject();
-//	}
+
 	@Override
 	 public void objectToClient(Object board) {
 		if(socket.isClosed()){
