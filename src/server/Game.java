@@ -258,6 +258,7 @@ public class Game {
 			if(points<0) points=0;
 			return String.valueOf(points);
 		}
+		case EMPTY:
 
 		default:
 			break;

@@ -110,6 +110,7 @@ public class FXBoard extends Canvas {
 			gc.setLineWidth(2);
 			break;
 		}
+		case NOTHING:
 		default:
 			break;
 		}
@@ -133,6 +134,7 @@ public class FXBoard extends Canvas {
 			case BLACK:{//TODO states from fields
 				fillField(readObject.getFields().indexOf(field), Color.BLACK, field.getStateAfterGame(),true);
 				break;}
+			case EMPTY:
 
 			default:{
 				fillField(readObject.getFields().indexOf(field), Color.BLACK, field.getStateAfterGame(),false);

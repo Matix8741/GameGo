@@ -142,4 +142,26 @@ public class LogicTest {
 		GameRules.removeTerritories(board);
 	}
 	
+	@Test
+	public void anotherTest() throws FieldOccupiedException, SuicideException, KoException {
+		GameRules.move(board, board.getField(5, 5), state.WHITE);
+		GameRules.move(board, board.getField(2, 2), state.WHITE);
+		GameRules.move(board, board.getField(2, 3), state.WHITE);
+		GameRules.move(board, board.getField(4, 5), state.BLACK);
+		GameRules.move(board, board.getField(6, 5), state.BLACK);
+		GameRules.move(board, board.getField(5, 4), state.BLACK);
+		GameRules.move(board, board.getField(5, 6), state.BLACK);
+		Assert.assertTrue(board.getField(2, 2).getState()==state.WHITE && board.getField(2, 3).getState()==state.WHITE);
+	}
+	
+	@Test
+	public void anotherTest2() throws FieldOccupiedException, SuicideException, KoException {
+		GameRules.move(board, board.getField(2, 2), state.WHITE);
+		GameRules.move(board, board.getField(2, 3), state.WHITE);
+		System.out.println("Wynik:");
+		board.getField(2, 2).countBreaths();
+		for(Group aGroup : board.getGroups())
+			System.out.println(aGroup);
+	}
+	
 }
