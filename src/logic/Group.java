@@ -27,6 +27,9 @@ public class Group implements Serializable {
 		for (Field aField : out)
 			if (aField.isEmpty())
 				i++;
+		for (Field aField : fields)
+			System.out.print("+"+aField.getX()+"/"+aField.getY()+" ");
+		System.out.println(i);
 		return i;
 	}
 	
@@ -35,7 +38,7 @@ public class Group implements Serializable {
 	}
 	
 	public Group(Field field) {
-		//System.out.println("Hello 3");
+		System.out.println("Tworzê grupê dla pola "+field.getX()+"/"+field.getY());
 		fields = new ArrayList<Field>();
 		fields.add(field);
 		out = new ArrayList<Field>();
@@ -57,7 +60,6 @@ public class Group implements Serializable {
 		mystate = field.getState();
 		
 		board.getGroups().add(this);
-		
 		try {
 			if (field.getLeft().getState()==mystate && field.getLeft().getGroup()!=null)
 				merge(field.getLeft());
@@ -77,16 +79,19 @@ public class Group implements Serializable {
 	}
 
 	private void merge(Field field) {
+		System.out.println("to cholerne merge");
 		if (this.equals(field.getGroup()))
 			return;
 		
+		Group oldGroup;
 		for (Field aField : field.getGroup().getFields()){
 			fields.add(aField);
+			oldGroup=aField.getGroup();
 			aField.setGroup(this);
+			board.getGroups().remove(oldGroup);
 		}
 		field.getGroup().getOut().removeAll(out);
 		out.addAll(field.getGroup().getOut());
-		board.getGroups().remove(field);
 	}
 
 }
