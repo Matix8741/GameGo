@@ -18,11 +18,11 @@ public class Group implements Serializable {
 		return fields;
 	}
 	
-	public List<Field> getOut() {
+	List<Field> getOut() {
 		return out;
 	}
 	
-	public int countBreaths() {
+	int countBreaths() {
 		int i=0;
 		for (Field aField : out)
 			if (aField.isEmpty())
@@ -30,11 +30,11 @@ public class Group implements Serializable {
 		return i;
 	}
 	
-	public state getState() {
+	state getState() {
 		return mystate;
 	}
 	
-	public Group(Field field) {
+	Group(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
 		out = new ArrayList<Field>();

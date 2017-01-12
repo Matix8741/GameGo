@@ -18,7 +18,7 @@ public class GameRules {
 		return board.getTerritories();
 	}
 
-	public static state territoryOwner(Group territory) {
+	private static state territoryOwner(Group territory) {
 		if (territory.getState() != state.EMPTY)
 			return state.EMPTY;
 
@@ -29,7 +29,7 @@ public class GameRules {
 		return color;
 	}
 
-	public static void territories(Board board) {
+	private static void territories(Board board) {
 		for (Field aField : board.getFields()) {
 			if (aField.isEmpty()) {
 				aField.setGroup(new Group(aField));
@@ -37,7 +37,7 @@ public class GameRules {
 		}
 	}
 
-	public static void removeTerritories(Board board) {
+	private static void removeTerritories(Board board) {
 		List<Group> toRemove = new ArrayList<Group>();
 		for (Group aGroup : board.getGroups())
 			if (aGroup.getState() == state.EMPTY)

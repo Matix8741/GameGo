@@ -17,11 +17,11 @@ public class Territory {
 		return fields;
 	}
 	
-	public List<Field> getOut() {
+	private List<Field> getOut() {
 		return out;
 	}
 	
-	public Territory(Field field) {
+	Territory(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
 		out = new ArrayList<Field>();

@@ -22,14 +22,14 @@ public class Board implements Serializable {
 		return fields;
 	}
 	
-	public Board getLastMove(state color) {
+	Board getLastMove(state color) {
 		if (color==state.BLACK)
 			return lastBlackMove;
 		else
 			return lastWhiteMove;
 	}
 
-	public List<Group> getGroups() {
+	List<Group> getGroups() {
 		return groups;
 	}
 
@@ -37,7 +37,7 @@ public class Board implements Serializable {
 		return fields.get(size * (y - 1) + x - 1);
 	}
 
-	public Field getField(Field field) {
+	Field getField(Field field) {
 		return getField(field.getX(), field.getY());
 	}
 
@@ -55,7 +55,7 @@ public class Board implements Serializable {
 			fields.add(new Field((i % size) + 1, (i / size) + 1, this));
 	}
 
-	public Board copy() {
+	Board copy() {
 		Board copy = null;
 		try {
 			copy = new Board(getSize());
@@ -67,7 +67,7 @@ public class Board implements Serializable {
 		return copy;
 	}
 
-	public boolean compare(Board lastMove) {
+	boolean compare(Board lastMove) {
 		for (Field aField : this.getFields()) {
 			if (!(getField(aField).getState()==lastMove.getField(aField).getState()))
 				return false;
@@ -76,14 +76,14 @@ public class Board implements Serializable {
 		
 	}
 
-	public void saveMove(state color) {
+	void saveMove(state color) {
 		if (color==state.BLACK)
 			lastBlackMove = this.copy();
 		else
 			lastWhiteMove = this.copy();
 	}
 
-	public void setTerritories() {
+	void setTerritories() {
 		for (Field aField : this.getFields())
 			aField.setTerritory(null);
 		territories = new ArrayList<Territory>();
@@ -93,7 +93,7 @@ public class Board implements Serializable {
 			}
 	}
 
-	public List<Territory> getTerritories() {
+	List<Territory> getTerritories() {
 		return territories;
 	}
 }

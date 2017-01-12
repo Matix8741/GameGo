@@ -18,7 +18,7 @@ public class Field implements Serializable {
 	private Group group;
 	private Territory territory;
 	
-	protected Field(int x, int y, Board board) {
+	Field(int x, int y, Board board) {
 		this.x = x;
 		this.y = y;
 		this.board = board;
@@ -26,15 +26,15 @@ public class Field implements Serializable {
 		stateAfterGame = logic.stateAfterGame.NOTHING;
 	}
 	
-	public int getX() {
+	int getX() {
 		return x;
 	}
 	
-	public int getY() {
+	int getY() {
 		return y;
 	}
 	
-	public Board getBoard() {
+	Board getBoard() {
 		return board;
 	}
 	
@@ -42,11 +42,11 @@ public class Field implements Serializable {
 		return group;
 	}
 	
-	public void setGroup(Group newGroup) {
+	void setGroup(Group newGroup) {
 		this.group = newGroup;
 	}
 	
-	public int countBreaths() {
+	int countBreaths() {
 		return getGroup().countBreaths();
 	}
 	
@@ -71,7 +71,7 @@ public class Field implements Serializable {
 		return board.getField(x, y+1);
 	}
 	
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		if (myState == state.EMPTY)
 			return true;
 		return false;
@@ -81,7 +81,7 @@ public class Field implements Serializable {
 		return myState;
 	}
 	
-	public void setState(state newState) {
+	void setState(state newState) {
 		myState = newState;
 		if (newState==state.EMPTY)
 			group = null;
@@ -89,7 +89,15 @@ public class Field implements Serializable {
 			group = new Group(this);
 	}
 	
-	public void setTerritory() {
+	Territory getTerritory() {
+		return territory;
+	}
+
+	void setTerritory(Territory newTerritory) {
+		this.territory = newTerritory;
+	}
+	
+	void setTerritory() {
 		territory = new Territory(this);
 	}
 
@@ -101,28 +109,20 @@ public class Field implements Serializable {
 		this.stateAfterGame = stateAfterGame;
 	}
 
-	public boolean isIfDone() {
+	/*private boolean isIfDone() {
 		return ifDone;
 	}
 
-	public void changeDone() {
+	private void changeDone() {
 		if(this.ifDone){
 			ifDone = false;
 		}else{
 			ifDone = true;
 		}
-	}
+	}*/
 
 	public Group getTerirory() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public Territory getTerritory() {
-		return territory;
-	}
-
-	public void setTerritory(Territory newTerritory) {
-		this.territory = newTerritory;
 	}
 }
