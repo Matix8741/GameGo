@@ -126,7 +126,7 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 		}
 		int i = generator.nextInt(getX());
 		int j = generator.nextInt(getX()-1)+1;
-		String messege = game.sendMessege("M"+String.valueOf(i*j), myPlayer);
+		String messege = game.sendMessege("M"+String.valueOf((i*game.getBoard().getSize())+j), myPlayer);
 		return messege;
 	}
 }

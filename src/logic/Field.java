@@ -14,11 +14,11 @@ public class Field implements Serializable {
 	private int x;
 	private int y;
 	private state myState;
-	private state opponentState;
 	private Board board;
 	private Group group;
+	private Territory territory;
 	
-	protected Field(int x, int y, Board board) {
+	Field(int x, int y, Board board) {
 		this.x = x;
 		this.y = y;
 		this.board = board;
@@ -26,21 +26,15 @@ public class Field implements Serializable {
 		stateAfterGame = logic.stateAfterGame.NOTHING;
 	}
 	
-	protected Field(Field field) {
-		this.x = field.getX();
-		this.y = field.getY();
-		this.myState = field.getState();
-	}
-	
-	public int getX() {
+	int getX() {
 		return x;
 	}
 	
-	public int getY() {
+	int getY() {
 		return y;
 	}
 	
-	public Board getBoard() {
+	Board getBoard() {
 		return board;
 	}
 	
@@ -48,15 +42,12 @@ public class Field implements Serializable {
 		return group;
 	}
 	
-	public void setGroup(Group newGroup) {
+	void setGroup(Group newGroup) {
 		this.group = newGroup;
 	}
 	
-	public int countBreaths() {
-		if (getGroup()==null)
-			return 100;
-		else
-			return getGroup().countBreaths();
+	int countBreaths() {
+		return getGroup().countBreaths();
 	}
 	
 	public Field getLeft() throws EndOfBoardException {
@@ -80,46 +71,34 @@ public class Field implements Serializable {
 		return board.getField(x, y+1);
 	}
 	
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		if (myState == state.EMPTY)
 			return true;
 		return false;
-	}
-	public void setEmpty() {
-		myState = state.EMPTY;
 	}
 	
 	public state getState() {
 		return myState;
 	}
 	
-	public state getOpponentState() {
-		return opponentState;
-	}
-	
-	public void setState(state newState) {
+	void setState(state newState) {
 		myState = newState;
-		if (newState==state.EMPTY) {
-			opponentState = null;
+		if (newState==state.EMPTY)
 			group = null;
-		}
-		else {
-			if (newState == state.BLACK)
-				opponentState = state.WHITE;
-			else if (newState == state.WHITE)
-				opponentState = state.BLACK;
+		else
 			group = new Group(this);
-		}
 	}
 	
-	public void setStateWithoutGroup(state newState) {
-		myState = newState;
-		if (newState == state.BLACK)
-			opponentState = state.WHITE;
-		else if (newState == state.WHITE)
-			opponentState = state.BLACK;
-		else
-			opponentState = null;
+	Territory getTerritory() {
+		return territory;
+	}
+
+	void setTerritory(Territory newTerritory) {
+		this.territory = newTerritory;
+	}
+	
+	void setTerritory() {
+		territory = new Territory(this);
 	}
 
 	public stateAfterGame getStateAfterGame() {
@@ -130,17 +109,17 @@ public class Field implements Serializable {
 		this.stateAfterGame = stateAfterGame;
 	}
 
-	public boolean isIfDone() {
+	/*private boolean isIfDone() {
 		return ifDone;
 	}
 
-	public void changeDone() {
+	private void changeDone() {
 		if(this.ifDone){
 			ifDone = false;
 		}else{
 			ifDone = true;
 		}
-	}
+	}*/
 
 	public Group getTerirory() {
 		// TODO Auto-generated method stub

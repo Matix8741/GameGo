@@ -18,11 +18,11 @@ public class Group implements Serializable {
 		return fields;
 	}
 	
-	public List<Field> getOut() {
+	List<Field> getOut() {
 		return out;
 	}
 	
-	public int countBreaths() {
+	int countBreaths() {
 		int i=0;
 		for (Field aField : out)
 			if (aField.isEmpty())
@@ -30,12 +30,11 @@ public class Group implements Serializable {
 		return i;
 	}
 	
-	public state getState() {
+	state getState() {
 		return mystate;
 	}
 	
-	public Group(Field field) {
-		//System.out.println("Hello 3");
+	Group(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
 		out = new ArrayList<Field>();
@@ -57,7 +56,6 @@ public class Group implements Serializable {
 		mystate = field.getState();
 		
 		board.getGroups().add(this);
-		
 		try {
 			if (field.getLeft().getState()==mystate && field.getLeft().getGroup()!=null)
 				merge(field.getLeft());
@@ -80,13 +78,16 @@ public class Group implements Serializable {
 		if (this.equals(field.getGroup()))
 			return;
 		
+		Group oldGroup = field.getGroup();
 		for (Field aField : field.getGroup().getFields()){
 			fields.add(aField);
 			aField.setGroup(this);
 		}
-		field.getGroup().getOut().removeAll(out);
-		out.addAll(field.getGroup().getOut());
-		board.getGroups().remove(field);
+		
+		oldGroup.getOut().removeAll(out);
+		out.addAll(oldGroup.getOut());
+		out.removeAll(fields);
+		
+		board.getGroups().remove(oldGroup);
 	}
-
 }
