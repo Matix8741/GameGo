@@ -42,7 +42,6 @@ public class GameRules {
 	
 	public static int move(Board board, Field field, state color)
 			throws FieldOccupiedException, SuicideException, KoException {
-		System.out.println("---------------------------------ZACZYNAM ROZWA¯AÆ NOWY RUCH");
 		int beaten=0;
 		if (!(isOccupied(board, field))) {
 			state opponentColor;
@@ -141,7 +140,6 @@ public class GameRules {
 
 	private static void rightMove(Board board, Field field, state color) {
 		board.getField(field).setState(color);
-		System.out.println("postawiono: "+field.getX()+"/"+field.getY());
 	}
 
 	private static int beating(Board board, state opponentColor) {
