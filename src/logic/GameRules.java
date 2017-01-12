@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameRules {
-	
+
 	public static boolean isProbablyDead(Group group) {
-		if (group.getState()==state.EMPTY)
+		if (group.getState() == state.EMPTY)
 			return false;
-		if (group.countBreaths()==1)
+		if (group.countBreaths() == 1)
 			return true;
 		return false;
 	}
-	
+
 	public static state territoryOwner(Group territory) {
-		if (territory.getState()!=state.EMPTY)
+		if (territory.getState() != state.EMPTY)
 			return state.EMPTY;
-		
-		state color=territory.getOut().get(0).getState();
+
+		state color = territory.getOut().get(0).getState();
 		for (Field aField : territory.getOut())
-			if (aField.getState()!=color)
+			if (aField.getState() != color)
 				return state.EMPTY;
 		return color;
 	}
-	
+
 	public static void territories(Board board) {
 		for (Field aField : board.getFields()) {
 			if (aField.isEmpty()) {
@@ -31,18 +31,18 @@ public class GameRules {
 			}
 		}
 	}
-	
+
 	public static void removeTerritories(Board board) {
 		List<Group> toRemove = new ArrayList<Group>();
 		for (Group aGroup : board.getGroups())
-			if (aGroup.getState()==state.EMPTY)
+			if (aGroup.getState() == state.EMPTY)
 				toRemove.add(aGroup);
 		board.getGroups().removeAll(toRemove);
 	}
-	
+
 	public static int move(Board board, Field field, state color)
 			throws FieldOccupiedException, SuicideException, KoException {
-		int beaten=0;
+		int beaten = 0;
 		if (!(isOccupied(board, field))) {
 			state opponentColor;
 			if (color == state.BLACK)
@@ -54,8 +54,7 @@ public class GameRules {
 					rightMove(board, field, color);
 					beaten = beating(board, opponentColor);
 				}
-			}
-			else if (!(isSuicidal(board, field, color, opponentColor)))
+			} else if (!(isSuicidal(board, field, color, opponentColor)))
 				rightMove(board, field, color);
 			board.saveMove(color);
 		}
@@ -70,25 +69,29 @@ public class GameRules {
 
 	private static boolean gonnaBeat(Board board, Field field, state color, state opponentColor) {
 		try {
-			if (field.getLeft().getState()==opponentColor) 
-				if (field.getLeft().countBreaths()==1)
+			if (field.getLeft().getState() == opponentColor)
+				if (field.getLeft().countBreaths() == 1)
 					return true;
-		} catch (EndOfBoardException e) {}
+		} catch (EndOfBoardException e) {
+		}
 		try {
-			if (field.getRight().getState()==opponentColor)
-				if (field.getRight().countBreaths()==1) 
+			if (field.getRight().getState() == opponentColor)
+				if (field.getRight().countBreaths() == 1)
 					return true;
-		} catch (EndOfBoardException e) {}
+		} catch (EndOfBoardException e) {
+		}
 		try {
-			if (field.getDown().getState()==opponentColor) 
-				if (field.getDown().countBreaths()==1)
+			if (field.getDown().getState() == opponentColor)
+				if (field.getDown().countBreaths() == 1)
 					return true;
-			} catch (EndOfBoardException e) {}
+		} catch (EndOfBoardException e) {
+		}
 		try {
-			if (field.getUp().getState()==opponentColor)
-				if (field.getUp().countBreaths()==1)
+			if (field.getUp().getState() == opponentColor)
+				if (field.getUp().countBreaths() == 1)
 					return true;
-		} catch (EndOfBoardException e) {}
+		} catch (EndOfBoardException e) {
+		}
 		return false;
 	}
 
@@ -102,39 +105,52 @@ public class GameRules {
 			return false;
 	}
 
-	private static boolean isSuicidal(Board board, Field field, state color, state opponentColor) throws SuicideException {
+	private static boolean isSuicidal(Board board, Field field, state color, state opponentColor)
+			throws SuicideException {
 		if (GameRules.countBreaths(board, field, color, opponentColor) == 0)
 			throw new SuicideException();
 		return false;
 	}
-	
+
 	public static int countBreaths(Board board, Field field, state color, state opponentColor) {
-		int breaths=4;
+		int breaths = 4;
 		try {
-			if (field.getLeft().getState()==opponentColor || (field.getLeft().getState()==color && field.getLeft().countBreaths()==1))
+			if (field.getLeft().getState() == opponentColor)
 				breaths--;
+			else if (field.getLeft().getState() == color)
+				if (field.getLeft().countBreaths() == 1)
+					breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
 		}
 		try {
-			if (field.getRight().getState()==opponentColor || (field.getRight().getState()==color && field.getRight().countBreaths()==1))
+			if (field.getRight().getState() == opponentColor)
 				breaths--;
+			else if (field.getRight().getState() == color)
+				if (field.getRight().countBreaths() == 1)
+					breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
 		}
 		try {
-			if (field.getUp().getState()==opponentColor || (field.getUp().getState()==color && field.getUp().countBreaths()==1))
+			if (field.getUp().getState() == opponentColor)
 				breaths--;
+			else if (field.getUp().getState() == color)
+				if (field.getUp().countBreaths() == 1)
+					breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
 		}
 		try {
-			if (field.getDown().getState()==opponentColor || (field.getDown().getState()==color && field.getDown().countBreaths()==1))
+			if (field.getDown().getState() == opponentColor)
 				breaths--;
+			else if (field.getDown().getState() == color)
+				if (field.getDown().countBreaths() == 1)
+					breaths--;
 		} catch (EndOfBoardException e) {
 			breaths--;
 		}
-		
+
 		return breaths;
 	}
 
@@ -144,15 +160,16 @@ public class GameRules {
 
 	private static int beating(Board board, state opponentColor) {
 		ArrayList<Group> toRemove = new ArrayList<Group>();
-		int i=0;
+		int i = 0;
 		for (Group aGroup : board.getGroups()) {
-			if (aGroup.countBreaths() == 0 && aGroup.getState() == opponentColor) {
-				for (Field aField : aGroup.getFields()) {
-					i++;
-					aField.setState(state.EMPTY);
+			if (aGroup.getState() == opponentColor)
+				if (aGroup.countBreaths() == 0) {
+					for (Field aField : aGroup.getFields()) {
+						i++;
+						aField.setState(state.EMPTY);
+					}
+					toRemove.add(aGroup);
 				}
-				toRemove.add(aGroup);
-			}
 		}
 		board.getGroups().removeAll(toRemove);
 		return i;

@@ -14,7 +14,6 @@ public class Field implements Serializable {
 	private int x;
 	private int y;
 	private state myState;
-	private state opponentState;
 	private Board board;
 	private Group group;
 	
@@ -24,12 +23,6 @@ public class Field implements Serializable {
 		this.board = board;
 		myState = state.EMPTY;
 		stateAfterGame = logic.stateAfterGame.NOTHING;
-	}
-	
-	protected Field(Field field) {
-		this.x = field.getX();
-		this.y = field.getY();
-		this.myState = field.getState();
 	}
 	
 	public int getX() {
@@ -53,10 +46,7 @@ public class Field implements Serializable {
 	}
 	
 	public int countBreaths() {
-		if (getGroup()==null)
-			return 100;
-		else
-			return getGroup().countBreaths();
+		return getGroup().countBreaths();
 	}
 	
 	public Field getLeft() throws EndOfBoardException {
@@ -85,31 +75,17 @@ public class Field implements Serializable {
 			return true;
 		return false;
 	}
-	public void setEmpty() {
-		myState = state.EMPTY;
-	}
 	
 	public state getState() {
 		return myState;
 	}
 	
-	public state getOpponentState() {
-		return opponentState;
-	}
-	
 	public void setState(state newState) {
 		myState = newState;
-		if (newState==state.EMPTY) {
-			opponentState = null;
+		if (newState==state.EMPTY)
 			group = null;
-		}
-		else {
-			if (newState == state.BLACK)
-				opponentState = state.WHITE;
-			else if (newState == state.WHITE)
-				opponentState = state.BLACK;
+		else
 			group = new Group(this);
-		}
 	}
 
 	public stateAfterGame getStateAfterGame() {

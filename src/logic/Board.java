@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board implements Serializable, Cloneable {
+public class Board implements Serializable {
 
 	/**
 	 * 
@@ -12,14 +12,14 @@ public class Board implements Serializable, Cloneable {
 	private static final long serialVersionUID = 199410800481618070L;
 	private int size;
 
-	public List<Field> getFields() {
-		return fields;
-	}
-
 	private List<Field> fields;
 	private List<Group> groups;
 	private Board lastWhiteMove;
 	private Board lastBlackMove;
+	
+	public List<Field> getFields() {
+		return fields;
+	}
 	
 	public Board getLastMove(state color) {
 		if (color==state.BLACK)
@@ -57,7 +57,7 @@ public class Board implements Serializable, Cloneable {
 	public Board copy() {
 		Board copy = null;
 		try {
-			copy = new Board(19);
+			copy = new Board(getSize());
 		} catch (InvalidBoardSizeException e) {}
 		for (Field aField : this.getFields()) {
 			if (!(aField.isEmpty()))
@@ -67,8 +67,6 @@ public class Board implements Serializable, Cloneable {
 	}
 
 	public boolean compare(Board lastMove) {
-		if (lastMove==null) 
-			return false;
 		for (Field aField : this.getFields()) {
 			if (!(getField(aField).getState()==lastMove.getField(aField).getState()))
 				return false;
