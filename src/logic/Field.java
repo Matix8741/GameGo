@@ -16,6 +16,7 @@ public class Field implements Serializable {
 	private state myState;
 	private Board board;
 	private Group group;
+	private Territory territory;
 	
 	protected Field(int x, int y, Board board) {
 		this.x = x;
@@ -87,6 +88,10 @@ public class Field implements Serializable {
 		else
 			group = new Group(this);
 	}
+	
+	public void setTerritory() {
+		territory = new Territory(this);
+	}
 
 	public stateAfterGame getStateAfterGame() {
 		return stateAfterGame;
@@ -111,5 +116,13 @@ public class Field implements Serializable {
 	public Group getTerirory() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Territory getTerritory() {
+		return territory;
+	}
+
+	public void setTerritory(Territory newTerritory) {
+		this.territory = newTerritory;
 	}
 }

@@ -1,19 +1,18 @@
 package logic;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Group implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Territory {
 	private List<Field> fields;
 	private List<Field> out;
+	private state owner;
 	private Board board;
-	private state mystate;
-
+	
+	public state getOwner() {
+		return owner;
+	}
+	
 	public List<Field> getFields() {
 		return fields;
 	}
@@ -22,19 +21,7 @@ public class Group implements Serializable {
 		return out;
 	}
 	
-	public int countBreaths() {
-		int i=0;
-		for (Field aField : out)
-			if (aField.isEmpty())
-				i++;
-		return i;
-	}
-	
-	public state getState() {
-		return mystate;
-	}
-	
-	public Group(Field field) {
+	public Territory(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
 		out = new ArrayList<Field>();
@@ -53,41 +40,54 @@ public class Group implements Serializable {
 		} catch (EndOfBoardException e1) {}
 		
 		board = field.getBoard();
-		mystate = field.getState();
+		board.getTerritories().add(this);
 		
-		board.getGroups().add(this);
 		try {
-			if (field.getLeft().getState()==mystate && field.getLeft().getGroup()!=null)
+			if (field.getLeft().isEmpty() && field.getLeft().getTerritory()!=null)
 				merge(field.getLeft());
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getRight().getState()==mystate && field.getRight().getGroup()!=null)
+			if (field.getRight().isEmpty() && field.getRight().getTerritory()!=null)
 				merge(field.getRight());
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getUp().getState()==mystate && field.getUp().getGroup()!=null)
+			if (field.getUp().isEmpty() && field.getUp().getTerritory()!=null)
 				merge(field.getUp());
 		} catch (EndOfBoardException e) {}
 		try {
-			if (field.getDown().getState()==mystate && field.getDown().getGroup()!=null)
+			if (field.getDown().isEmpty() && field.getDown().getTerritory()!=null)
 				merge(field.getDown());
 		} catch (EndOfBoardException e) {}
+		
+		if (!this.getOut().isEmpty())
+			if (!this.getOut().get(0).isEmpty()) {
+				this.setOwner(this.getOut().get(0).getState());
+				for (Field aField : this.getOut())
+					if (aField.getState()!=this.owner) {
+						this.setOwner(null);
+						break;
+					}
+			}
+	}
+	
+	private void setOwner(state state) {
+		this.owner = state;
 	}
 
 	private void merge(Field field) {
-		if (this.equals(field.getGroup()))
+		if (this.equals(field.getTerritory()))
 			return;
 		
-		Group oldGroup = field.getGroup();
-		for (Field aField : field.getGroup().getFields()){
+		Territory oldTerritory = field.getTerritory();
+		for (Field aField : field.getTerritory().getFields()){
 			fields.add(aField);
-			aField.setGroup(this);
+			aField.setTerritory(this);
 		}
 		
-		oldGroup.getOut().removeAll(out);
-		out.addAll(oldGroup.getOut());
+		oldTerritory.getOut().removeAll(out);
+		out.addAll(oldTerritory.getOut());
 		out.removeAll(fields);
 		
-		board.getGroups().remove(oldGroup);
+		board.getTerritories().remove(oldTerritory);
 	}
 }

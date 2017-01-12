@@ -12,6 +12,11 @@ public class GameRules {
 			return true;
 		return false;
 	}
+	
+	public static List<Territory> getTerritories(Board board) {
+		board.setTerritories();
+		return board.getTerritories();
+	}
 
 	public static state territoryOwner(Group territory) {
 		if (territory.getState() != state.EMPTY)

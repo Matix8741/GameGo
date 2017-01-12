@@ -14,6 +14,7 @@ public class Board implements Serializable {
 
 	private List<Field> fields;
 	private List<Group> groups;
+	private List<Territory> territories;
 	private Board lastWhiteMove;
 	private Board lastBlackMove;
 	
@@ -80,5 +81,19 @@ public class Board implements Serializable {
 			lastBlackMove = this.copy();
 		else
 			lastWhiteMove = this.copy();
+	}
+
+	public void setTerritories() {
+		for (Field aField : this.getFields())
+			aField.setTerritory(null);
+		territories = new ArrayList<Territory>();
+		for (Field aField : this.getFields())
+			if (aField.isEmpty()) {
+				aField.setTerritory();
+			}
+	}
+
+	public List<Territory> getTerritories() {
+		return territories;
 	}
 }
