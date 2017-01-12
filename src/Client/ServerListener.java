@@ -215,10 +215,10 @@ public class ServerListener extends Thread {
 						Platform.runLater(() -> clientPlayer.setServerStatement(command));
 				}
 				else if(command.equals("NO")){
-					if(!ifBot){
+//					if(!ifBot){
 						command = readFromServer();
 						Platform.runLater(() -> clientPlayer.setServerStatement(command));
-					}
+//					}
 					
 				}
 			} catch (IOException e) {

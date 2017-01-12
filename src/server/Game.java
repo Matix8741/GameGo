@@ -3,7 +3,6 @@ package server;
 import GameState.GameState;
 import GameState.GameStateBehavior;
 import GameState.StateOn;
-import Messege.MessageSurrender;
 import logic.Board;
 import logic.Field;
 import logic.FieldOccupiedException;
@@ -175,10 +174,10 @@ public class Game {
 		this.behavior = this.behavior.oneend();
 		
 	}
-	private void end() {
-		this.behavior = this.behavior.end();
-		
-	}
+//	private void end() {
+//		this.behavior = this.behavior.end();
+//		
+//	}
 	private void doInPass(Field field, IPlayerS iPlayerS) {
 		//TODO territory
 		if(CurrentPlayer == iPlayerS){

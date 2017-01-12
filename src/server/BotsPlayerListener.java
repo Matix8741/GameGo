@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import logic.Board;
 import logic.state;
 
 public class BotsPlayerListener extends Thread implements IPlayerListener {
@@ -14,7 +13,6 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 	private IPlayerS myPlayer;
 	private Game game;
 	private int x;
-	private Board board;
 	private Random generator;
 	private String statement;
 	public BotsPlayerListener() {
@@ -80,7 +78,6 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 
 	@Override
 	public void objectToClient(Object board) {
-		this.board = (Board) board;
 		
 	}
 
@@ -100,8 +97,11 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 
 	public void myMove(){
 		String messege = "";
+		int i=0;
 		while(messege !="A"&& messege !="1PAUSE"){
 			messege = doMove();
+			i++;
+			if(i==120){game.sendMessege("FF", myPlayer);}
 		}
 		if(messege.equals("A")){
 			opponent.OutMessege(messege);
@@ -111,7 +111,6 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 			opponent.OutMessege(game.getMessage());
 		}
 		if(messege.equals("1PAUSE")){
-			
 		}
 	}
 
