@@ -149,8 +149,7 @@ public class GameRules {
 			if (aGroup.countBreaths() == 0 && aGroup.getState() == opponentColor) {
 				for (Field aField : aGroup.getFields()) {
 					i++;
-					aField.setEmpty();
-					aField.setGroup(null);
+					aField.setState(state.EMPTY);
 				}
 				toRemove.add(aGroup);
 			}

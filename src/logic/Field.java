@@ -111,16 +111,6 @@ public class Field implements Serializable {
 			group = new Group(this);
 		}
 	}
-	
-	public void setStateWithoutGroup(state newState) {
-		myState = newState;
-		if (newState == state.BLACK)
-			opponentState = state.WHITE;
-		else if (newState == state.WHITE)
-			opponentState = state.BLACK;
-		else
-			opponentState = null;
-	}
 
 	public stateAfterGame getStateAfterGame() {
 		return stateAfterGame;
