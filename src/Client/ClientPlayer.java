@@ -29,6 +29,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.stateAfterGame;
 
+/**
+ * @author Mateusz
+ *
+ */
 public class ClientPlayer extends Application {
 	static int port = 6066;
 	Stage stage = null;
@@ -37,9 +41,11 @@ public class ClientPlayer extends Application {
 	private Label opponetPoints;
 	private Label infoFromServer;
 	private String pp;
-	@Override
-	public void start(Stage primaryStage) throws UnknownHostException, IOException {
-		final MyClient myClient = new MyClient("localhost", port);
+
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 */
+	@Override public void start(Stage primaryStage) throws UnknownHostException, IOException { final MyClient myClient = new MyClient("localhost", port);
 		final Stage boardStage = new Stage();
 		primaryStage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
 		boardStage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
@@ -96,6 +102,12 @@ public class ClientPlayer extends Application {
 		primaryStage.show();
 		//createBoard(myClient);
 	}
+	/**
+	 * @param myClient
+	 * @param size
+	 * @param player
+	 * @throws IOException
+	 */
 	protected void prepareGame(MyClient myClient, String size, Toggle player) throws IOException {
 		MessegeFirst messege = new MessegeFirst();
 		String s = player.toString();
@@ -105,14 +117,27 @@ public class ClientPlayer extends Application {
 		messege.createMessega();
 		myClient.sendToServer(messege.toString());
 	}
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}	
 
+	/**
+	 * @return
+	 */
 	private ClientPlayer getOwn(){
 		return this;
 	}
 
+	/**
+	 * @param client
+	 * @param x
+	 * @param color
+	 * @param serverlistener
+	 * @param boardStage
+	 */
 	public void createBoard(MyClient client, int x, Color color, ServerListener serverlistener,Stage boardStage){
 			boardStage.initStyle(StageStyle.DECORATED);
 			BorderPane root = new BorderPane();
@@ -178,6 +203,11 @@ public class ClientPlayer extends Application {
 		//	boardStage.setResizable(false);
 			boardStage.show();
 	}
+	/**
+	 * @param tf
+	 * @param lb
+	 * @param maxLength
+	 */
 	public static void addTextLimiterAndAction(final TextField tf,final Label lb, final int maxLength) {
 		tf.textProperty().addListener((ChangeListener<String>) (ov, oldValue, newValue) -> {
 			if (tf.getText().length() > maxLength) {
@@ -203,6 +233,10 @@ public class ClientPlayer extends Application {
 			}
 		});
 		}
+	/**
+	 * @param stage
+	 * @return
+	 */
 	private Timer searching(Stage stage){
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
@@ -224,10 +258,17 @@ public class ClientPlayer extends Application {
 		},0,500);
 		return timer;
 	}
+	/**
+	 * @param timer
+	 * @param stage
+	 */
 	public static void closeSearching(Timer timer, Stage stage){
 		timer.cancel();
 		stage.close();
 	}
+	/**
+	 * @param label
+	 */
 	private static void changeLabel(Label label ){
 		if(label.getText().substring(label.getText().length()-3).equals("...")){
 			label.setText("Searching opponent.");
@@ -238,12 +279,21 @@ public class ClientPlayer extends Application {
 		else
 			label.setText("Searching opponent..");
 	}
+	/**
+	 * @param points
+	 */
 	public void setOurPoints(String points){
 		myPoints.setText(points);
 	}
+	/**
+	 * @param points
+	 */
 	public void setOpponentPoints(String points){
 		opponetPoints.setText(points);
 	}
+	/**
+	 * @param statement
+	 */
 	public void setServerStatement(String statement){
 		infoFromServer.setText(statement);
 	}

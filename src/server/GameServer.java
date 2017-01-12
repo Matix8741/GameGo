@@ -13,6 +13,9 @@ public class GameServer extends Thread {
 	private int port = 6066;
 	private List<Game> freeGames;
 	
+	/**
+	 * 
+	 */
 	public GameServer()  {
 		freeGames = new ArrayList<Game>();
 		try {
@@ -23,6 +26,9 @@ public class GameServer extends Thread {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	@Override
 	public void run() {
 		try {	
@@ -41,6 +47,9 @@ public class GameServer extends Thread {
 	
 	
 	
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Thread one = new GameServer();
 		one.start();

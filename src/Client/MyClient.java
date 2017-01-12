@@ -15,6 +15,12 @@ public class MyClient extends Socket {
 	private InputStream inFromServer;
 	private DataInputStream in;
 	
+	/**
+	 * @param arg0
+	 * @param arg1
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public MyClient(String arg0, int arg1) throws UnknownHostException, IOException {
 		super(arg0, arg1);
 		outToServer = getOutputStream();
@@ -24,12 +30,20 @@ public class MyClient extends Socket {
 	
 	}
 	
+	/**
+	 * @return
+	 * @throws IOException
+	 */
 	public String readFromServer() throws IOException {
 		if(isClosed()){
 			return "";
 		}
 		return in.readUTF();
 	}
+	/**
+	 * @param messege
+	 * @throws IOException
+	 */
 	public void sendToServer(String messege) throws IOException{
 		if(isClosed()){
 			return;
@@ -37,10 +51,16 @@ public class MyClient extends Socket {
 		out.writeUTF(messege);
 	}
 
+	/**
+	 * @return
+	 */
 	public DataInputStream getIN() {
 		// TODO Auto-generated method stub
 		return in;
 	}
+	/**
+	 * @return
+	 */
 	public InputStream getInput(){
 		return inFromServer;
 	}

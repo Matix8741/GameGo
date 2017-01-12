@@ -26,6 +26,9 @@ public class Game {
 	private IPlayerS CurrentPlayer;
 	private int bonusPoints;
 	private String message = "Ruch poprawny";
+	/**
+	 * @param x
+	 */
 	public Game(int x) {
 		this.x = x;
 		try {
@@ -37,6 +40,11 @@ public class Game {
 		behavior = new StateOn();
 		bonusPoints = x/3;
 	}
+	/**
+	 * @param field
+	 * @param iPlayerS
+	 * @return
+	 */
 	public boolean doMove(Field field, IPlayerS iPlayerS) {
 		if(CurrentPlayer == iPlayerS){
 			try {
@@ -57,12 +65,23 @@ public class Game {
 		return false;
 		
 	}
+	/**
+	 * @return
+	 */
 	public IPlayerS getCurrentPlayer() {
 		return CurrentPlayer;
 	}
+	/**
+	 * @param iPlayerS
+	 */
 	public void setCurrentPlayer(IPlayerS iPlayerS) {
 		CurrentPlayer = iPlayerS;
 	}
+	/**
+	 * @param messege
+	 * @param iPlayerS
+	 * @return
+	 */
 	public String sendMessege(String messege, IPlayerS iPlayerS) {
 		System.out.println("Komunikat otrzymany: "+messege +",  "+ iPlayerS);
 		if(messege.substring(0, 1).equals("M")){
@@ -134,6 +153,10 @@ public class Game {
 		return "NO";
 		
 	}
+	/**
+	 * @param iPlayerS
+	 * @param group
+	 */
 	private void changeGroup(IPlayerS iPlayerS, Group group) {
 		if(!(group == null)){
 			for(Field fiield :group.getFields()){
@@ -155,10 +178,16 @@ public class Game {
 		}
 		
 	}
+	/**
+	 * 
+	 */
 	private void waitFor() {
 		behavior = behavior.waitfor();
 		
 	}
+	/**
+	 * @return
+	 */
 	private IPlayerListener getWinner() {
 		
 		if(Integer.valueOf(getPoints(CurrentPlayer))>Integer.valueOf(getPoints(CurrentPlayer.getOpponnent()))){
@@ -170,10 +199,17 @@ public class Game {
 		}
 		
 	}
+	/**
+	 * 
+	 */
 	private void oneEnd() {
 		this.behavior = this.behavior.oneend();
 		
 	}
+	/**
+	 * @param field
+	 * @param iPlayerS
+	 */
 	private void doInPass(Field field, IPlayerS iPlayerS) {
 		//TODO territory
 		if(CurrentPlayer == iPlayerS){
@@ -189,6 +225,9 @@ public class Game {
 		}
 		
 	}
+	/**
+	 * @param playerS
+	 */
 	private void pass(IPlayerS playerS) {
 		if(playerS == CurrentPlayer){
 			this.behavior = this.behavior.afterpass();
@@ -211,6 +250,9 @@ public class Game {
 		
 		
 	}
+	/**
+	 * 
+	 */
 	private void pause(){
 		behavior = behavior.pause();
 	}
@@ -218,16 +260,29 @@ public class Game {
 		//TODO when need
 		
 	}
+	/**
+	 * @return
+	 */
 	public IPlayerListener getCurrentPlayerListener() {
 		return currentPlayerListener;
 	}
+	/**
+	 * @param currentPlayerListener
+	 */
 	public void setCurrentPlayerListener(IPlayerListener currentPlayerListener) {
 		this.currentPlayerListener = currentPlayerListener;
 	}
+	/**
+	 * @return
+	 */
 	public Board getBoard() {
 		// TODO Auto-generated method stub
 		return board;
 	}
+	/**
+	 * @param iPlayerS
+	 * @return
+	 */
 	public String getPoints(IPlayerS iPlayerS) {
 		switch (iPlayerS.getColor()) {
 		case BLACK:{
@@ -264,9 +319,15 @@ public class Game {
 		}
 		return "0";
 	}
+	/**
+	 * 
+	 */
 	public void turnOn() {
 		this.behavior = this.behavior.on();
 	}
+	/**
+	 * @return
+	 */
 	public String getMessage() {
 		return message;
 	}

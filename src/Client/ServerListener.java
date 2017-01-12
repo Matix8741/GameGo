@@ -30,6 +30,16 @@ public class ServerListener extends Thread {
 	private String opponentPoints;
 	private boolean ifBot;
 	
+	/**
+	 * @param in
+	 * @param timer
+	 * @param x
+	 * @param myClient
+	 * @param stage
+	 * @param clientPlayer
+	 * @param boardStage
+	 * @param inObj
+	 */
 	public ServerListener(DataInputStream in,Timer timer,int x,MyClient myClient,Stage stage, ClientPlayer clientPlayer,
 			Stage boardStage, ObjectInputStream inObj) {
 		this.myClient = myClient;
@@ -41,17 +51,30 @@ public class ServerListener extends Thread {
 		this.boardStage = boardStage;
 		this.inObj = inObj;
 	}
+	/**
+	 * @return
+	 */
 	public FXBoard getFxBoard() {
 		return fxBoard;
 	}
+	/**
+	 * @param fxBoard
+	 */
 	public void setFxBoard(FXBoard fxBoard) {
 		this.fxBoard = fxBoard;
 	}
+	/**
+	 * @return
+	 * @throws IOException
+	 */
 	public String readFromServer() throws IOException {
 		if(!myClient.isConnected())return null;
 		return in.readUTF();
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	@Override
 	public void run() {
 		firstContact(myClient, integer, timer, stage);
@@ -232,12 +255,21 @@ public class ServerListener extends Thread {
 			}
 		}
 	}
+	/**
+	 * @throws IOException
+	 */
 	private void close() throws IOException {
 		inObj.close();
 		in.close();
 		myClient.close();
 		running = false;
 	}
+	/**
+	 * @param myClient
+	 * @param integer
+	 * @param timer
+	 * @param stage
+	 */
 	public void firstContact(MyClient myClient, int integer, Timer timer, Stage stage){
 		try {
 			color = readFromServer();
@@ -257,9 +289,15 @@ public class ServerListener extends Thread {
 		
 		
 	}
+	/**
+	 * @return
+	 */
 	private ServerListener getOwn(){
 		return this;
 	}
+	/**
+	 * @param b
+	 */
 	public void setIfBot(boolean b) {
 		ifBot=b;
 		

@@ -19,6 +19,9 @@ import logic.stateAfterGame;
 public class FXBoard extends Canvas {
 
 	private  HBox for_pause;
+	/**
+	 * @return
+	 */
 	public PassButton getPassButton() {
 		return passButton;
 	}
@@ -34,6 +37,13 @@ public class FXBoard extends Canvas {
 	private double htOfRow;
 	private double wdOfRow;
 	private HBox accept;
+	/**
+	 * @param arg1
+	 * @param arg2
+	 * @param client
+	 * @param x2
+	 * @param color2
+	 */
 	public FXBoard( double arg1, double arg2, MyClient client, int x2, Color color2) {
 		super(arg1,arg2);
 		color = color2;
@@ -75,6 +85,12 @@ public class FXBoard extends Canvas {
 		    }
 		});
 	}
+	/**
+	 * @param i
+	 * @param color
+	 * @param afterGame
+	 * @param b
+	 */
 	public void fillField(int i, Color color, stateAfterGame afterGame, boolean b) {
 		FXField field = fields.get(i);
 		if(b){
@@ -115,13 +131,22 @@ public class FXBoard extends Canvas {
 		}
 		
 	}
+	/**
+	 * @return
+	 */
 	public MyClient getClient() {
 		// TODO Auto-generated method stub
 		return client;
 	}
+	/**
+	 * @return
+	 */
 	public Color getColor() {
 		return color;
 	}
+	/**
+	 * @param readObject
+	 */
 	public void drawBoard(Board readObject) {
 		gc.clearRect(0, 0, this.getWidth(), getHeight());
 		drawGrid();
@@ -142,60 +167,65 @@ public class FXBoard extends Canvas {
 		}
 		
 	}
+	/**
+	 * 
+	 */
 	private void drawGrid() {
 		for (int k = 0; k < x; k++){
 	          gc.strokeLine(15, k * htOfRow+15 , width+15, k * htOfRow+15  );
 	          gc.strokeLine(k*wdOfRow+15  , 15, k*wdOfRow +15 , height+15 );
 	      }
 	}
+	/**
+	 * @param pause
+	 */
 	public void setPassButton(PassButton pause) {
 		passButton = pause;
 		
 	}
+	/**
+	 * @param when_pause
+	 * @param accepting
+	 */
 	public void setBordeForPause(HBox when_pause, HBox accepting) {
 		for_pause = when_pause;
 		accept = accepting;
 	}
+	/**
+	 * @param node
+	 */
 	public void addForPause(Node node){
 		for_pause.getChildren().add(node);
 	}
+	/**
+	 * 
+	 */
 	public void removeForResume(){
 		for_pause.getChildren().clear();
 	}
+	/**
+	 * @param node
+	 */
 	public void addForAccept(Node node){
 		accept.getChildren().add(node);
 	}
+	/**
+	 * 
+	 */
 	public void removeForAccept(){
 		accept.getChildren().clear();
 	}
+	/**
+	 * @return
+	 */
 	public stateAfterGame getMystate() {
 		return mystate;
 	}
+	/**
+	 * @param mystate
+	 */
 	public void setMystate(stateAfterGame mystate) {
 		this.mystate = mystate;
 	}
-//	public void nextMyState(){
-//		switch (mystate) {
-//		case NOTHING:{
-//			mystate = stateAfterGame.ALIVE;
-//			break;
-//		}
-//		case ALIVE: {
-//			mystate = stateAfterGame.DEAD;
-//			break;
-//		}
-//		case DEAD: {
-//			mystate = stateAfterGame.INTERRITORY;
-//			break;
-//		}
-//		case INTERRITORY: {
-//			mystate = stateAfterGame.NOTHING;
-//			break;
-//		}
-//
-//		default:
-//			break;
-//		}
-//	}
 
 }

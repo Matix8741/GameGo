@@ -20,6 +20,9 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 		generator = new Random();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	@Override
 	public void run() {
 		while(running) {

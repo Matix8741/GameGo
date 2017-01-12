@@ -5,8 +5,9 @@ public class MessegeFirst implements MessegeBody {
 	private String size= null;
 	private String player = null;
 	private String messege;
-	// code SS*size of board*
-	// PL*Player*
+	/* (non-Javadoc)
+	 * @see Messege.MessegeBody#createMessega()
+	 */
 	@Override
 	public Object createMessega() {
 		messege ="SS" + String.valueOf(size);
@@ -14,20 +15,32 @@ public class MessegeFirst implements MessegeBody {
 		return messege;
 	}
 
+	/* (non-Javadoc)
+	 * @see Messege.MessegeBody#setSize(java.lang.String)
+	 */
 	@Override
 	public void setSize(String size) {
 		this.size = size;
 	}
 
+	/* (non-Javadoc)
+	 * @see Messege.MessegeBody#setPlayerType(java.lang.String)
+	 */
 	@Override
 	public void setPlayerType(String player) {
 		this.player = player;
 	}
 
+	/* (non-Javadoc)
+	 * @see Messege.MessegeBody#setMove(java.lang.String)
+	 */
 	@Override
 	public void setMove(String Move) {
 		
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override 
 	public String toString(){
 		return messege;
