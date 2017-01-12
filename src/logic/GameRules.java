@@ -42,6 +42,7 @@ public class GameRules {
 	
 	public static int move(Board board, Field field, state color)
 			throws FieldOccupiedException, SuicideException, KoException {
+		System.out.println("---------------------------------ZACZYNAM ROZWA¯AÆ NOWY RUCH");
 		int beaten=0;
 		if (!(isOccupied(board, field))) {
 			state opponentColor;
@@ -69,30 +70,25 @@ public class GameRules {
 	}
 
 	private static boolean gonnaBeat(Board board, Field field, state color, state opponentColor) {
-		//System.out.println("Field: "+field.getX()+"."+field.getY());
 		try {
-			//System.out.println("left "+field.getLeft().countBreaths());
-			if (field.getLeft().getState()==opponentColor && field.getLeft().countBreaths()==1) {
-				return true;
-			}
+			if (field.getLeft().getState()==opponentColor) 
+				if (field.getLeft().countBreaths()==1)
+					return true;
 		} catch (EndOfBoardException e) {}
 		try {
-			//System.out.println("right "+field.getRight().countBreaths());
-			if (field.getRight().getState()==opponentColor && field.getRight().countBreaths()==1) {
-				return true;
-			}
+			if (field.getRight().getState()==opponentColor)
+				if (field.getRight().countBreaths()==1) 
+					return true;
 		} catch (EndOfBoardException e) {}
 		try {
-			//System.out.println("down "+field.getDown().countBreaths());
-			if (field.getDown().getState()==opponentColor && field.getDown().countBreaths()==1) {
-				return true;
-			}
-		} catch (EndOfBoardException e) {}
+			if (field.getDown().getState()==opponentColor) 
+				if (field.getDown().countBreaths()==1)
+					return true;
+			} catch (EndOfBoardException e) {}
 		try {
-			//System.out.println("up "+field.getUp().countBreaths());
-			if (field.getUp().getState()==opponentColor && field.getUp().countBreaths()==1) {
-				return true;
-			}
+			if (field.getUp().getState()==opponentColor)
+				if (field.getUp().countBreaths()==1)
+					return true;
 		} catch (EndOfBoardException e) {}
 		return false;
 	}
@@ -101,7 +97,6 @@ public class GameRules {
 		Board copy = board.copy();
 		rightMove(copy, field, color);
 		beating(copy, opponentColor);
-		System.out.println(copy.compare(board.getLastMove(color)));
 		if (copy.compare(board.getLastMove(color)))
 			throw new KoException();
 		else
@@ -146,12 +141,13 @@ public class GameRules {
 
 	private static void rightMove(Board board, Field field, state color) {
 		board.getField(field).setState(color);
+		System.out.println("postawiono: "+field.getX()+"/"+field.getY());
 	}
 
 	private static int beating(Board board, state opponentColor) {
 		ArrayList<Group> toRemove = new ArrayList<Group>();
 		int i=0;
-		for (Group aGroup : board.getGroups())
+		for (Group aGroup : board.getGroups()) {
 			if (aGroup.countBreaths() == 0 && aGroup.getState() == opponentColor) {
 				for (Field aField : aGroup.getFields()) {
 					i++;
@@ -160,6 +156,7 @@ public class GameRules {
 				}
 				toRemove.add(aGroup);
 			}
+		}
 		board.getGroups().removeAll(toRemove);
 		return i;
 	}
