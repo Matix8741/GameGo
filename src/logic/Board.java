@@ -21,13 +21,6 @@ public class Board implements Serializable, Cloneable {
 	private Board lastWhiteMove;
 	private Board lastBlackMove;
 	
-	public Board getLastMove(state color) {
-		if (color==state.BLACK)
-			return lastBlackMove;
-		else
-			return lastWhiteMove;
-	}
-	
 	public void setLastMove(state color, Board lastMove) {
 		if (color==state.BLACK)
 			lastBlackMove = lastMove;
@@ -86,5 +79,12 @@ public class Board implements Serializable, Cloneable {
 
 	public void saveMove(state color) {
 		setLastMove(color, this.copy());
+	}
+	
+	public Board getLastMove(state color) {
+		if (color==state.BLACK)
+			return lastBlackMove;
+		else
+			return lastWhiteMove;
 	}
 }
