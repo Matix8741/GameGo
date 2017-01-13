@@ -2,6 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import logic.Territory;
 
 public class GameRules {
 

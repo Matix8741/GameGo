@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.Serializable;
+import logic.Territory;
 
 public class Field implements Serializable {
 
@@ -89,7 +90,7 @@ public class Field implements Serializable {
 			group = new Group(this);
 	}
 	
-	Territory getTerritory() {
+	public Territory getTerritory() {
 		return territory;
 	}
 
@@ -121,8 +122,4 @@ public class Field implements Serializable {
 		}
 	}*/
 
-	public Group getTerirory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

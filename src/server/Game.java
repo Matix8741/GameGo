@@ -11,11 +11,13 @@ import logic.Group;
 import logic.InvalidBoardSizeException;
 import logic.KoException;
 import logic.SuicideException;
+import logic.Territory;
 import logic.state;
 import logic.stateAfterGame;
 
 public class Game {
 	private Group lastGroup;
+	private Territory lastTerritory;
 	protected GameStateBehavior behavior;
 	private int x;
 	public int getX() {
@@ -26,10 +28,12 @@ public class Game {
 	private IPlayerS CurrentPlayer;
 	private int bonusPoints;
 	private String message = "Ruch poprawny";
+	private boolean notWas;
 	/**
 	 * @param x
 	 */
 	public Game(int x) {
+		notWas = true;
 		this.x = x;
 		try {
 			board = new Board(x);
@@ -83,7 +87,6 @@ public class Game {
 	 * @return
 	 */
 	public String sendMessege(String messege, IPlayerS iPlayerS) {
-		System.out.println("Komunikat otrzymany: "+messege +",  "+ iPlayerS);
 		if(messege.substring(0, 1).equals("M")){
 			if(!(behavior.getState() == GameState.PAUSE) && !(behavior.getState() == GameState.WAITFORDECIDE)){
 				turnOn();
@@ -92,7 +95,7 @@ public class Game {
 					CurrentPlayer = iPlayerS.getOpponnent();
 					currentPlayerListener = currentPlayerListener.getOpponent();
 					return "A";
-				}else message = "Ruch niepoprawny";
+				}
 			}
 		}
 		else if(messege.substring(0, 1).equals("A")){
@@ -120,10 +123,11 @@ public class Game {
 			if(!(behavior.getState() == GameState.WAITFORDECIDE)&&CurrentPlayer == iPlayerS){
 				oneEnd();
 				message = "Ruch zpassowany - chêæ koñca gry";
-				currentPlayerListener = currentPlayerListener.getOpponent();
-				CurrentPlayer = CurrentPlayer.getOpponnent();
-				if(behavior.getState() == GameState.ONEEND)
+				if(behavior.getState() == GameState.ONEEND) {
+					currentPlayerListener = currentPlayerListener.getOpponent();
+					CurrentPlayer = CurrentPlayer.getOpponnent();
 					return "NO";
+				}	
 				else if(behavior.getState() == GameState.END){
 					getWinner().OutMessege("WON");
 					getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
@@ -140,13 +144,16 @@ public class Game {
 			}
 		}else if (messege.equals("LINE")){
 			changeGroup((PlayerS) CurrentPlayer,lastGroup);
+			changeGroup(true,lastTerritory);//wracamy do wczeœniejszego w³aœciciela terytorium
 			lastGroup = null;
+			lastTerritory = null;
 			message = "Odmowa wyboru";
 			pause();
 			return "dec";
 		}else if (messege.equals("EPT")){
 			message = "Wybor zaakecptowany";
 			lastGroup = null;
+			lastTerritory = null;
 			pause();
 			return "acpt";
 		}
@@ -178,6 +185,128 @@ public class Game {
 		}
 		
 	}
+	private void changeGroup(IPlayerS iPlayerS, Territory group) {
+		System.out.println(group);
+		if(!(group == null)){
+			System.out.println("HALOOOOOOO");
+			for(Field fiield :group.getFields()){
+				if(!(group.getOwner() == null)){
+					switch(group.getOwner()){
+					case BLACK:
+						if(iPlayerS.getColor() == state.BLACK){
+							if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_BLACK){
+								fiield.setStateAfterGame(stateAfterGame.NOTHING);
+								group.setOwner(state.EMPTY);
+							}
+							else{
+								group.setOwner(iPlayerS.getColor());
+								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+							}
+						}else if (iPlayerS.getColor() == state.WHITE){//jest bia³y
+							group.setOwner(iPlayerS.getColor());
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+						}
+						break;
+					case EMPTY:
+						if(iPlayerS.getColor() == state.BLACK){
+							group.setOwner(iPlayerS.getColor());
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+						}else if (iPlayerS.getColor() == state.WHITE){//jest bia³y
+							group.setOwner(iPlayerS.getColor());
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+						}else {
+							group.setOwner(state.EMPTY);
+							fiield.setStateAfterGame(stateAfterGame.NOTHING);
+						}
+						break;
+					case WHITE:
+						if(iPlayerS.getColor() == state.WHITE){
+							if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_WHITE){
+								fiield.setStateAfterGame(stateAfterGame.NOTHING);
+								group.setOwner(state.EMPTY);
+							}
+							else{
+								group.setOwner(iPlayerS.getColor());
+								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+							}
+						}else if (iPlayerS.getColor() == state.BLACK){//jest bia³y
+							group.setOwner(iPlayerS.getColor());
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+						}
+						break;
+					default:
+						break;
+					
+					}
+				}
+				
+			}
+		}
+		
+	}
+	private void changeGroup(Boolean back, Territory group) {
+		System.out.println(group);
+		if(!(group == null)){
+			group.setOwner(group.getOwnerBefore());
+			System.out.println("HALOOOOOOO");
+			for(Field fiield :group.getFields()){
+				if(!(group.getOwner() == null)){
+					switch(group.getOwner()){
+					case BLACK:
+						fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+						break;
+					case EMPTY:
+						fiield.setStateAfterGame(stateAfterGame.NOTHING);
+						break;
+					case WHITE:
+						fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+						break;
+					default:
+						break;
+					
+					}
+				}
+				
+			}
+		}
+		
+	}
+	private void changeGroup( Territory group) {
+		System.out.println(group);
+		if(!(group == null)){
+			System.out.println("HALOOOOOOO");
+			for(Field fiield :group.getFields()){
+				if(!(group.getOwner() == null)){
+					switch(group.getOwner()){
+					case BLACK:
+						if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_BLACK){
+							fiield.setStateAfterGame(stateAfterGame.NOTHING);
+						}
+						else{
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+						}
+						break;
+					case EMPTY:
+						break;
+					case WHITE:
+						if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_WHITE){
+							fiield.setStateAfterGame(stateAfterGame.NOTHING);
+						}
+						else{
+							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+						}
+						break;
+					default:
+						break;
+					
+					}
+				}
+				
+			}
+		}
+		
+	}
+
 	/**
 	 * 
 	 */
@@ -191,7 +320,6 @@ public class Game {
 	private IPlayerListener getWinner() {
 		
 		if(Integer.valueOf(getPoints(CurrentPlayer))>Integer.valueOf(getPoints(CurrentPlayer.getOpponnent()))){
-			//TODO czy platerListener ma zawsze tego CurrentPlayera
 			return currentPlayerListener;
 		}
 		else{
@@ -211,13 +339,16 @@ public class Game {
 	 * @param iPlayerS
 	 */
 	private void doInPass(Field field, IPlayerS iPlayerS) {
-		//TODO territory
 		if(CurrentPlayer == iPlayerS){
 			message = "Wybieranie...";
 			changeGroup(iPlayerS,lastGroup);
+			changeGroup(true, lastTerritory);//wracanie do wczesniejszego wlasciciela
 			lastGroup = field.getGroup();
+			lastTerritory = field.getTerritory();
+			System.out.println(field.getState());
 			if(field.getState() == state.EMPTY){
-				changeGroup(iPlayerS, field.getTerirory());
+				System.out.println("LLLLLLLLLLLLL");
+				changeGroup( iPlayerS,field.getTerritory());//ustalenie tego nowego 
 			}else{
 				changeGroup(iPlayerS, field.getGroup());
 			}
@@ -232,9 +363,18 @@ public class Game {
 		if(playerS == CurrentPlayer){
 			this.behavior = this.behavior.afterpass();
 			if( behavior.getState() == GameState.PAUSE){
+				if(notWas){
+					notWas = false;
+					for (Territory aTerritoy : GameRules.getTerritories(board)){
+						changeGroup(aTerritoy);
+					}
+				}
+				
 				message = "Dogadywanie siê graczy";
 				currentPlayerListener.OutMessege("PAUSE");
+				currentPlayerListener.objectToClient(board);
 				currentPlayerListener.getOpponent().OutMessege("PAUSE");
+				currentPlayerListener.getOpponent().objectToClient(board);
 				CurrentPlayer = CurrentPlayer.getOpponnent();
 				currentPlayerListener = currentPlayerListener.getOpponent();
 			}

@@ -5,7 +5,7 @@ import logic.state;
 
 public class PlayerS  implements Player, IPlayerS  {
 
-	private int captives;
+	private int captives =0;
 	private IPlayerS Opponnent;
 	/* (non-Javadoc)
 	 * @see server.IPlayerS#setOpponnent(server.PlayerS)
@@ -37,7 +37,7 @@ public class PlayerS  implements Player, IPlayerS  {
 		return captives;
 	}
 	public void setCaptives(int captives) {
-		this.captives = captives;
+		this.captives += captives;
 	}
 
 }

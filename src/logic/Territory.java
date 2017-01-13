@@ -1,12 +1,18 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Territory {
+public class Territory implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3940059024077288320L;
 	private List<Field> fields;
 	private List<Field> out;
 	private state owner;
+	private state ownerBefore;
 	private Board board;
 	
 	public state getOwner() {
@@ -58,19 +64,21 @@ public class Territory {
 			if (field.getDown().isEmpty() && field.getDown().getTerritory()!=null)
 				merge(field.getDown());
 		} catch (EndOfBoardException e) {}
-		
+		owner = state.EMPTY;
+		ownerBefore = state.EMPTY;
 		if (!this.getOut().isEmpty())
 			if (!this.getOut().get(0).isEmpty()) {
 				this.setOwner(this.getOut().get(0).getState());
 				for (Field aField : this.getOut())
 					if (aField.getState()!=this.owner) {
-						this.setOwner(null);
+						this.setOwner(state.EMPTY);
 						break;
 					}
 			}
 	}
 	
-	private void setOwner(state state) {
+	public void setOwner(state state) {
+		ownerBefore = owner;
 		this.owner = state;
 	}
 
@@ -90,4 +98,9 @@ public class Territory {
 		
 		board.getTerritories().remove(oldTerritory);
 	}
+
+	public state getOwnerBefore() {
+		return ownerBefore;
+	}
+
 }

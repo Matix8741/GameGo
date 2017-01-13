@@ -3,6 +3,7 @@ package logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import logic.Territory;
 
 public class Board implements Serializable {
 
