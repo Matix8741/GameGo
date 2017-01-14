@@ -30,7 +30,7 @@ public class Board implements Serializable {
 			return lastWhiteMove;
 	}
 
-	List<Group> getGroups() {
+	public List<Group> getGroups() {
 		return groups;
 	}
 

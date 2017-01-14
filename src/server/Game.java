@@ -365,6 +365,11 @@ public class Game {
 			if( behavior.getState() == GameState.PAUSE){
 				if(notWas){
 					notWas = false;
+					for(Group group : board.getGroups()){
+						if(GameRules.isProbablyDead(group)){
+							changeGroup(playerS, group);
+						}
+					}
 					for (Territory aTerritoy : GameRules.getTerritories(board)){
 						changeGroup(aTerritoy);
 					}
