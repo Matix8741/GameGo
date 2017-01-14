@@ -156,6 +156,50 @@ public class ServerListener extends Thread {
 					Platform.runLater(() -> clientPlayer.setServerStatement(command));
 					if(ifBot) myClient.sendToServer("END");
 				}
+				else if(command.equals("DEAD_PAUSE")){
+					Platform.runLater(() -> {
+						fxBoard.getPassButton().setState( stateButt.RESUME );
+						fxBoard.getPassButton().setText("RESUME");
+						Button button = new Button("OK");
+						Button end = new Button("END");
+						end.setOnAction( event -> {
+							try {
+								myClient.sendToServer("END");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						});
+						button.setOnAction( event -> {
+							try {
+								myClient.sendToServer("CHOOSE");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						});
+						fxBoard.removeForResume();
+						fxBoard.addForPause(button);
+						fxBoard.addForPause(end);
+					});
+					try {
+						fxBoard.drawBoard((Board)inObj.readObject());
+					} catch (ClassNotFoundException e) {
+						System.out.println(e.getMessage());
+					}catch (IOException e1){
+						System.out.println(e1.getMessage());
+						close();
+						return;
+					}
+					mypoints = readFromServer();
+					Platform.runLater(() -> clientPlayer.setOurPoints(mypoints));
+					opponentPoints = readFromServer();
+					Platform.runLater(() -> clientPlayer.setOpponentPoints(opponentPoints));
+					command = readFromServer();
+					Platform.runLater(() -> clientPlayer.setServerStatement(command));
+					if(ifBot) myClient.sendToServer("END");
+				}
 				else if(command.equals("PPAUSE")){//PAUZA TAKA, ZE TRZEBA ZAREAGOWAC NA RUCH PRZECIWNIKA
 					Platform.runLater(() -> {
 						fxBoard.getPassButton().setState( stateButt.RESUME );

@@ -17,7 +17,7 @@ public class StateEnd implements GameStateBehavior {
 	@Override
 	public GameStateBehavior pause() {
 		// TODO Auto-generated method stub
-		return this;
+		return GameState.PAUSE.getStateBehavior();
 	}
 
 	@Override

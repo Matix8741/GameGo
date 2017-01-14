@@ -29,10 +29,12 @@ public class Game {
 	private int bonusPoints;
 	private String message = "Ruch poprawny";
 	private boolean notWas;
+	private boolean afterDead;
 	/**
 	 * @param x
 	 */
 	public Game(int x) {
+		afterDead = false;
 		notWas = true;
 		this.x = x;
 		try {
@@ -99,9 +101,9 @@ public class Game {
 			}
 		}
 		else if(messege.substring(0, 1).equals("A")){
-			if(behavior.getState() == GameState.PAUSE&& !(behavior.getState() == GameState.WAITFORDECIDE)){
+			if(behavior.getState() == GameState.PAUSE && !(behavior.getState() == GameState.WAITFORDECIDE)){
 				int move = Integer.valueOf(messege.substring(1));
-				doInPass(board.getFields().get(move),iPlayerS);
+				doInPass(board.getFields().get(move),iPlayerS,afterDead);
 				return "A";
 			}
 		}else if (messege.equals("FF")){
@@ -112,13 +114,15 @@ public class Game {
 			pass(iPlayerS);
 		}
 		else if (messege.equals("RESUME")){
-			currentPlayerListener.OutMessege("RESUME");
-			currentPlayerListener.getOpponent().OutMessege("RESUME");
-			message = "Gra wznowiona";
-			turnOn();
-			if(currentPlayerListener.getMyPlayer() == iPlayerS)
-				currentPlayerListener = currentPlayerListener.getOpponent();
-			CurrentPlayer = iPlayerS.getOpponnent();
+			if(!afterDead){
+				currentPlayerListener.OutMessege("RESUME");
+				currentPlayerListener.getOpponent().OutMessege("RESUME");
+				message = "Gra wznowiona";
+				turnOn();
+				if(currentPlayerListener.getMyPlayer() == iPlayerS)
+					currentPlayerListener = currentPlayerListener.getOpponent();
+				CurrentPlayer = iPlayerS.getOpponnent();
+			}
 		}else if (messege.equals("END")){
 			if(!(behavior.getState() == GameState.WAITFORDECIDE)&&CurrentPlayer == iPlayerS){
 				oneEnd();
@@ -129,8 +133,24 @@ public class Game {
 					return "NO";
 				}	
 				else if(behavior.getState() == GameState.END){
+					if(afterDead){
 					getWinner().OutMessege("WON");
 					getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
+					}else{
+						for(Field field : board.getFields()){
+							System.out.println(board.getFields().indexOf(field));
+							if(field.getStateAfterGame() == stateAfterGame.DEAD){
+								field.setStateAfterGame(stateAfterGame.NOTHING);
+								field.setState(state.EMPTY);
+							}
+						}
+						for (Territory aTerritoy : GameRules.getTerritories(board)){
+							changeGroup(aTerritoy);
+						}
+						behavior = behavior.pause();
+						afterDead = true;
+						return "DEAD_PAUSE";
+					}
 				}
 			}
 			
@@ -337,27 +357,33 @@ public class Game {
 	/**
 	 * @param field
 	 * @param iPlayerS
+	 * @param b 
 	 */
-	private void doInPass(Field field, IPlayerS iPlayerS) {
+	private void doInPass(Field field, IPlayerS iPlayerS, boolean b) {
 		if(CurrentPlayer == iPlayerS){
-			message = "Wybieranie...";
-			changeGroup(iPlayerS,lastGroup);
-			changeGroup(true, lastTerritory);//wracanie do wczesniejszego wlasciciela
-			lastGroup = field.getGroup();
-			lastTerritory = field.getTerritory();
-			System.out.println(field.getState());
-			if(field.getState() == state.EMPTY){
-				System.out.println("LLLLLLLLLLLLL");
-				changeGroup( iPlayerS,field.getTerritory());//ustalenie tego nowego 
+			if(!b){
+				message = "Wybieranie...";
+				changeGroup(iPlayerS,lastGroup);
+				lastGroup = field.getGroup();
+				System.out.println(field.getState());
+				if(field.getState() == state.EMPTY){
+					System.out.println("LLLLLLLLLLLLL");
+				}else{
+					changeGroup(iPlayerS, field.getGroup());
+				}
 			}else{
-				changeGroup(iPlayerS, field.getGroup());
+				changeGroup(true, lastTerritory);//wracanie do wczesniejszego wlasciciela
+				lastTerritory = field.getTerritory();
+				if(field.getState() == state.EMPTY){
+					changeGroup( iPlayerS,field.getTerritory());//ustalenie tego nowego 
+				}
 			}
-			
 		}
 		
 	}
 	/**
 	 * @param playerS
+	 * @param b 
 	 */
 	private void pass(IPlayerS playerS) {
 		if(playerS == CurrentPlayer){
@@ -369,9 +395,6 @@ public class Game {
 						if(GameRules.isProbablyDead(group)){
 							changeGroup(playerS, group);
 						}
-					}
-					for (Territory aTerritoy : GameRules.getTerritories(board)){
-						changeGroup(aTerritoy);
 					}
 				}
 				

@@ -82,7 +82,7 @@ public class Field implements Serializable {
 		return myState;
 	}
 	
-	void setState(state newState) {
+	public void setState(state newState) {
 		myState = newState;
 		if (newState==state.EMPTY)
 			group = null;

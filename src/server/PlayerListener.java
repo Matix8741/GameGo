@@ -101,6 +101,19 @@ public class PlayerListener extends Thread implements IPlayerListener {
 						if(back.equals("acpt")){
 							opponent.OutMessege(back);
 						}
+						if(back.equals("DEAD_PAUSE")){
+							opponent.OutMessege(back);
+							OutMessege(back);
+							opponent.objectToClient(game.getBoard());
+							objectToClient(game.getBoard());
+							opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
+							OutMessege(game.getPoints(getMyPlayer()));
+							opponent.OutMessege(game.getPoints(getMyPlayer()));
+							OutMessege(game.getPoints(opponent.getMyPlayer()));
+							OutMessege(game.getMessage());
+							getOpponent().OutMessege(game.getMessage());
+							continue;
+						}
 						OutMessege(back);
 						OutMessege(game.getMessage());
 						getOpponent().OutMessege(game.getMessage());
