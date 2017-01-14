@@ -138,7 +138,6 @@ public class Game {
 					getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
 					}else{
 						for(Field field : board.getFields()){
-							System.out.println(board.getFields().indexOf(field));
 							if(field.getStateAfterGame() == stateAfterGame.DEAD){
 								field.setStateAfterGame(stateAfterGame.NOTHING);
 								field.setState(state.EMPTY);
@@ -206,69 +205,95 @@ public class Game {
 		
 	}
 	private void changeGroup(IPlayerS iPlayerS, Territory group) {
-		System.out.println(group);
+		System.out.println("change(iPlayerS, Territory)");
 		if(!(group == null)){
-			System.out.println("HALOOOOOOO");
-			for(Field fiield :group.getFields()){
+			int i =0;
 				if(!(group.getOwner() == null)){
 					switch(group.getOwner()){
 					case BLACK:
-						if(iPlayerS.getColor() == state.BLACK){
-							if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_BLACK){
-								fiield.setStateAfterGame(stateAfterGame.NOTHING);
-								group.setOwner(state.EMPTY);
+						for(Field fiield :group.getFields()){
+							System.out.println("BLACK"+fiield);
+							if(iPlayerS.getColor() == state.BLACK){
+								if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_BLACK){
+									fiield.setStateAfterGame(stateAfterGame.NOTHING);
+									i =0;
+								}
+								else{
+									i=1;
+									fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+								}
+							}else if (iPlayerS.getColor() == state.WHITE){//jest bia³y
+								i=2;
+								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
 							}
-							else{
-								group.setOwner(iPlayerS.getColor());
-								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
-							}
-						}else if (iPlayerS.getColor() == state.WHITE){//jest bia³y
-							group.setOwner(iPlayerS.getColor());
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
 						}
 						break;
 					case EMPTY:
-						if(iPlayerS.getColor() == state.BLACK){
-							group.setOwner(iPlayerS.getColor());
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
-						}else if (iPlayerS.getColor() == state.WHITE){//jest bia³y
-							group.setOwner(iPlayerS.getColor());
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
-						}else {
-							group.setOwner(state.EMPTY);
-							fiield.setStateAfterGame(stateAfterGame.NOTHING);
+						for(Field fiield :group.getFields()){
+							System.out.println("EMPTY"+fiield);
+							if(iPlayerS.getColor() == state.BLACK){
+								i=1;
+								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
+							}else if (iPlayerS.getColor() == state.WHITE){//jest bia³y
+								i=2;
+								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+							}else {
+								i=0;
+								fiield.setStateAfterGame(stateAfterGame.NOTHING);
+							}
 						}
 						break;
 					case WHITE:
-						if(iPlayerS.getColor() == state.WHITE){
-							if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_WHITE){
-								fiield.setStateAfterGame(stateAfterGame.NOTHING);
-								group.setOwner(state.EMPTY);
+						for(Field fiield :group.getFields()){
+							System.out.println("WHITE"+fiield);
+							if(iPlayerS.getColor() == state.WHITE){
+								if(fiield.getStateAfterGame() == stateAfterGame.INTERRITORY_WHITE){
+									fiield.setStateAfterGame(stateAfterGame.NOTHING);
+									i=0;
+								}
+								else{
+									i=2;
+									fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
+								}
+							}else if (iPlayerS.getColor() == state.BLACK){//jest bia³y
+								i=1;
+								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
 							}
-							else{
-								group.setOwner(iPlayerS.getColor());
-								fiield.setStateAfterGame(stateAfterGame.INTERRITORY_WHITE);
-							}
-						}else if (iPlayerS.getColor() == state.BLACK){//jest bia³y
-							group.setOwner(iPlayerS.getColor());
-							fiield.setStateAfterGame(stateAfterGame.INTERRITORY_BLACK);
 						}
 						break;
-					default:
+					default://TODO zmiana w³aœciciela na koniec
 						break;
 					
 					}
-				}
+					switch (i) {
+					case 0:
+						group.setOwner(state.EMPTY);
+						
+						break;
+					case 1:
+						group.setOwner(state.BLACK);
+						
+						break;
+					case 2:
+						group.setOwner(state.WHITE);
+												
+						break;
+					case 3:
+							
+						break;
+					case 4:
+						
+						break;
+					default:
+					}
 				
 			}
 		}
 		
 	}
 	private void changeGroup(Boolean back, Territory group) {
-		System.out.println(group);
 		if(!(group == null)){
 			group.setOwner(group.getOwnerBefore());
-			System.out.println("HALOOOOOOO");
 			for(Field fiield :group.getFields()){
 				if(!(group.getOwner() == null)){
 					switch(group.getOwner()){
@@ -292,9 +317,7 @@ public class Game {
 		
 	}
 	private void changeGroup( Territory group) {
-		System.out.println(group);
 		if(!(group == null)){
-			System.out.println("HALOOOOOOO");
 			for(Field fiield :group.getFields()){
 				if(!(group.getOwner() == null)){
 					switch(group.getOwner()){
@@ -365,9 +388,7 @@ public class Game {
 				message = "Wybieranie...";
 				changeGroup(iPlayerS,lastGroup);
 				lastGroup = field.getGroup();
-				System.out.println(field.getState());
 				if(field.getState() == state.EMPTY){
-					System.out.println("LLLLLLLLLLLLL");
 				}else{
 					changeGroup(iPlayerS, field.getGroup());
 				}
