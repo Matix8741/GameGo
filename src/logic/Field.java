@@ -3,6 +3,11 @@ package logic;
 import java.io.Serializable;
 import logic.Territory;
 
+/**
+ * @author Daniel
+ *
+ *every place where a stone is/can be
+ */
 public class Field implements Serializable {
 
 	private static final long serialVersionUID = -1014502393010618861L;
@@ -15,6 +20,13 @@ public class Field implements Serializable {
 	private Territory territory;
 	private stateAfterGame stateAfterGame;
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param board
+	 * 
+	 * creates field at the beginning of the game
+	 */
 	Field(int x, int y, Board board) {
 		this.x = x;
 		this.y = y;
