@@ -154,7 +154,10 @@ public class ServerListener extends Thread {
 					}
 					command = readFromServer();
 					Platform.runLater(() -> clientPlayer.setServerStatement(command));
-					if(ifBot) myClient.sendToServer("END");
+					if(ifBot) {
+						System.out.println("AAA");
+						myClient.sendToServer("END");
+					}
 				}
 				else if(command.equals("DEAD_PAUSE")){
 					Platform.runLater(() -> {
@@ -198,7 +201,10 @@ public class ServerListener extends Thread {
 					Platform.runLater(() -> clientPlayer.setOpponentPoints(opponentPoints));
 					command = readFromServer();
 					Platform.runLater(() -> clientPlayer.setServerStatement(command));
-					if(ifBot) myClient.sendToServer("END");
+					if(ifBot) {
+						myClient.sendToServer("END");
+						System.out.println("EEE");
+					}
 				}
 				else if(command.equals("PPAUSE")){//PAUZA TAKA, ZE TRZEBA ZAREAGOWAC NA RUCH PRZECIWNIKA
 					Platform.runLater(() -> {

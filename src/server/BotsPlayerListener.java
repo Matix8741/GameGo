@@ -105,10 +105,13 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 			messege = doMove();
 			i++;
 			if(i>120){
+				System.out.println("!111!");
 				game.sendMessege("PASS", myPlayer);
 				game.sendMessege("PASS", myPlayer.getOpponnent());
 				game.sendMessege("END", myPlayer);
 				game.sendMessege("END", myPlayer.getOpponnent());
+				//game.sendMessege("END", myPlayer);
+				//game.sendMessege("END", myPlayer.getOpponnent());
 				running = false;
 				return;
 			}
@@ -126,7 +129,16 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 
 	private String doMove(){
 		if(statement.equals("1PAUSE")){
+			System.out.println("!?");
 			game.sendMessege("PASS", myPlayer);
+			game.sendMessege("END", myPlayer.getOpponnent());
+			game.sendMessege("END", myPlayer);
+			opponent.OutMessege(game.getMessage());
+			opponent.OutMessege("DEAD_PAUSE");
+			opponent.objectToClient(game.getBoard());
+			opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
+			opponent.OutMessege(game.getPoints(getMyPlayer()));
+			opponent.OutMessege(game.getMessage());
 			game.sendMessege("END", myPlayer.getOpponnent());
 			game.sendMessege("END", myPlayer);
 			return "1PAUSE";

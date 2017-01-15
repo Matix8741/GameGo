@@ -127,16 +127,18 @@ public class Game {
 			if(!(behavior.getState() == GameState.WAITFORDECIDE)&&CurrentPlayer == iPlayerS){
 				oneEnd();
 				message = "Ruch zpassowany - chêæ koñca gry";
+				System.out.println(iPlayerS + "  " +"  "+afterDead+"  "+ behavior.getState());
 				if(behavior.getState() == GameState.ONEEND) {
 					currentPlayerListener = currentPlayerListener.getOpponent();
 					CurrentPlayer = CurrentPlayer.getOpponnent();
 					return "NO";
 				}	
-				else if(behavior.getState() == GameState.END){
+				else if(behavior.getState() == GameState.END&&CurrentPlayer == iPlayerS){
 					if(afterDead){
 					getWinner().OutMessege("WON");
 					getWinner().getOpponent().OutMessege("LOSE");//TODO stany kiedy koniec gry
 					}else{
+						System.out.println("pracuje");
 						for(Field field : board.getFields()){
 							if(field.getStateAfterGame() == stateAfterGame.DEAD){
 								field.setStateAfterGame(stateAfterGame.NOTHING);

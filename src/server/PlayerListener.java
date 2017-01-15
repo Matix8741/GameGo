@@ -74,9 +74,9 @@ public class PlayerListener extends Thread implements IPlayerListener {
 						}
 						if(back.equals("PAUSE")){
 							if(ifbot) {
-								game.sendMessege("END", myPlayer.getOpponnent());
-								game.sendMessege("END", myPlayer);
-								game.sendMessege("END", myPlayer.getOpponnent());
+//								game.sendMessege("END", myPlayer.getOpponnent());
+//								game.sendMessege("END", myPlayer);
+//								game.sendMessege("END", myPlayer.getOpponnent());
 							}
 						}
 						if(back.equals("PPAUSE")){
