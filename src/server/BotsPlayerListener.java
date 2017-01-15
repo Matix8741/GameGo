@@ -119,8 +119,8 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 				opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
 				opponent.OutMessege(game.getPoints(getMyPlayer()));
 				opponent.OutMessege(game.getMessage());
-				game.sendMessege("END", myPlayer);
 				game.sendMessege("END", myPlayer.getOpponnent());
+				game.sendMessege("END", myPlayer);
 				running = false;
 				return;
 			}
