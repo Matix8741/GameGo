@@ -5,7 +5,7 @@ import logic.state;
 
 public class PlayerS  implements Player, IPlayerS  {
 
-	private int captives =0;
+	private int captives;
 	private IPlayerS Opponnent;
 	/* (non-Javadoc)
 	 * @see server.IPlayerS#setOpponnent(server.PlayerS)
@@ -18,6 +18,7 @@ public class PlayerS  implements Player, IPlayerS  {
 	
 	public PlayerS(state color) {
 		this.color = color;
+		captives = 0;
 	}
 	/* (non-Javadoc)
 	 * @see server.IPlayerS#getColor()

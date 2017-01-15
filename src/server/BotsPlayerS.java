@@ -9,6 +9,7 @@ public class BotsPlayerS implements IPlayerS {
 	private IPlayerS Opponnent;
 	public BotsPlayerS(state c) {
 		this.color = c;
+		captives = 0;
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class BotsPlayerS implements IPlayerS {
 	 * @see server.IPlayerS#setCaptives(int)
 	 */
 	public void setCaptives(int captives) {
-		this.captives = captives;
+		this.captives += captives;
 	}
 
 }
