@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2.0">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>95</x>
+      <y>250</y>
+      <w>195</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>logic::Field
+--
+-serialVersionUID = -1014502393010618861L: long
+-x: int
+-y: int
+-myState: state
+-board: Board
+-group: Group
+-territory: Territory
+-stateAfterGame: stateAfterGame
+--
+~Field(int x, int y, Board board): ctor
+~getX(): int
+~getY(): int
++setState(state newState): void
++getState(): state
+~isEmpty(): boolean
+~getBoard(): Board
+~setGroup(Group newGroup): void
++getGroup(): Group
+~setTerritory(Territory newTerritory): void
+~setTerritory(): void
++getTerritory(): Territory
++setStateAfterGame(stateAfterGame stateAfterGame): void
++getStateAfterGame(): stateAfterGame
+~countBreaths(): int
++getLeft(): Field
++getRight(): Field
++getUp(): Field
++getDown(): Field
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>615</x>
+      <y>235</y>
+      <w>95</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>logic::Group
+--
+-serialVersionUID = 1L: long
+-fields: List&lt;Field&gt;
+-out: List&lt;Field&gt;
+-mystate: state
+-board: Board
+--
+~Group(Field field): ctor
++getFields(): List&lt;Field&gt;
+~getOut(): List&lt;Field&gt;
+~getState(): state
+~countBreaths(): int
+-merge(Field field): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>405</y>
+      <w>170</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>logic::Territory
+--
+-serialVersionUID = -3940059024077288320L: long
+-fields: List&lt;Field&gt;
+-out: List&lt;Field&gt;
+-owner: state
+-ownerBefore: state
+-board: Board
+--
+~Territory(Field field): ctor
++getFields(): List&lt;Field&gt;
+-getOut(): List&lt;Field&gt;
++setOwner(state state): void
++getOwner(): state
++getOwnerBefore(): state
+-merge(Field field): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>510</y>
+      <w>160</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>logic::Board
+--
+-serialVersionUID = 199410800481618070L: long
+-size: int
+-fields: List&lt;Field&gt;
+-groups: List&lt;Group&gt;
+-territories: List&lt;Territory&gt;
+-lastWhiteMove: Board
+-lastBlackMove: Board
+--
++Board(int size): ctor
++getSize(): int
++getFields(): List&lt;Field&gt;
++getField(int x, int y): Field
+~getField(Field field): Field
++getGroups(): List&lt;Group&gt;
+~setTerritories(): void
+~getTerritories(): List&lt;Territory&gt;
+~saveMove(state color): void
+~getLastMove(state color): Board
+~copy(): Board
+~compare(Board lastMove): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>105</y>
+      <w>255</w>
+      <h>115</h>
+    </coordinates>
+    <panel_attributes>logic::GameRules
+--
+--
++move(Board board, Field field, state color): int
++isProbablyDead(Group group): boolean
++getTerritories(Board board): List&lt;Territory&gt;
+-isOccupied(Board board, Field field): boolean
+-gonnaBeat(Board board, Field field, state color, state opponentColor): boolean
+-ko(Board board, Field field, state color, state opponentColor): boolean
+-isSuicidal(Board board, Field field, state color, state opponentColor): boolean
++countBreaths(Board board, Field field, state color, state opponentColor): int
+-rightMove(Board board, Field field, state color): void
+-beating(Board board, state opponentColor): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>515</x>
+      <y>650</y>
+      <w>110</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>logic::InvalidBoardSizeException
+--
+-serialVersionUID = 1L: long
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>615</x>
+      <y>95</y>
+      <w>100</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>logic::FieldOccupiedException
+--
+--
++getMessage(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>65</x>
+      <y>530</y>
+      <w>95</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>logic::EndOfBoardException
+--
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>615</x>
+      <y>175</y>
+      <w>80</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>logic::SuicideException
+--
+--
++getMessage(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>615</x>
+      <y>135</y>
+      <w>75</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>logic::KoException
+--
+--
++getMessage(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>95</y>
+      <w>115</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>170</y>
+      <w>115</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>210.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>135</y>
+      <w>115</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>540</x>
+      <y>110</y>
+      <w>40</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;throws&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>550</x>
+      <y>135</y>
+      <w>40</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;throws&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>555</x>
+      <y>165</y>
+      <w>40</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;throws&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>285</x>
+      <y>215</y>
+      <w>100</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;80.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>215</y>
+      <w>20</w>
+      <h>305</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>20.0;590.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>215</y>
+      <w>255</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>490.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>215</y>
+      <w>220</w>
+      <h>205</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>420.0;390.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>290</x>
+      <y>230</y>
+      <w>40</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;uses&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>350</x>
+      <y>235</y>
+      <w>40</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;uses&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>400</x>
+      <y>235</y>
+      <w>40</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;uses&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>440</x>
+      <y>225</y>
+      <w>40</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;uses&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>285</x>
+      <y>290</y>
+      <w>35</w>
+      <h>265</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;</panel_attributes>
+    <additional_attributes>50.0;510.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>305</x>
+      <y>490</y>
+      <w>15</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>1
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>295</x>
+      <y>350</y>
+      <w>40</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>1..n
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>60</x>
+      <y>460</y>
+      <w>45</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;150.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>75</x>
+      <y>515</y>
+      <w>40</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;throws&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>285</x>
+      <y>255</y>
+      <w>340</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;</panel_attributes>
+    <additional_attributes>660.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>540</x>
+      <y>420</y>
+      <w>20</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>0..1
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>310</x>
+      <y>290</y>
+      <w>20</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>1..n
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>285</x>
+      <y>305</y>
+      <w>305</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;</panel_attributes>
+    <additional_attributes>590.0;250.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>325</x>
+      <y>315</y>
+      <w>20</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>1
+..n
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>600</x>
+      <y>260</y>
+      <w>15</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>1
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>465</x>
+      <y>280</y>
+      <w>160</w>
+      <h>275</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;</panel_attributes>
+    <additional_attributes>300.0;10.0;10.0;530.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>465</x>
+      <y>455</y>
+      <w>125</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-&gt;&gt;</panel_attributes>
+    <additional_attributes>230.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>480</x>
+      <y>545</y>
+      <w>20</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>1
+..n
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>470</x>
+      <y>510</y>
+      <w>20</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>1
+..n
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>585</x>
+      <y>290</y>
+      <w>40</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>0..n
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>550</x>
+      <y>460</y>
+      <w>40</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>0..n
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>465</x>
+      <y>580</y>
+      <w>60</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>100.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>490</x>
+      <y>610</y>
+      <w>40</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;throws&gt;&gt;
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

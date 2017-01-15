@@ -1,5 +1,5 @@
 package logic;
 
 public enum state {
-	 WHITE, BLACK, EMPTY 
+	WHITE, BLACK, EMPTY
 };

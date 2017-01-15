@@ -6,19 +6,6 @@ import logic.Territory;
 
 public class GameRules {
 
-	public static boolean isProbablyDead(Group group) {
-		if (group.getState() == state.EMPTY)
-			return false;
-		if (group.countBreaths() == 1)
-			return true;
-		return false;
-	}
-	
-	public static List<Territory> getTerritories(Board board) {
-		board.setTerritories();
-		return board.getTerritories();
-	}
-
 	public static int move(Board board, Field field, state color)
 			throws FieldOccupiedException, SuicideException, KoException {
 		int beaten = 0;
@@ -38,6 +25,19 @@ public class GameRules {
 			board.saveMove(color);
 		}
 		return beaten;
+	}
+
+	public static boolean isProbablyDead(Group group) {
+		if (group.getState() == state.EMPTY)
+			return false;
+		if (group.countBreaths() == 1)
+			return true;
+		return false;
+	}
+
+	public static List<Territory> getTerritories(Board board) {
+		board.setTerritories();
+		return board.getTerritories();
 	}
 
 	private static boolean isOccupied(Board board, Field field) throws FieldOccupiedException {
