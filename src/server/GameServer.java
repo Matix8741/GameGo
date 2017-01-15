@@ -14,7 +14,7 @@ public class GameServer extends Thread {
 	private List<Game> freeGames;
 	
 	/**
-	 * 
+	 * create List of free games and create serversocket on port
 	 */
 	public GameServer()  {
 		freeGames = new ArrayList<Game>();
@@ -48,6 +48,7 @@ public class GameServer extends Thread {
 	
 	
 	/**
+	 * start GameServer
 	 * @param args
 	 */
 	public static void main(String[] args) {

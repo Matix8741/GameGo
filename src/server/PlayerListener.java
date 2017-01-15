@@ -23,6 +23,11 @@ public class PlayerListener extends Thread implements IPlayerListener {
 	private ObjectOutputStream outObj;
 	private boolean ifbot = false;
 	
+	/**
+	 * create connection between Client
+	 * @param socket
+	 * @throws IOException
+	 */
 	public PlayerListener(Socket socket) throws IOException {
 		this.socket = socket;
 		in = new DataInputStream(socket.getInputStream());
@@ -176,6 +181,9 @@ public class PlayerListener extends Thread implements IPlayerListener {
 		game.setCurrentPlayerListener(this);
 	}
 
+	/**
+	 * @return
+	 */
 	private String getMessega() {
 		if(socket.isClosed()){
 			return"";

@@ -6,20 +6,23 @@ public class PassButton extends Button {
 	private stateButt state;
 
 	/**
-	 * @param string
+	 * constructor special my class for Button - only super constructor
+	 * @param string name of button
 	 */
 	public PassButton(String string) {
 		super(string);
 	}
 
 	/**
-	 * @return
+	 * get state from button
+	 * @return 
 	 */
 	public stateButt getState() {
 		return state;
 	}
 
 	/**
+	 * set state for button
 	 * @param state
 	 */
 	public void setState(stateButt state) {

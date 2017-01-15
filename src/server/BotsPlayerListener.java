@@ -98,6 +98,9 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 		this.game = game;
 	}
 
+	/* (non-Javadoc)
+	 * @see server.IPlayerListener#myMove()
+	 */
 	public void myMove(){
 		String messege = "";
 		int i=0;
@@ -110,8 +113,14 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 				game.sendMessege("PASS", myPlayer.getOpponnent());
 				game.sendMessege("END", myPlayer);
 				game.sendMessege("END", myPlayer.getOpponnent());
-				//game.sendMessege("END", myPlayer);
-				//game.sendMessege("END", myPlayer.getOpponnent());
+				opponent.OutMessege(game.getMessage());
+				opponent.OutMessege("DEAD_PAUSE");
+				opponent.objectToClient(game.getBoard());
+				opponent.OutMessege(game.getPoints(opponent.getMyPlayer()));
+				opponent.OutMessege(game.getPoints(getMyPlayer()));
+				opponent.OutMessege(game.getMessage());
+				game.sendMessege("END", myPlayer);
+				game.sendMessege("END", myPlayer.getOpponnent());
 				running = false;
 				return;
 			}
@@ -127,6 +136,10 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 		}
 	}
 
+	/**
+	 * bot takes decide up which field choose and end game when player pass
+	 * @return statement from server
+	 */
 	private String doMove(){
 		if(statement.equals("1PAUSE")){
 			System.out.println("!?");
@@ -141,6 +154,7 @@ public class BotsPlayerListener extends Thread implements IPlayerListener {
 			opponent.OutMessege(game.getMessage());
 			game.sendMessege("END", myPlayer.getOpponnent());
 			game.sendMessege("END", myPlayer);
+			running = false;
 			return "1PAUSE";
 		}
 		int i = generator.nextInt(getX());

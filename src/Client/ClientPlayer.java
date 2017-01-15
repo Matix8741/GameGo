@@ -44,8 +44,10 @@ public class ClientPlayer extends Application {
 
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 * initialization first window and connect with server
 	 */
-	@Override public void start(Stage primaryStage) throws UnknownHostException, IOException { final MyClient myClient = new MyClient("localhost", port);
+	@Override public void start(Stage primaryStage) throws UnknownHostException, IOException { 
+		final MyClient myClient = new MyClient("localhost", port);
 		final Stage boardStage = new Stage();
 		primaryStage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
 		boardStage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
@@ -103,10 +105,11 @@ public class ClientPlayer extends Application {
 		//createBoard(myClient);
 	}
 	/**
-	 * @param myClient
-	 * @param size
-	 * @param player
-	 * @throws IOException
+	 * method send request for game with parameters, which player chose to server 
+	 * @param myClient socket for connection with server	
+	 * @param size size of board
+	 * @param player information if game will be agianst real player or bot
+	 * @throws IOException 
 	 */
 	protected void prepareGame(MyClient myClient, String size, Toggle player) throws IOException {
 		MessegeFirst messege = new MessegeFirst();
@@ -118,25 +121,27 @@ public class ClientPlayer extends Application {
 		myClient.sendToServer(messege.toString());
 	}
 	/**
-	 * @param args
+	 * launch client application
+	 * @param args 
 	 */
 	public static void main(String[] args) {
 		launch(args);
 	}	
 
 	/**
-	 * @return
+	 * @return tihs ClientPlayer
 	 */
 	private ClientPlayer getOwn(){
 		return this;
 	}
 
 	/**
-	 * @param client
-	 * @param x
-	 * @param color
-	 * @param serverlistener
-	 * @param boardStage
+	 * create Board to play 
+	 * @param client socket to connection with server
+	 * @param x size od board
+	 * @param color our Color with game: back or white
+	 * @param serverlistener thread to catch statements from server
+	 * @param boardStage Stage for board
 	 */
 	public void createBoard(MyClient client, int x, Color color, ServerListener serverlistener,Stage boardStage){
 			boardStage.initStyle(StageStyle.DECORATED);
@@ -204,9 +209,10 @@ public class ClientPlayer extends Application {
 			boardStage.show();
 	}
 	/**
-	 * @param tf
-	 * @param lb
-	 * @param maxLength
+	 * method for block incorrect size's entry
+	 * @param tf textfield for block 
+	 * @param lb label for show size
+	 * @param maxLength 2 
 	 */
 	public static void addTextLimiterAndAction(final TextField tf,final Label lb, final int maxLength) {
 		tf.textProperty().addListener((ChangeListener<String>) (ov, oldValue, newValue) -> {
@@ -234,8 +240,9 @@ public class ClientPlayer extends Application {
 		});
 		}
 	/**
-	 * @param stage
-	 * @return
+	 * special method creating window for wait for game
+	 * @param stage 
+	 * @return Timer witch change label
 	 */
 	private Timer searching(Stage stage){
 		stage.initStyle(StageStyle.UNDECORATED);
@@ -259,6 +266,7 @@ public class ClientPlayer extends Application {
 		return timer;
 	}
 	/**
+	 * close timer and stage
 	 * @param timer
 	 * @param stage
 	 */
@@ -267,6 +275,7 @@ public class ClientPlayer extends Application {
 		stage.close();
 	}
 	/**
+	 * 3 sate for label in searching window
 	 * @param label
 	 */
 	private static void changeLabel(Label label ){
@@ -280,19 +289,22 @@ public class ClientPlayer extends Application {
 			label.setText("Searching opponent..");
 	}
 	/**
-	 * @param points
+	 * set string to label myPoints
+	 * @param points string with our points
 	 */
 	public void setOurPoints(String points){
 		myPoints.setText(points);
 	}
 	/**
-	 * @param points
+	 * set string to label opponentPoints
+	 * @param points string with opponent's points
 	 */
 	public void setOpponentPoints(String points){
 		opponetPoints.setText(points);
 	}
 	/**
-	 * @param statement
+	 * set satement about game from server 
+	 * @param statement string for set
 	 */
 	public void setServerStatement(String statement){
 		infoFromServer.setText(statement);

@@ -31,7 +31,8 @@ public class Game {
 	private boolean notWas;
 	private boolean afterDead;
 	/**
-	 * @param x
+	 * create Game with x-size
+	 * @param x size
 	 */
 	public Game(int x) {
 		afterDead = false;
@@ -47,9 +48,10 @@ public class Game {
 		bonusPoints = x/3;
 	}
 	/**
-	 * @param field
-	 * @param iPlayerS
-	 * @return
+	 * try do move
+	 * @param field rock 
+	 * @param iPlayerS player who want do move
+	 * @return if did move
 	 */
 	public boolean doMove(Field field, IPlayerS iPlayerS) {
 		if(CurrentPlayer == iPlayerS){
@@ -84,9 +86,10 @@ public class Game {
 		CurrentPlayer = iPlayerS;
 	}
 	/**
-	 * @param messege
-	 * @param iPlayerS
-	 * @return
+	 * servise game - depends on message from players
+	 * @param messege 
+	 * @param iPlayerS player
+	 * @return back message
 	 */
 	public String sendMessege(String messege, IPlayerS iPlayerS) {
 		if(messege.substring(0, 1).equals("M")){
@@ -182,6 +185,7 @@ public class Game {
 		
 	}
 	/**
+	 * change dead rock to alive and inside out
 	 * @param iPlayerS
 	 * @param group
 	 */
@@ -206,6 +210,11 @@ public class Game {
 		}
 		
 	}
+	/**
+	 * change territory for black, white or empty - depends on player
+	 * @param iPlayerS
+	 * @param group
+	 */
 	private void changeGroup(IPlayerS iPlayerS, Territory group) {
 		System.out.println("change(iPlayerS, Territory)");
 		if(!(group == null)){
@@ -293,6 +302,11 @@ public class Game {
 		}
 		
 	}
+	/**
+	 * create recommend territories
+	 * @param back
+	 * @param group
+	 */
 	private void changeGroup(Boolean back, Territory group) {
 		if(!(group == null)){
 			group.setOwner(group.getOwnerBefore());
@@ -318,6 +332,10 @@ public class Game {
 		}
 		
 	}
+	/**
+	 * change territory: from black/white to nothing and from nothing to black/white
+	 * @param group
+	 */
 	private void changeGroup( Territory group) {
 		if(!(group == null)){
 			for(Field fiield :group.getFields()){
@@ -353,14 +371,15 @@ public class Game {
 	}
 
 	/**
-	 * 
+	 * change state to waitFor
 	 */
 	private void waitFor() {
 		behavior = behavior.waitfor();
 		
 	}
 	/**
-	 * @return
+	 * 
+	 * @return winner of game
 	 */
 	private IPlayerListener getWinner() {
 		
@@ -373,16 +392,17 @@ public class Game {
 		
 	}
 	/**
-	 * 
+	 * change state to oneEnd
 	 */
 	private void oneEnd() {
 		this.behavior = this.behavior.oneend();
 		
 	}
 	/**
+	 * pick territory or dead rocks
 	 * @param field
 	 * @param iPlayerS
-	 * @param b 
+	 * @param b if dead rocks or teriitory
 	 */
 	private void doInPass(Field field, IPlayerS iPlayerS, boolean b) {
 		if(CurrentPlayer == iPlayerS){
@@ -405,8 +425,8 @@ public class Game {
 		
 	}
 	/**
+	 * change state for pass
 	 * @param playerS
-	 * @param b 
 	 */
 	private void pass(IPlayerS playerS) {
 		if(playerS == CurrentPlayer){
@@ -442,7 +462,7 @@ public class Game {
 		
 	}
 	/**
-	 * 
+	 * change state for pause
 	 */
 	private void pause(){
 		behavior = behavior.pause();
@@ -471,8 +491,9 @@ public class Game {
 		return board;
 	}
 	/**
+	 * count points for player and return as String
 	 * @param iPlayerS
-	 * @return
+	 * @return String contains points for player
 	 */
 	public String getPoints(IPlayerS iPlayerS) {
 		switch (iPlayerS.getColor()) {
@@ -512,7 +533,7 @@ public class Game {
 		return "0";
 	}
 	/**
-	 * 
+	 * change state for turnOn
 	 */
 	public void turnOn() {
 		this.behavior = this.behavior.on();

@@ -16,8 +16,9 @@ public class MyClient extends Socket {
 	private DataInputStream in;
 	
 	/**
-	 * @param arg0
-	 * @param arg1
+	 * constructor special my class for Socket
+	 * @param arg0 name of server
+	 * @param arg1 port of server
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
@@ -31,7 +32,8 @@ public class MyClient extends Socket {
 	}
 	
 	/**
-	 * @return
+	 * method for read string from server
+	 * @return read message
 	 * @throws IOException
 	 */
 	public String readFromServer() throws IOException {
@@ -41,7 +43,8 @@ public class MyClient extends Socket {
 		return in.readUTF();
 	}
 	/**
-	 * @param messege
+	 * method for send string to server
+	 * @param messege string for send
 	 * @throws IOException
 	 */
 	public void sendToServer(String messege) throws IOException{

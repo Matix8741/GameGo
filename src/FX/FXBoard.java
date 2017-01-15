@@ -19,7 +19,8 @@ import logic.stateAfterGame;
 public class FXBoard extends Canvas {
 
 	private  HBox for_pause;
-	/**
+	/**		
+	 * get special passButton
 	 * @return
 	 */
 	public PassButton getPassButton() {
@@ -38,6 +39,7 @@ public class FXBoard extends Canvas {
 	private double wdOfRow;
 	private HBox accept;
 	/**
+	 * constructor - inizialization fields below and create all board
 	 * @param arg1
 	 * @param arg2
 	 * @param client
@@ -86,10 +88,12 @@ public class FXBoard extends Canvas {
 		});
 	}
 	/**
-	 * @param i
-	 * @param color
-	 * @param afterGame
-	 * @param b
+	 * method for draw rocks/fields picked on the board
+	 * @param i field's number to draw
+	 * @param color color for drawing field
+	 * @param afterGame additional param for dead rocks, or territory
+	 * @param b if field is territory
+	 * 
 	 */
 	public void fillField(int i, Color color, stateAfterGame afterGame, boolean b) {
 		FXField field = fields.get(i);
@@ -146,6 +150,7 @@ public class FXBoard extends Canvas {
 		return color;
 	}
 	/**
+	 * draw board itarate for all fields in (Board) readObject
 	 * @param readObject
 	 */
 	public void drawBoard(Board readObject) {

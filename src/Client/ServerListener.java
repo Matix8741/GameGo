@@ -31,6 +31,7 @@ public class ServerListener extends Thread {
 	private boolean ifBot;
 	
 	/**
+	 * contructor - inizialization fields below
 	 * @param in
 	 * @param timer
 	 * @param x
@@ -64,6 +65,7 @@ public class ServerListener extends Thread {
 		this.fxBoard = fxBoard;
 	}
 	/**
+	 * read string message from server
 	 * @return
 	 * @throws IOException
 	 */
@@ -313,6 +315,7 @@ public class ServerListener extends Thread {
 		}
 	}
 	/**
+	 * close connection with server
 	 * @throws IOException
 	 */
 	private void close() throws IOException {
@@ -322,10 +325,11 @@ public class ServerListener extends Thread {
 		running = false;
 	}
 	/**
-	 * @param myClient
-	 * @param integer
-	 * @param timer
-	 * @param stage
+	 * read from server information about color and create board to play
+	 * @param myClient socket
+	 * @param integer size od board
+	 * @param timer timer for searching window
+	 * @param stage stage for board
 	 */
 	public void firstContact(MyClient myClient, int integer, Timer timer, Stage stage){
 		try {
@@ -353,6 +357,7 @@ public class ServerListener extends Thread {
 		return this;
 	}
 	/**
+	 * set information if we play with bot
 	 * @param b
 	 */
 	public void setIfBot(boolean b) {
