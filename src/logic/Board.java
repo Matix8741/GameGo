@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import logic.Territory;
 
+/**
+ * @author Daniel
+ *
+ *a board and some informations about the game
+ */
 public class Board implements Serializable {
 
 	private static final long serialVersionUID = 199410800481618070L;
@@ -16,6 +21,13 @@ public class Board implements Serializable {
 	private Board lastWhiteMove;
 	private Board lastBlackMove;
 
+	/**
+	 * @param size
+	 * 
+	 * creates a new board at the beginning of the game
+	 * 
+	 * @throws InvalidBoardSizeException
+	 */
 	public Board(int size) throws InvalidBoardSizeException {
 		if (size <= 0)
 			throw new InvalidBoardSizeException();
@@ -26,26 +38,47 @@ public class Board implements Serializable {
 			fields.add(new Field((i % size) + 1, (i / size) + 1, this));
 	}
 
+	/**
+	 * @return size
+	 */
 	public int getSize() {
 		return size;
 	}
 
+	/**
+	 * @return fields
+	 */
 	public List<Field> getFields() {
 		return fields;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @return field
+	 */
 	public Field getField(int x, int y) {
 		return fields.get(size * (y - 1) + x - 1);
 	}
 
+	/**
+	 * @param field
+	 * @return field with the same x and y
+	 */
 	Field getField(Field field) {
 		return getField(field.getX(), field.getY());
 	}
 
+	/**
+	 * @return groups
+	 */
 	public List<Group> getGroups() {
 		return groups;
 	}
 
+	/**
+	 * sets territories for fields
+	 */
 	void setTerritories() {
 		for (Field aField : this.getFields())
 			aField.setTerritory(null);
@@ -56,10 +89,18 @@ public class Board implements Serializable {
 			}
 	}
 
+	/**
+	 * @return territories
+	 */
 	List<Territory> getTerritories() {
 		return territories;
 	}
 
+	/**
+	 * @param color
+	 * 
+	 * saves last move
+	 */
 	void saveMove(state color) {
 		if (color == state.BLACK)
 			lastBlackMove = this.copy();
@@ -67,6 +108,10 @@ public class Board implements Serializable {
 			lastWhiteMove = this.copy();
 	}
 
+	/**
+	 * @param color
+	 * @return last move of the color
+	 */
 	Board getLastMove(state color) {
 		if (color == state.BLACK)
 			return lastBlackMove;
@@ -74,6 +119,9 @@ public class Board implements Serializable {
 			return lastWhiteMove;
 	}
 
+	/**
+	 * @return copy of this to be saved
+	 */
 	Board copy() {
 		Board copy = null;
 		try {
@@ -87,6 +135,10 @@ public class Board implements Serializable {
 		return copy;
 	}
 
+	/**
+	 * @param lastMove
+	 * @return true if this and lastMove contain identical stones; false if not
+	 */
 	boolean compare(Board lastMove) {
 		for (Field aField : this.getFields()) {
 			if (!(getField(aField).getState() == lastMove.getField(aField).getState()))

@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Daniel
+ *
+ *a group of adjacent stones in one color 
+ */
 public class Group implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -13,6 +18,11 @@ public class Group implements Serializable {
 	private state mystate;
 	private Board board;
 
+	/**
+	 * @param field
+	 * 
+	 * creates new group with a just placed stone and absorbs all adjacent groups
+	 */
 	Group(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
@@ -61,18 +71,32 @@ public class Group implements Serializable {
 		}
 	}
 
+	/**
+	 * @return list of fields
+	 */
 	public List<Field> getFields() {
 		return fields;
 	}
 
+	/**
+	 * @return list of fields adjacent to this
+	 */
 	List<Field> getOut() {
 		return out;
 	}
 
+	/**
+	 * @return mystate
+	 */
 	state getState() {
 		return mystate;
 	}
 
+	/**
+	 * counts empty fields in 'out'
+	 * 
+	 * @return breaths
+	 */
 	int countBreaths() {
 		int i = 0;
 		for (Field aField : out)
@@ -81,6 +105,11 @@ public class Group implements Serializable {
 		return i;
 	}
 
+	/**
+	 * @param field
+	 * 
+	 * absorbing the group the field belongs to by this
+	 */
 	private void merge(Field field) {
 		if (this.equals(field.getGroup()))
 			return;

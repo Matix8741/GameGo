@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Daniel
+ *
+ *a group of empty fields
+ */
 public class Territory implements Serializable {
 
 	private static final long serialVersionUID = -3940059024077288320L;
@@ -14,6 +19,11 @@ public class Territory implements Serializable {
 	private state ownerBefore;
 	private Board board;
 
+	/**
+	 * @param field
+	 * 
+	 * creates territory containing the field and absorbs all adjacent territories
+	 */
 	Territory(Field field) {
 		fields = new ArrayList<Field>();
 		fields.add(field);
@@ -72,27 +82,47 @@ public class Territory implements Serializable {
 			}
 	}
 
+	/**
+	 * @return list of fields
+	 */
 	public List<Field> getFields() {
 		return fields;
 	}
 
+	/**
+	 * @return list of fields adjacent to this
+	 */
 	private List<Field> getOut() {
 		return out;
 	}
 
-	public void setOwner(state state) {
+	/**
+	 * @param newOwner
+	 */
+	public void setOwner(state newOwner) {
 		ownerBefore = owner;
-		this.owner = state;
+		this.owner = newOwner;
 	}
 
+	/**
+	 * @return owner
+	 */
 	public state getOwner() {
 		return owner;
 	}
 
+	/**
+	 * @return previous owner
+	 */
 	public state getOwnerBefore() {
 		return ownerBefore;
 	}
 
+	/**
+	 * @param field
+	 * 
+	 * absorbing the territory the field belongs to by this
+	 */
 	private void merge(Field field) {
 		if (this.equals(field.getTerritory()))
 			return;
