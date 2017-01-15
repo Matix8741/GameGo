@@ -9,7 +9,6 @@ public class Field implements Serializable {
 	/**
 	 * 
 	 */
-	private boolean ifDone = false;
 	private stateAfterGame stateAfterGame;
 	private static final long serialVersionUID = -1014502393010618861L;
 	private int x;
@@ -109,17 +108,5 @@ public class Field implements Serializable {
 	public void setStateAfterGame(stateAfterGame stateAfterGame) {
 		this.stateAfterGame = stateAfterGame;
 	}
-
-	/*private boolean isIfDone() {
-		return ifDone;
-	}
-
-	private void changeDone() {
-		if(this.ifDone){
-			ifDone = false;
-		}else{
-			ifDone = true;
-		}
-	}*/
 
 }

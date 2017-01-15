@@ -19,33 +19,6 @@ public class GameRules {
 		return board.getTerritories();
 	}
 
-	private static state territoryOwner(Group territory) {
-		if (territory.getState() != state.EMPTY)
-			return state.EMPTY;
-
-		state color = territory.getOut().get(0).getState();
-		for (Field aField : territory.getOut())
-			if (aField.getState() != color)
-				return state.EMPTY;
-		return color;
-	}
-
-	private static void territories(Board board) {
-		for (Field aField : board.getFields()) {
-			if (aField.isEmpty()) {
-				aField.setGroup(new Group(aField));
-			}
-		}
-	}
-
-	private static void removeTerritories(Board board) {
-		List<Group> toRemove = new ArrayList<Group>();
-		for (Group aGroup : board.getGroups())
-			if (aGroup.getState() == state.EMPTY)
-				toRemove.add(aGroup);
-		board.getGroups().removeAll(toRemove);
-	}
-
 	public static int move(Board board, Field field, state color)
 			throws FieldOccupiedException, SuicideException, KoException {
 		int beaten = 0;
